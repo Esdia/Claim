@@ -1,7 +1,9 @@
 package bobnard.claim;
 
+import bobnard.claim.UI.MainWindow;
+
 public class Claim {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        MainWindow.start();
     }
 }
