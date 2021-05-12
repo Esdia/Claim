@@ -3,17 +3,22 @@ package bobnard.claim.UI;
 import bobnard.claim.model.Game;
 
 import javax.swing.*;
+
 import java.awt.*;
 
 public class MainWindow implements Runnable {
     GameController controller;
-    JFrame frame;
+    private JFrame frame;
+    
+    public MainWindow (JFrame cf) {
+		frame = cf;
+	}
 
     @Override
     public void run() {
         Game game = new Game();
         this.controller = new GameController(game);
-        this.frame = new JFrame("Claim");
+        this.frame.setTitle("Claim");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setMinimumSize(new Dimension(480, 360));
@@ -29,7 +34,8 @@ public class MainWindow implements Runnable {
         frame.setVisible(true);
     }
 
-    public static void start() {
-        SwingUtilities.invokeLater(new MainWindow());
+    public static void start(JFrame cf) {
+    	MainWindow bw = new MainWindow(cf);
+        SwingUtilities.invokeLater(bw);
     }
 }

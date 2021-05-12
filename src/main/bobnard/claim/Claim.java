@@ -1,9 +1,11 @@
 package bobnard.claim;
 
-import bobnard.claim.UI.MainWindow;
+
+import bobnard.claim.UI.*;
 
 public class Claim {
     public static void main(String[] args) {
-        MainWindow.start();
+    	CFrame cf = new CFrame();
+    	MainWindow.start(cf);
     }
 }
