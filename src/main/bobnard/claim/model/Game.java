@@ -82,6 +82,10 @@ public class Game {
         return this.phase.getCurrentPlayer();
     }
 
+    public Player getPlayer(int index) {
+        return this.players[index];
+    }
+
     public boolean isDone() {
         return this.isDone;
     }
