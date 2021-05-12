@@ -1,6 +1,6 @@
 package bobnard.claim.model;
 
-public class Card {
+public class Card implements Comparable<Card> {
     public final Faction faction;
     public final int value;
 
@@ -31,5 +31,14 @@ public class Card {
         Card c = (Card) o;
 
         return c.faction == this.faction && c.value == this.value;
+    }
+
+    @Override
+    public int compareTo(Card o) {
+        if (this.faction == o.faction) {
+            return Integer.compare(this.value, o.value);
+        } else {
+            return this.faction.compareTo(o.faction);
+        }
     }
 }
