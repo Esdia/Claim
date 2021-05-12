@@ -24,7 +24,10 @@ public class Deck {
             this.deck.push(new Card(Faction.GOBLINS, 0));
         }
 
-        // We shuffle the deck
+        this.shuffle();
+    }
+
+    private void shuffle() {
         Collections.shuffle(this.deck);
     }
 
