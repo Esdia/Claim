@@ -1,7 +1,9 @@
 package bobnard.claim.UI;
 
 
-import java.awt.Image;
+import bobnard.claim.model.Game;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,42 +12,28 @@ import javax.swing.*;
 
 
 
-public class CFrame extends JFrame implements ActionListener{
+public class CFrame extends JComponent implements ActionListener{
 	
 
 	
 	boolean phase;
+	Game game;
 	JButton b1;
 	ImageIcon icb1;
 	JButton b2;
 	ImageIcon icb2;
+	String path = "src/main/bobnard/claim/UI/resources/";
 	
 	int ArraySize = 13;
 	ArrayList<JButton> firstP = new ArrayList<JButton>(ArraySize);
 	ArrayList<JButton> secondP = new ArrayList<JButton>(ArraySize);
-	ArrayList<ImageIcon> images = new ArrayList<ImageIcon>(ArraySize);
-	
-	public CFrame() {
-;
-		
-		
+
+	public CFrame(Game game) {
+		this.game = game;
+
 		phase = true;
-		
-		icb1 =  new ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Logo Wolf.jpg");
-		icb2 =  new ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Beatrice.png");
-		images.add(new ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Zelda.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Bloodborne Maria.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Logo Wolf.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Zelda.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Bloodborne Maria.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Beatrice.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Logo Wolf.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Zelda.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Bloodborne Maria.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Beatrice.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Logo Wolf.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Zelda.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Bloodborne Maria.jpg"));
+		icb1 =  new ImageIcon(path+"Logo Wolf.jpg");
+		icb2 =  new ImageIcon(path+"Beatrice.png");
 		
 		
 		
@@ -65,16 +53,16 @@ public class CFrame extends JFrame implements ActionListener{
 		
 		
 		
-		ButtonMapping(firstP, 1);
-		ButtonMapping(secondP, 700);
+		ButtonMapping();
 	
 		setLayout(null);
 		// TODO Dimensions 
 
 		this.setVisible(true);
 	}
-	
-	
+
+
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -94,25 +82,35 @@ public class CFrame extends JFrame implements ActionListener{
 		Image resIm = im.getScaledInstance (w, h, java.awt.Image.SCALE_SMOOTH);
 		return new ImageIcon(resIm);
 	}
+
+
 	
-	
-		
-	
-	public void ButtonMapping(ArrayList<JButton> buttons, int y) {
-		//int h = (int) getSize().getHeight();
-		//int w = (int) getSize().getWidth();
+	public void ButtonMapping() {
 		int x = 30;
-		for (int i=0; i< ArraySize; i++) {
+		for (int i=0; i< 12; i++) {
+			ImageIcon ic =  new ImageIcon(path+game.getPlayer(0).getCards().get(i).name+".png");
+			firstP.add(new JButton(ic));
+			firstP.get(i).setIcon(resizeIcon(ic,  50, 75));
+			firstP.get(i).setBounds( x, 1, 50, 75);
 
-			buttons.add(new JButton(images.get(i)));
-			buttons.get(i).setIcon(resizeIcon(images.get(i),  50, 75));
-			buttons.get(i).setBounds( x, y, 50, 75);
-
-			buttons.get(i).setVisible(true);
-			this.add(buttons.get(i));
-			buttons.get(i).addActionListener(this);
+			firstP.get(i).setVisible(true);
+			this.add(firstP.get(i));
+			firstP.get(i).addActionListener(this);
 			x += 50;
 			
+		}
+		x=30;
+		for (int i=0; i< 12; i++) {
+			ImageIcon ic =  new ImageIcon(path+game.getPlayer(1).getCards().get(i).name+".png");
+			secondP.add(new JButton(ic));
+			secondP.get(i).setIcon(resizeIcon(ic,  50, 75));
+			secondP.get(i).setBounds( x, 700, 50, 75);
+
+			secondP.get(i).setVisible(true);
+			this.add(secondP.get(i));
+			secondP.get(i).addActionListener(this);
+			x += 50;
+
 		}
 	}
 
@@ -139,8 +137,8 @@ public class CFrame extends JFrame implements ActionListener{
 		b.setIcon(resizeIcon(i, nw, nh));
 		b.setBounds(x, y, nw, nh);
 	}
-	
-	
+
+
 }
 	
 
