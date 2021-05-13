@@ -8,9 +8,9 @@ import java.awt.*;
 
 public class MainWindow implements Runnable {
     GameController controller;
-    private JFrame frame;
+    private CFrame frame;
     
-    public MainWindow (JFrame cf) {
+    public MainWindow (CFrame cf) {
 		frame = cf;
 	}
 
@@ -21,7 +21,7 @@ public class MainWindow implements Runnable {
         this.frame.setTitle("Claim");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setMinimumSize(new Dimension(480, 360));
+        frame.setMinimumSize(new Dimension(280, 360));
         frame.setSize(
                 screenSize.width * 3 / 4,
                 screenSize.height * 3 / 4
@@ -30,11 +30,12 @@ public class MainWindow implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.addMouseListener(new Mouse(controller));
+        frame.BMapping();
 
         frame.setVisible(true);
     }
 
-    public static void start(JFrame cf) {
+    public static void start(CFrame cf) {
     	MainWindow bw = new MainWindow(cf);
         SwingUtilities.invokeLater(bw);
     }

@@ -48,7 +48,7 @@ public class CFrame extends JFrame implements ActionListener{
 		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Bloodborne Maria.jpg"));
 		
 		
-		
+
 		b1 =  new JButton(icb1);
 		b1.setIcon(resizeIcon(icb1, 150, 75));
 		b1.setBounds(400, 400, 100, 70);
@@ -63,17 +63,21 @@ public class CFrame extends JFrame implements ActionListener{
 		this.add(b2);
 		b2.addActionListener(this);
 		
-		
-		
-		ButtonMapping(firstP, 1);
-		ButtonMapping(secondP, 700);
-	
 		setLayout(null);
+		this.setVisible(true);
+		
+	
+
 		// TODO Dimensions 
 
-		this.setVisible(true);
+		
+		
+		
 	}
-	
+	public void BMapping() {
+		ButtonMapping(firstP, false);
+		ButtonMapping(secondP, true);		
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -98,20 +102,28 @@ public class CFrame extends JFrame implements ActionListener{
 	
 		
 	
-	public void ButtonMapping(ArrayList<JButton> buttons, int y) {
-		//int h = (int) getSize().getHeight();
-		//int w = (int) getSize().getWidth();
+	public void ButtonMapping(ArrayList<JButton> buttons, boolean P) {
+		int h = (int) getSize().getHeight();
+		int w = (int) getSize().getWidth();
 		int x = 30;
 		for (int i=0; i< ArraySize; i++) {
 
 			buttons.add(new JButton(images.get(i)));
-			buttons.get(i).setIcon(resizeIcon(images.get(i),  50, 75));
-			buttons.get(i).setBounds( x, y, 50, 75);
+			buttons.get(i).setIcon(resizeIcon(images.get(i), w/16, h/10));
+//			if (P) { buttons.get(i).setBounds( x, 700, 100, 150); 
+//			}else {
+//				  buttons.get(i).setBounds( x, 1, 100, 150); }
+
+			if (P) { 
+				buttons.get(i).setBounds( x, h-(h/10)-30, w/16, h/10); 
+			}else {
+				buttons.get(i).setBounds( x, 1, w/16, h/10); }
+
 
 			buttons.get(i).setVisible(true);
 			this.add(buttons.get(i));
 			buttons.get(i).addActionListener(this);
-			x += 50;
+			x += buttons.get(i).getWidth();
 			
 		}
 	}
