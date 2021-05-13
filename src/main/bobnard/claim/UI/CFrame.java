@@ -20,9 +20,10 @@ public class CFrame extends JFrame implements ActionListener{
 	JButton b2;
 	ImageIcon icb2;
 	
-  
-	ArrayList<JButton> buttons = new ArrayList<JButton>(26);
-	ArrayList<ImageIcon> images = new ArrayList<ImageIcon>(26);
+	int ArraySize = 13;
+	ArrayList<JButton> firstP = new ArrayList<JButton>(ArraySize);
+	ArrayList<JButton> secondP = new ArrayList<JButton>(ArraySize);
+	ArrayList<ImageIcon> images = new ArrayList<ImageIcon>(ArraySize);
 	
 	public CFrame() {
 ;
@@ -45,17 +46,7 @@ public class CFrame extends JFrame implements ActionListener{
 		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Logo Wolf.jpg"));
 		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Zelda.png"));
 		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Bloodborne Maria.jpg"));
-		images.add(new ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Beatrice.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Logo Wolf.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Zelda.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Bloodborne Maria.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Beatrice.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Logo Wolf.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Zelda.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Bloodborne Maria.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Beatrice.png"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Logo Wolf.jpg"));
-		images.add(new  ImageIcon("C:\\Users\\Nad\\Pictures\\Images du Pif\\Zelda.png"));
+		
 		
 		
 		b1 =  new JButton(icb1);
@@ -73,11 +64,13 @@ public class CFrame extends JFrame implements ActionListener{
 		b2.addActionListener(this);
 		
 		
-		ButtonMapping();
+		
+		ButtonMapping(firstP, 1);
+		ButtonMapping(secondP, 700);
 	
 		setLayout(null);
 		// TODO Dimensions 
-		setSize(800,800);
+
 		this.setVisible(true);
 	}
 	
@@ -85,11 +78,11 @@ public class CFrame extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (buttons.contains(e.getSource()) && buttons.indexOf(e.getSource()) < buttons.size()/2 ) {
-			buttons.get(buttons.indexOf(e.getSource())).setBounds(275, 250, 60, 90);		
+		if (firstP.contains(e.getSource()) ) {
+			firstP.get(firstP.indexOf(e.getSource())).setBounds(275, 250, 60, 90);		
 		}
-		if (buttons.contains(e.getSource()) && buttons.indexOf(e.getSource()) >= buttons.size()/2 ) {
-			buttons.get(buttons.indexOf(e.getSource())).setBounds(275, 350, 60, 90);		
+		if (secondP.contains(e.getSource()) ) {
+			secondP.get(secondP.indexOf(e.getSource())).setBounds(275, 350, 60, 90);		
 		}
 
 		
@@ -105,19 +98,16 @@ public class CFrame extends JFrame implements ActionListener{
 	
 		
 	
-	public void ButtonMapping() {
+	public void ButtonMapping(ArrayList<JButton> buttons, int y) {
+		//int h = (int) getSize().getHeight();
+		//int w = (int) getSize().getWidth();
 		int x = 30;
-		for (int i=0; i< 24; i++) {
-			if (i == 12) {
-				x = 30;
-			}
+		for (int i=0; i< ArraySize; i++) {
+
 			buttons.add(new JButton(images.get(i)));
-			buttons.get(i).setIcon(resizeIcon(images.get(i), 50, 75));
-			if (i < 12) {
-				buttons.get(i).setBounds( x, 1, 50, 75);
-			}else {
-				buttons.get(i).setBounds( x, 700, 50, 75);
-			}
+			buttons.get(i).setIcon(resizeIcon(images.get(i),  50, 75));
+			buttons.get(i).setBounds( x, y, 50, 75);
+
 			buttons.get(i).setVisible(true);
 			this.add(buttons.get(i));
 			buttons.get(i).addActionListener(this);
@@ -127,6 +117,28 @@ public class CFrame extends JFrame implements ActionListener{
 	}
 
 	
+	//TODO Method to apply ButtonRepaint on EVERY button
+	
+
+	
+	public void ButtonRepaint(JButton b, ImageIcon i) {
+		
+		int h = (int) getSize().getHeight();
+		int w = (int) getSize().getWidth();
+
+		int nh = h/10;
+		int nw = w/16;
+		int x  = 2*nw;
+		int y  = 1;
+		
+		if (b.getX() > w/2) {
+			y = h - (nh+30); // Error Margin
+		}
+
+		
+		b.setIcon(resizeIcon(i, nw, nh));
+		b.setBounds(x, y, nw, nh);
+	}
 	
 	
 }
