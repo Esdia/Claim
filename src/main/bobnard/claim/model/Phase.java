@@ -90,7 +90,7 @@ public abstract class Phase {
     abstract void dealWithPlayedCards();
 
     boolean isDone() {
-        return !this.players[0].hasCards();
+        return !this.players[this.getLastTrickLoser()].hasCards();
     }
 
     int getCurrentPlayer() {
