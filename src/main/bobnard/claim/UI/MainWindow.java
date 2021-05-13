@@ -9,16 +9,15 @@ import java.awt.*;
 public class MainWindow implements Runnable {
     GameController controller;
     private JFrame frame;
-    
-    public MainWindow (JFrame cf) {
-		frame = cf;
-	}
+
 
     @Override
     public void run() {
         Game game = new Game();
-        this.controller = new GameController(game);
-        this.frame.setTitle("Claim");
+        CFrame gameUI = new CFrame(game);
+
+        this.controller = new GameController(game, gameUI);
+        this.frame = new JFrame("Claim");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setMinimumSize(new Dimension(480, 360));
@@ -31,11 +30,12 @@ public class MainWindow implements Runnable {
 
         frame.addMouseListener(new Mouse(controller));
 
+        this.frame.add(controller.getGameUI());
         frame.setVisible(true);
     }
 
-    public static void start(JFrame cf) {
-    	MainWindow bw = new MainWindow(cf);
+    public static void start() {
+        MainWindow bw = new MainWindow();
         SwingUtilities.invokeLater(bw);
     }
 }
