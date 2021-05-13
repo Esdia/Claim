@@ -8,20 +8,21 @@ import java.awt.*;
 
 public class MainWindow implements Runnable {
     GameController controller;
-    private CFrame frame;
-    
-    public MainWindow (CFrame cf) {
-		frame = cf;
-	}
+    private JFrame frame;
 
+
+    
+    
     @Override
     public void run() {
         Game game = new Game();
-        this.controller = new GameController(game);
-        this.frame.setTitle("Claim");
+        CFrame gameUI = new CFrame(game);
+
+        this.controller = new GameController(game, gameUI);
+        this.frame = new JFrame("Claim");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setMinimumSize(new Dimension(280, 360));
+        frame.setMinimumSize(new Dimension(480, 360));
         frame.setSize(
                 screenSize.width * 3 / 4,
                 screenSize.height * 3 / 4
@@ -30,13 +31,13 @@ public class MainWindow implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.addMouseListener(new Mouse(controller));
-        frame.BMapping();
 
+        this.frame.add(controller.getGameUI());
         frame.setVisible(true);
     }
 
-    public static void start(CFrame cf) {
-    	MainWindow bw = new MainWindow(cf);
+    public static void start() {
+        MainWindow bw = new MainWindow();
         SwingUtilities.invokeLater(bw);
     }
 }

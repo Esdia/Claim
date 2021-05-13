@@ -32,7 +32,9 @@ public class PhaseOne extends Phase {
     void endTrick() {
         super.endTrick();
         this.giveCentralCards();
-        this.flipCard();
+        if (!this.isDone()) {
+            this.flipCard();
+        }
     }
 
     void giveCentralCards() {

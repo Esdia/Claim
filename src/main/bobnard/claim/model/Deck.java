@@ -8,7 +8,6 @@ public class Deck {
 
     public Deck() {
         this.deck = new Stack<>();
-
         for (int i = 0; i < 10; i++) {
             this.deck.push(new Card(Faction.GOBLINS, i));
             this.deck.push(new Card(Faction.UNDEADS, i));

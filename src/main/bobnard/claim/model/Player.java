@@ -50,7 +50,7 @@ public class Player {
         this.hand.sort();
     }
 
-    Hand getCards() {
+    public Hand getCards() {
         return this.hand;
     }
 
