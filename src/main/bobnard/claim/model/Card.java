@@ -3,6 +3,7 @@ package bobnard.claim.model;
 public class Card implements Comparable<Card> {
     public final Faction faction;
     public final int value;
+    public String name;
 
     public Card(Faction faction, int value) {
         if (value < 0 || value > 9) {
@@ -13,6 +14,7 @@ public class Card implements Comparable<Card> {
             throw new IllegalArgumentException();
         }
 
+        this.name = faction.toString() + value;
         this.faction = faction;
         this.value = value;
     }
