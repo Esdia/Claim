@@ -71,9 +71,8 @@ public class CFrame extends JFrame implements ActionListener{
 		// TODO Dimensions 
 
 		
-		
-		
 	}
+	
 	public void BMapping() {
 		ButtonMapping(firstP, false);
 		ButtonMapping(secondP, true);		
