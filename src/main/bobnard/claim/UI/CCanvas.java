@@ -11,25 +11,51 @@ import javax.swing.*;
 public class CCanvas extends Canvas{
 	
 	BufferedImage image;
-	
-	public CCanvas() {
-		setBounds(0,0,800, 800);
+	String path = "src/main/bobnard/claim/UI/resources/";
+	public int h;
+	public int w;
+	public CCanvas(int nw, int nh) {
+		h = nh;
+		w = nw;
+		setBounds(200,200, w/2, h/3);
+		this.setBackground(Color.getHSBColor(100, 200, 500));
 	}
 	
 	public void paint (Graphics g) {
 		
+		setBounds(w - (w/6),h/4, w/6, h/2);
+		int x = this.getWidth();
+		int y = this.getHeight();
+		int t = x/6;
+		
+		 try { 
+			 image = ImageIO.read(new File(path+"Icon1.png"));
+			 } catch (IOException e) {}	
+		g.drawImage(image, (x/2)-(t/2), t/2, t, t, null); 
+
+		
+		try { 
+		   image = ImageIO.read(new File(path+"Icon2.png")); 
+		  } catch (IOException e) {} 
+		g.drawImage(image, (x/2)-(t/2), (2*t)+(t/2), t, t, null);
+		 		
+
 		try {
-			image = ImageIO.read(new File("C:\\Users\\Nad\\Pictures\\Images du Pif\\CardBack.jpg"));
+			image = ImageIO.read(new File(path+"Icon3.png"));
 		} catch (IOException  e) {}	
-		g.drawImage(image, 20, 300, 50, 75, null); 
-	
+		g.drawImage(image, (x/2)-(t/2), (4*t)+(t/2), t, t, null);
+		
+
 		try {
-			image = ImageIO.read(new File("C:\\Users\\Nad\\Pictures\\Images du Pif\\The Scroll.jpg"));
+			image = ImageIO.read(new File(path+"Icon4.png"));
 		} catch (IOException  e) {}	
-		g.drawImage(image, 150, 150, 200, 150, null);
-	
-	
-	
+		g.drawImage(image, (x/2)-(t/2), (6*t)+(t/2), t, t, null);
+		
+
+		try {
+			image = ImageIO.read(new File(path+"Icon5.png"));
+		} catch (IOException  e) {}	
+		g.drawImage(image, (x/2)-(t/2), (8*t)+(t/2), t, t, null);
 	
 	
 	}
