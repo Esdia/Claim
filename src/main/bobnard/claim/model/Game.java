@@ -12,8 +12,8 @@ public class Game {
     public Game() {
         players = new Player[2];
 
-        players[0] = new Player();
-        players[1] = new Player();
+        players[0] = new Player(0);
+        players[1] = new Player(1);
 
         this.isDone = false;
 
@@ -84,6 +84,14 @@ public class Game {
 
     public Player getPlayer(int index) {
         return this.players[index];
+    }
+    
+    public boolean getLegal(Card card) {
+    	return this.phase.isLegalMove(card);
+    }
+    
+    public Card[] getPlayedCards() {
+    	return this.phase.getPlayedCards();
     }
 
     public boolean isDone() {

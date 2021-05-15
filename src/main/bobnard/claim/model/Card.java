@@ -1,9 +1,13 @@
 package bobnard.claim.model;
 
+import bobnard.claim.UI.*;
+
 public class Card implements Comparable<Card> {
     public final Faction faction;
     public final int value;
     public String name;
+    
+    public CardUI myGui;
 
     public Card(Faction faction, int value) {
         if (value < 0 || value > 9) {
@@ -17,6 +21,7 @@ public class Card implements Comparable<Card> {
         this.name = faction.toString() + value;
         this.faction = faction;
         this.value = value;
+        myGui = new CardUI(this);
     }
 
     @Override

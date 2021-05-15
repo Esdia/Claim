@@ -2,6 +2,8 @@ package bobnard.claim.model;
 
 import java.util.ArrayList;
 
+import bobnard.claim.UI.MainWindow;
+
 public abstract class Phase {
     protected final Player[] players;
 
@@ -70,6 +72,11 @@ public abstract class Phase {
 
         this.trick.addCard(card, currentPlayer == currentLeader);
         this.players[currentPlayer].removeCard(card);
+        if (currentPlayer == 0) {
+        	MainWindow.gameUI.PlayedCard1 = card;
+        }else {
+        	MainWindow.gameUI.PlayedCard2 = card;
+        }
 
         if (this.trick.isReady()) {
             this.endTrick();

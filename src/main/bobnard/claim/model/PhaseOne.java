@@ -1,5 +1,7 @@
 package bobnard.claim.model;
 
+import bobnard.claim.UI.*;
+
 public class PhaseOne extends Phase {
     private final Deck deck;
 
@@ -21,12 +23,16 @@ public class PhaseOne extends Phase {
 
         this.players[0].sortHand();
         this.players[1].sortHand();
-    }
+        
+        MainWindow.gameUI.setplayers(this.players[0], this.players[1]);
+        MainWindow.gameUI.repaint();
+     }
 
     void flipCard() {
         this.flippedCard = deck.draw();
         System.out.println("Flipped card : " + this.flippedCard);
-    }
+        MainWindow.gameUI.FlippedCard = this.flippedCard;
+        }
 
     @Override
     void endTrick() {
@@ -34,6 +40,10 @@ public class PhaseOne extends Phase {
         this.giveCentralCards();
         if (!this.isDone()) {
             this.flipCard();
+            MainWindow.gameUI.PlayedCard1.myGui.setplayer(-1, false);
+            MainWindow.gameUI.PlayedCard2.myGui.setplayer(-1, false);
+            MainWindow.gameUI.PlayedCard1 = null;
+            MainWindow.gameUI.PlayedCard2 = null;
         }
     }
 
