@@ -6,8 +6,9 @@ import bobnard.claim.model.Game;
 
 public class Claim {
     public static void main(String[] args) {
-    	MainWindow.start();
-        Game game = new Game();
-        MainWindow.gameUI.setGame(game);
+        MenuWindow.start();
+    	//MainWindow.start();
+        //Game game = new Game();
+        //MainWindow.gameUI.setGame(game);
     }
 }
