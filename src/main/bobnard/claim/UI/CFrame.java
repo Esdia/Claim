@@ -82,16 +82,16 @@ public class CFrame extends JComponent implements ActionListener{
 		
 		
 		try {
-			FactionIm1 = ImageIO.read(new File(path+"Icon1.png"));
-			FactionIm2 = ImageIO.read(new File(path+"Icon2.png"));
-			FactionIm3 = ImageIO.read(new File(path+"Icon3.png"));
-			FactionIm4 = ImageIO.read(new File(path+"Icon4.png"));
-			FactionIm5 = ImageIO.read(new File(path+"Icon5.png"));
+			FactionIm1 = ImageIO.read(new File(path+"SCORE0.png"));
+			FactionIm2 = ImageIO.read(new File(path+"SCORE1.png"));
+			FactionIm3 = ImageIO.read(new File(path+"SCORE2.png"));
+			FactionIm4 = ImageIO.read(new File(path+"SCORE3.png"));
+			FactionIm5 = ImageIO.read(new File(path+"SCORE4.png"));
 		} catch (IOException  ee) {}	
 		
 
-		icb1 =  new ImageIcon(path+"CardBack.jpg");
-		icb2 =  new ImageIcon(path+"CardBack.jpg");
+		icb1 =  new ImageIcon(path+"CARDBACK.png");
+		icb2 =  new ImageIcon(path+"CARDBACK.png");
 		icbf = new ImageIcon(path+ "GOBLINS0.png");
 
 		b1 =  new JButton(icb1);
@@ -117,7 +117,7 @@ public class CFrame extends JComponent implements ActionListener{
 		} catch (IOException  ee) {}	
 
 		try {
-			image2 = ImageIO.read(new File(path+"CardBack.jpg"));
+			image2 = ImageIO.read(new File(path+"CARDBACK.png"));
 		} catch (IOException  ee) {}
 
 	}
