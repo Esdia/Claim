@@ -32,7 +32,6 @@ public class CFrame extends JComponent implements ActionListener{
 	JButton PlayedButton2;
 	ImageIcon PBimage2;
 
-	CCanvas c1;
 	String path = "src/main/bobnard/claim/UI/resources/";
 
 	int ArraySize = 13;
@@ -43,6 +42,12 @@ public class CFrame extends JComponent implements ActionListener{
 	BufferedImage image2;
 	BufferedImage ImPlayed1;
 	BufferedImage ImPlayed2;
+	
+	BufferedImage FactionIm1;
+	BufferedImage FactionIm2;
+	BufferedImage FactionIm3;
+	BufferedImage FactionIm4;
+	BufferedImage FactionIm5;
 
 	Player Myp0, Myp1;
 	public Card FlippedCard;
@@ -70,6 +75,16 @@ public class CFrame extends JComponent implements ActionListener{
 		PlayedButton2 = null;
 		PBimage1 = null;
 		PBimage2 = null;
+		
+		
+		try {
+			FactionIm1 = ImageIO.read(new File(path+"Icon1.png"));
+			FactionIm2 = ImageIO.read(new File(path+"Icon2.png"));
+			FactionIm3 = ImageIO.read(new File(path+"Icon3.png"));
+			FactionIm4 = ImageIO.read(new File(path+"Icon4.png"));
+			FactionIm5 = ImageIO.read(new File(path+"Icon5.png"));
+		} catch (IOException  ee) {}	
+		
 
 		icb1 =  new ImageIcon(path+"CardBack.jpg");
 		icb2 =  new ImageIcon(path+"CardBack.jpg");
@@ -90,13 +105,8 @@ public class CFrame extends JComponent implements ActionListener{
 		this.add(bf);
 		bf.addActionListener(this);
 
-		c1 = new CCanvas(10, 20);
-		c1.setVisible(false);
-		this.add(c1);
-
 		setLayout(null);		
 		this.setVisible(true);
-		//ButtonMaking();
 
 		try {
 			image = ImageIO.read(new File(path+"Wood.jpg"));
@@ -112,13 +122,28 @@ public class CFrame extends JComponent implements ActionListener{
 	public void paintComponent(Graphics g) {
 		int h = (int) getSize().getHeight();
 		int w = (int) getSize().getWidth();
+		int t = w/36;
+		int x = w-2*(t);
+		int y = ((int) ((w/20)*1.5))+(h/12);
 
 		g.drawImage(image, 0, 0, w, h, null);
 
 		g.drawImage(image2, w/32, (h/2)-(h/12), w/16, h/6, null);
+		
+		g.drawImage(FactionIm1, x, y, t, t, null);
+		g.drawImage(FactionIm2, x, y+2*(t), t, t, null);
+		g.drawImage(FactionIm3, x, y+4*(t), t, t, null);
+		g.drawImage(FactionIm4, x, y+6*(t), t, t, null);
+		g.drawImage(FactionIm5, x, y+8*(t), t, t, null);
+		
+		Font fonte = new Font("Serif", Font.BOLD, 12);
+		g.setFont(fonte);
+		g.drawString("PLAYER 1 :" + 1 + " / " + 3 + ": PLAYER 2", x - t, y+t + (t/2));
+		g.drawString("PLAYER 1 :" + 2 + " / " + 2 + ": PLAYER 2", x - t, y+3*t+ (t/2));
+		g.drawString("PLAYER 1 :" + 3 + " / " + 4 + ": PLAYER 2", x - t, y+5*t+ (t/2));
+		g.drawString("PLAYER 1 :" + 4 + " / " + 1 + ": PLAYER 2", x - t, y+7*t+ (t/2));
+		g.drawString("PLAYER 1 :" + 5 + " / " + 7 + ": PLAYER 2", x - t, y+9*t+ (t/2));
 
-		//TODO REPLACEMENT FOR A BETTER FLIPPED CARD SOLUTION (maybe ?)
-		//g.drawImage(image2, (w/32)+2*(w/16), (h/2)-(h/16), w/20, h/8, null);
 
 		b1.setIcon(resizeIcon(icb1, w/18, h/8));
 		b1.setBounds(w/32, 10, w/18, h/8);
@@ -128,11 +153,6 @@ public class CFrame extends JComponent implements ActionListener{
 		b2.setBounds(w/32, h-10-(h/8), w/18, h/8);
 		b2.setVisible(true);
 
-		c1.h = h;
-		c1.w = w;
-		c1.setVisible(true);
-		setLayout(null);
-
 		this.setVisible(true);
 		
 		if (Myp0 != null) Myp0.DrawHand();
@@ -141,79 +161,16 @@ public class CFrame extends JComponent implements ActionListener{
 		if (PlayedCard1 != null) PlayedCard1.myGui.DisplayPlayed();
 		if (PlayedCard2 != null) PlayedCard2.myGui.DisplayPlayed();
 
-		/*		
-		  if (PlayedButton1 != null) { 
-			  PlayedButton1.setIcon(resizeIcon(PBimage1,  w/20, h/8));
-			  PlayedButton1.setBounds((w/2)-(w/20), (h/2)-(h/8)-(h/16), w/20, h/8);
-			  PlayedButton1.setVisible(true);
-			 }
-		  if (PlayedButton2 != null) {
-			  PlayedButton2.setIcon(resizeIcon(PBimage2,  w/20, h/8));
-			  PlayedButton2.setBounds((w/2)-(w/20), (h/2)+(h/16), w/20, h/8);
-			  PlayedButton2.setVisible(true);
-		  }
-		  if ((PlayedButton2 != null) && (PlayedButton1 != null)) {
-			  PlayedButton2.setVisible(false);
-			  PlayedButton1.setVisible(false);
-			  PlayedButton2 = null;
-			  PlayedButton1 = null;
-		  }
-		 */
-		//ButtonMapping();
-		//MappingFlipped();
-		c1.repaint();
-
-
-		//TODO REPLACEMENT FOR A BETTER FLIPPED CARD SOLUTION
-		//g.drawImage(image2, (w/32)+2*(w/16), (h/2)-(h/16), w/20, h/8, null);
-
-
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int h = (int) getSize().getHeight();
-		int w = (int) getSize().getWidth();
-
-
-
-		if (firstP.contains(e.getSource()) && game.getLegal(game.getPlayer(0).getCards().get(firstP.indexOf(e.getSource())))) {
-
-			//firstP.get(firstP.indexOf(e.getSource())).setBounds( (w/2)-(w/20), (h/2)-(h/10)-(w/20), w/20, h/8);
-			System.out.println("J1 :" + game.getPlayer(0).getCards().get(firstP.indexOf(e.getSource())).name);
-			PBimage1 =  new ImageIcon(path+game.getPlayer(0).getCards().get(firstP.indexOf(e.getSource())).name+".png");
-			game.playCard(game.getPlayer(0).getCards().get(firstP.indexOf(e.getSource())));
-			PlayedButton1 = new JButton(PBimage1);
-			PlayedButton1.setVisible(false);
-			this.add(PlayedButton1);
-			PlayedButton1.addActionListener(this);
-			//firstP.get(firstP.indexOf(e.getSource())-1).setVisible(false);
-			firstP.remove(firstP.get(firstP.indexOf(e.getSource())-1));
-			this.repaint(0);
+		
+		if( e.getSource() == b1) {
+			System.out.println("B1");
 		}
-		else if (secondP.contains(e.getSource()) && game.getLegal(game.getPlayer(1).getCards().get(secondP.indexOf(e.getSource())))) {
-
-			//secondP.get(secondP.indexOf(e.getSource())).setBounds( (w/2)-(w/20), (h/2)+(h/10)+(w/20), w/20, h/8);
-			System.out.println("J2:" + game.getPlayer(1).getCards().get(secondP.indexOf(e.getSource())).name);
-			PBimage2 =  new ImageIcon(path+game.getPlayer(1).getCards().get(secondP.indexOf(e.getSource())).name+".png");
-			game.playCard(game.getPlayer(1).getCards().get(secondP.indexOf(e.getSource())));
-			PlayedButton2 = new JButton(PBimage2);
-			PlayedButton2.setVisible(false);
-			this.add(PlayedButton2);
-			PlayedButton2.addActionListener(this);
-			//secondP.get(secondP.indexOf(e.getSource())-1).setVisible(false);
-			secondP.remove(secondP.get(secondP.indexOf(e.getSource())-1));
-			this.repaint(0);
-		} else {
-			if (firstP.contains(e.getSource())) {
-				System.out.println("WRONG 1 :" + game.getPlayer(0).getCards().get(firstP.indexOf(e.getSource())).name);
-			}
-			if (secondP.contains(e.getSource())) {
-				System.out.println("WRONG 2:" + game.getPlayer(1).getCards().get(secondP.indexOf(e.getSource())).name);
-			}
-		}
-
-
+		
+	
 	}
 
 
@@ -224,41 +181,12 @@ public class CFrame extends JComponent implements ActionListener{
 
 	}
 
-
-	public void ButtonMapping() {
-		int h = (int) getSize().getHeight();
-		int w = (int) getSize().getWidth();
-
-
-		int x = w/8;
-		//for (int i=0; i< game.getPlayer(0).getCards().size()-1; i++) {
-		for (int i=0; i< firstP.size(); i++) {
-			firstP.get(i).setVisible(false);
-			ImageIcon ic =  new ImageIcon(path+game.getPlayer(0).getCards().get(i).name+".png");
-			firstP.get(i).setIcon(resizeIcon(ic,  w/20, h/8));
-			firstP.get(i).setBounds( x, 1, w/20, h/8);
-			firstP.get(i).setVisible(true);
-			x += w/20;			
-		}
-		x= w/8;
-		//for (int i=0; i< game.getPlayer(1).getCards().size(); i++) {
-		for (int i=0; i< secondP.size(); i++) {
-			secondP.get(i).setVisible(false);
-			ImageIcon ic =  new ImageIcon(path+game.getPlayer(1).getCards().get(i).name+".png");
-			secondP.get(i).setIcon(resizeIcon(ic,  w/20, h/8));
-			secondP.get(i).setBounds( x, h-(h/8), w/20, h/8);
-			secondP.get(i).setVisible(true);
-			x += w/20;
-		}
-	}
-
+	
 	public void ButtonDraw(String Name, int player, int indexc) {
 		setVisible(true);
 		repaint(0);
 		int h = (int) getSize().getHeight();
 		int w = (int) getSize().getWidth();
-		//if (h == 0) h = 600;
-		//if (w == 0) w = 400;
 		int x = w/8 + ((w/20) * (indexc+1) );
 		int y = 1 ;
 		if (player == 1) y = h-(h/8);
@@ -270,23 +198,6 @@ public class CFrame extends JComponent implements ActionListener{
 		this.add(jb);
 		jb.addActionListener(this);
 	}
-
-	public void MappingFlipped() {
-		int h = (int) getSize().getHeight();
-		int w = (int) getSize().getWidth();
-		//TODO Implement getFlippedCard() method in Game.java
-		//icbf = new ImageIcon(path+ game.getFlippedCard().name + ".png");
-		icbf = new ImageIcon(path+ "GOBLINS0.png");
-		bf.setIcon(resizeIcon(icbf,  w/20, h/8));
-		bf.setBounds( (w/32)+2*(w/20), (h/2)-(h/16), w/20, h/8);
-		bf.setVisible(true);
-	}	
-
-
-
-
-
-
 
 
 }
