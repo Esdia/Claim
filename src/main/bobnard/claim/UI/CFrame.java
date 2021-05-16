@@ -127,10 +127,10 @@ public class CFrame extends JComponent implements ActionListener{
 		int h = (int) getSize().getHeight();
 		int w = (int) getSize().getWidth();
 		int t = w/36;
-		int tt  = t/2;
 		int x = w-2*(t);
 		int y = ((int) ((w/20)*1.5))+(h/12);
-
+		int tt  = y + (t/2) + t;
+		
 		g.drawImage(image, 0, 0, w, h, null);
 
 		g.drawImage(image2, w/32, (h/2)-(h/12), w/16, (int) ((w/16)*1.5), null); // h/6
@@ -146,11 +146,10 @@ public class CFrame extends JComponent implements ActionListener{
 		Font fonte = new Font("Serif", Font.BOLD, 20);
 		g.setFont(fonte);
 		x+= 10;
-		g.drawString(Score[0][0] + " / " + Score[1][0] , x , y+t + tt);
-		g.drawString(Score[0][1] + " / " + Score[1][1] , x , y+3*t+ tt);
-		g.drawString(Score[0][2] + " / " + Score[1][2] , x , y+5*t+ tt);
-		g.drawString( Score[0][3] + " / " + Score[1][3] , x , y+7*t+ tt);
-		g.drawString(Score[0][4] + " / " + Score[1][4] , x , y+9*t+ tt);
+		for (int i=0; i< 5; i++) {
+			g.drawString(Score[0][i] + " / " + Score[1][i] , x ,tt);
+			tt += 2*t;
+		}
 
 		b1.setIcon(resizeIcon(icb1, w/18, (int) ((w/18)*1.5))); // h/8
 		b1.setBounds(w/32, 10, w/18, (int) ((w/18)*1.5));  // h/8
@@ -210,11 +209,12 @@ public class CFrame extends JComponent implements ActionListener{
 	
 	public void getScoredCard(int id, Card card) {
 		switch(card.faction) {
-			case GOBLINS : Score[id][0]++;
-			case KNIGHTS : Score[id][1]++;
-			case UNDEADS : Score[id][2]++;
-			case DWARVES : Score[id][3]++;
-			case DOPPELGANGERS : Score[id][4]++;
+			case GOBLINS : Score[id][0]++; break;
+			case KNIGHTS : Score[id][1]++; break;
+			case UNDEADS : Score[id][2]++; break;
+			case DWARVES : Score[id][3]++; break;
+			case DOPPELGANGERS : Score[id][4]++; break;
+			
 		}
 	
 	}

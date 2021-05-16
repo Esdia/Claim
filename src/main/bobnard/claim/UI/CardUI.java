@@ -19,7 +19,7 @@ import bobnard.claim.UI.*;
 
 public class CardUI extends JButton implements ActionListener{
 	static String path = "src/main/bobnard/claim/UI/resources/";
-	
+	static String errTurn = "WAIT FOR YOUR TURN TO PLAY !!";
 	Card mycard;
 	JButton mbutton;
 	ImageIcon myic;
@@ -30,6 +30,9 @@ public class CardUI extends JButton implements ActionListener{
 		mycard = c;
 		myic =  new ImageIcon(path+c.name+".png");
 		mbutton = new JButton(myic);
+		Color mycolor = new Color(0, 0, 0, 0);
+		mbutton.setBackground(mycolor);
+		mbutton.setBorderPainted(false);
 		mbutton.setVisible(false);
 		isvisible = false;
 		mplayer = 0;
@@ -68,7 +71,7 @@ public class CardUI extends JButton implements ActionListener{
 	}
 	
 	public void DisplayPlayed() {
-		System.out.println("Played" + mycard.name + " " + mplayer );
+		
 		int h,w;
 		w = (int) MainWindow.gameUI.getSize().getWidth();
 		h = (int) MainWindow.gameUI.getSize().getHeight();
@@ -89,6 +92,12 @@ public class CardUI extends JButton implements ActionListener{
 	
 	
 	public void actionPerformed(ActionEvent e) {
+		
+		if (MainWindow.gameUI.game.getCurrentPlayer() != mplayer) {
+			JOptionPane.showMessageDialog(MainWindow.gameUI,errTurn);
+			return;
+		}
+		
 		if (mplayer != -1) MainWindow.gameUI.game.playCard(mycard);
 		System.out.println("ActionPerformer" + mycard.name );
 		MainWindow.gameUI.repaint();

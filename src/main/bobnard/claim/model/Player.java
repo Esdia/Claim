@@ -21,12 +21,12 @@ public class Player {
 
     void addToScore(Card card) {
         this.scoreStack.push(card);
+        MainWindow.gameUI.getScoredCard(playerID, card);
         
     }
 
     void addFollower(Card card) {
         this.followers.push(card);
-        MainWindow.gameUI.getScoredCard(playerID, card);
     }
 
     void addCard(Card card) {
