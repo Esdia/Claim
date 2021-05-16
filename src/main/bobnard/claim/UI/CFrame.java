@@ -127,6 +127,7 @@ public class CFrame extends JComponent implements ActionListener{
 		int h = (int) getSize().getHeight();
 		int w = (int) getSize().getWidth();
 		int t = w/36;
+		int tt  = t/2;
 		int x = w-2*(t);
 		int y = ((int) ((w/20)*1.5))+(h/12);
 
@@ -142,13 +143,14 @@ public class CFrame extends JComponent implements ActionListener{
 		g.drawImage(FactionIm4, x, y+6*(t), t, t, null);
 		g.drawImage(FactionIm5, x, y+8*(t), t, t, null);
 		
-		Font fonte = new Font("Serif", Font.BOLD, 12);
+		Font fonte = new Font("Serif", Font.BOLD, 20);
 		g.setFont(fonte);
-		g.drawString("PLAYER 1 :" + Score[0][0] + " / " + Score[1][0] + ": PLAYER 2", x - t, y+t + (t/2));
-		g.drawString("PLAYER 1 :" + Score[0][1] + " / " + Score[1][1] + ": PLAYER 2", x - t, y+3*t+ (t/2));
-		g.drawString("PLAYER 1 :" + Score[0][2] + " / " + Score[1][2] + ": PLAYER 2", x - t, y+5*t+ (t/2));
-		g.drawString("PLAYER 1 :" + Score[0][3] + " / " + Score[1][3] + ": PLAYER 2", x - t, y+7*t+ (t/2));
-		g.drawString("PLAYER 1 :" + Score[0][4] + " / " + Score[1][4] + ": PLAYER 2", x - t, y+9*t+ (t/2));
+		x+= 10;
+		g.drawString(Score[0][0] + " / " + Score[1][0] , x , y+t + tt);
+		g.drawString(Score[0][1] + " / " + Score[1][1] , x , y+3*t+ tt);
+		g.drawString(Score[0][2] + " / " + Score[1][2] , x , y+5*t+ tt);
+		g.drawString( Score[0][3] + " / " + Score[1][3] , x , y+7*t+ tt);
+		g.drawString(Score[0][4] + " / " + Score[1][4] , x , y+9*t+ tt);
 
 		b1.setIcon(resizeIcon(icb1, w/18, (int) ((w/18)*1.5))); // h/8
 		b1.setBounds(w/32, 10, w/18, (int) ((w/18)*1.5));  // h/8
