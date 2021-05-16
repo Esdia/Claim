@@ -32,6 +32,7 @@ public class PhaseOne extends Phase {
         this.flippedCard = deck.draw();
         System.out.println("Flipped card : " + this.flippedCard);
         MainWindow.gameUI.FlippedCard = this.flippedCard;
+        MainWindow.gameUI.FlippedCard.myGui.setplayer(-1, true);
         }
 
     @Override
