@@ -10,6 +10,7 @@ public class Player {
     private final ScoreStack scoreStack;
     private final Stack<Card> followers;
     private int playerID;
+    
 
     Player(int id ) {
         this.hand = new Hand();
@@ -20,10 +21,12 @@ public class Player {
 
     void addToScore(Card card) {
         this.scoreStack.push(card);
+        
     }
 
     void addFollower(Card card) {
         this.followers.push(card);
+        MainWindow.gameUI.getScoredCard(playerID, card);
     }
 
     void addCard(Card card) {

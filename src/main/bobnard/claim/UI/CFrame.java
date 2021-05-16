@@ -54,6 +54,8 @@ public class CFrame extends JComponent implements ActionListener{
 	public Card PlayedCard1;
 	public Card PlayedCard2;
 	
+	int[][] Score = new int[2][5];
+	
 	public void setplayers (Player p0, Player p1) {
 		Myp0 = p0;
 		Myp1 = p1;
@@ -75,6 +77,8 @@ public class CFrame extends JComponent implements ActionListener{
 		PlayedButton2 = null;
 		PBimage1 = null;
 		PBimage2 = null;
+		
+	
 		
 		
 		try {
@@ -128,7 +132,9 @@ public class CFrame extends JComponent implements ActionListener{
 
 		g.drawImage(image, 0, 0, w, h, null);
 
-		g.drawImage(image2, w/32, (h/2)-(h/12), w/16, h/6, null);
+		g.drawImage(image2, w/32, (h/2)-(h/12), w/16, (int) ((w/16)*1.5), null); // h/6
+		
+		
 		
 		g.drawImage(FactionIm1, x, y, t, t, null);
 		g.drawImage(FactionIm2, x, y+2*(t), t, t, null);
@@ -138,19 +144,18 @@ public class CFrame extends JComponent implements ActionListener{
 		
 		Font fonte = new Font("Serif", Font.BOLD, 12);
 		g.setFont(fonte);
-		g.drawString("PLAYER 1 :" + 1 + " / " + 3 + ": PLAYER 2", x - t, y+t + (t/2));
-		g.drawString("PLAYER 1 :" + 2 + " / " + 2 + ": PLAYER 2", x - t, y+3*t+ (t/2));
-		g.drawString("PLAYER 1 :" + 3 + " / " + 4 + ": PLAYER 2", x - t, y+5*t+ (t/2));
-		g.drawString("PLAYER 1 :" + 4 + " / " + 1 + ": PLAYER 2", x - t, y+7*t+ (t/2));
-		g.drawString("PLAYER 1 :" + 5 + " / " + 7 + ": PLAYER 2", x - t, y+9*t+ (t/2));
+		g.drawString("PLAYER 1 :" + Score[0][0] + " / " + Score[1][0] + ": PLAYER 2", x - t, y+t + (t/2));
+		g.drawString("PLAYER 1 :" + Score[0][1] + " / " + Score[1][1] + ": PLAYER 2", x - t, y+3*t+ (t/2));
+		g.drawString("PLAYER 1 :" + Score[0][2] + " / " + Score[1][2] + ": PLAYER 2", x - t, y+5*t+ (t/2));
+		g.drawString("PLAYER 1 :" + Score[0][3] + " / " + Score[1][3] + ": PLAYER 2", x - t, y+7*t+ (t/2));
+		g.drawString("PLAYER 1 :" + Score[0][4] + " / " + Score[1][4] + ": PLAYER 2", x - t, y+9*t+ (t/2));
 
-
-		b1.setIcon(resizeIcon(icb1, w/18, h/8));
-		b1.setBounds(w/32, 10, w/18, h/8);
+		b1.setIcon(resizeIcon(icb1, w/18, (int) ((w/18)*1.5))); // h/8
+		b1.setBounds(w/32, 10, w/18, (int) ((w/18)*1.5));  // h/8
 		b1.setVisible(true);
 
-		b2.setIcon(resizeIcon(icb2, w/18, h/8));
-		b2.setBounds(w/32, h-10-(h/8), w/18, h/8);
+		b2.setIcon(resizeIcon(icb2, w/18, (int) ((w/18)*1.5)));  // h/8
+		b2.setBounds(w/32, h-10-((int) ((w/18)*1.5)), w/18, (int) ((w/18)*1.5));  // h/8
 		b2.setVisible(true);
 
 		this.setVisible(true);
@@ -200,6 +205,17 @@ public class CFrame extends JComponent implements ActionListener{
 	}
 
 
+	
+	public void getScoredCard(int id, Card card) {
+		switch(card.faction) {
+			case GOBLINS : Score[id][0]++;
+			case KNIGHTS : Score[id][1]++;
+			case UNDEADS : Score[id][2]++;
+			case DWARVES : Score[id][3]++;
+			case DOPPELGANGERS : Score[id][4]++;
+		}
+	
+	}
 }
 	
 
