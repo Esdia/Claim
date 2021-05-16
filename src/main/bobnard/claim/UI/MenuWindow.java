@@ -12,7 +12,7 @@ public class MenuWindow implements Runnable {
     
     @Override
     public void run() {
-
+		Audio.play("happiness_of_marionette_omake.wav");
     	frame = new JFrame("Claim menu");
 		gameUI = new Menu(frame);
     	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
