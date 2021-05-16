@@ -122,7 +122,12 @@ public class Menu extends JComponent implements ActionListener{
             MainWindow.gameUI.setGame(game);
         }
             if(e.getSource() == b2) {
-                JOptionPane.showMessageDialog(this.frame,"https://cdn.1j1ju.com/medias/f6/35/f8-claim-rulebook.pdf");
+                File pdfFile = new File("src/main/bobnard/claim/UI/resources/rules/rules.pdf");
+                try {
+                    Desktop.getDesktop().open(pdfFile);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
 
         if(e.getSource() == b3) {

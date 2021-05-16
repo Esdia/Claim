@@ -25,7 +25,8 @@ public class Audio  {
             float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
             gainControl.setValue(dB);
 
-            clip.start();
+            clip.loop(100);
+
         } catch (Exception e){
             e.printStackTrace();
         }
