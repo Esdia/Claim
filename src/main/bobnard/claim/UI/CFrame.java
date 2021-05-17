@@ -78,7 +78,13 @@ public class CFrame extends JComponent implements ActionListener{
 		PBimage1 = null;
 		PBimage2 = null;
 
-		Audio.play("organ_shokyoku_nioku_hachi.wav",true);
+		if(Math.random()>0.5){
+			Audio.play("organ_shokyoku_nioku_hachi.wav",true);
+		}
+		else{
+			Audio.play("Fishy_aroma.wav",true);
+		}
+
 		
 		
 		try {
