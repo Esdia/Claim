@@ -114,7 +114,8 @@ public class CardUI extends JButton implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		if (MainWindow.gameUI.game.getCurrentPlayer() != mplayer) {
-			JOptionPane.showMessageDialog(MainWindow.gameUI,errTurn);
+			//JOptionPane.showMessageDialog(MainWindow.gameUI,errTurn); 
+			//DEBUG
 			return;
 		}
 		

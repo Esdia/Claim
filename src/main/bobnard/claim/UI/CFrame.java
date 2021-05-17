@@ -86,6 +86,7 @@ public class CFrame extends JComponent implements ActionListener{
 
 		icb1 =  new ImageIcon(path+"CARDBACK.png");
 		icb2 =  new ImageIcon(path+"CARDBACK.png");
+		
 
 		Color mycolor = new Color(0, 0, 0, 0);
 
@@ -129,7 +130,7 @@ public class CFrame extends JComponent implements ActionListener{
 		g.drawImage(image, 0, 0, w, h, null);
 
 		g.drawImage(image2, w/32, (h/2)-(hb/2), wb, hb, null);
-
+		
 		paintscore(g, h, w);
 
 		b1.setIcon(resizeIcon(icb1, wb, hb));
@@ -175,15 +176,16 @@ public class CFrame extends JComponent implements ActionListener{
 		int x = w-2*(t);
 		int y = ((int) ((w/20)*1.5))+(h/30);
 		int xx  = x + (t/2)-5 ;		
-
-		Font fonte = new Font("Serif", Font.BOLD, 20);
+		int fsize = h/54;
+		
+		Font fonte = new Font("Serif", Font.BOLD, fsize);
 		g.setColor(Color.WHITE);
 		g.setFont(fonte);
 		
 		for(int i=0; i<5; i++) {
 			g.drawImage(FactionIm[i], x, y, t, th, null);
-			g.drawString( "" + Score[0][i]  , xx ,y + 25);
-			g.drawString( "" +Score[1][i] , xx,y + th -15);
+			g.drawString( "" + Score[0][i]  , xx ,y  + (int) (fsize*1.5));
+			g.drawString( "" +Score[1][i] , xx,y + th -(int)(fsize/1.5));
 			y+=th;
 		}
 
@@ -199,7 +201,7 @@ public class CFrame extends JComponent implements ActionListener{
 		case DOPPELGANGERS : Score[id][4]++; break;
 
 		}
-
+		this.repaint();
 	}
 }
 
