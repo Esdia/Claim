@@ -19,12 +19,15 @@ import bobnard.claim.UI.*;
 
 public class CardUI extends JButton implements ActionListener{
 	static String path = "src/main/bobnard/claim/UI/resources/";
-	static String errTurn = "WAIT FOR YOUR TURN TO PLAY !!";
+	static String errTurn = "SELECT ONE OF YOUR CARDS!!";
 	Card mycard;
 	JButton mbutton;
 	ImageIcon myic;
+	static ImageIcon myback =  new ImageIcon(path+"CARDBACK.png");;
 	int mplayer;
 	boolean isvisible;
+	int wb, hb;
+	
 	
 	public CardUI(Card c) {
 		mycard = c;
@@ -50,23 +53,40 @@ public class CardUI extends JButton implements ActionListener{
 		int h,w;
 		w = (int) MainWindow.gameUI.getSize().getWidth();
 		h = (int) MainWindow.gameUI.getSize().getHeight();
-		
-		int x = w/8 + ((w/20) * rang );
+		computewbhb(w,h);
+		int x = w/8 + (wb * rang );
 		int y = 5;
-		if (mplayer == 1) y = h-(int) ((w/20)*1.5) -5 ;
+		if (mplayer == 1) y = h-hb -5 ;
+		
+		boolean flip = false;
+		try {
+			flip = MainWindow.gameUI.game.getCurrentPlayer() != mplayer;
+		}catch (Exception e) {}
+		
+		
+		if (flip) {
+			mbutton.setIcon(MainWindow.gameUI.resizeIcon(myback,   wb, hb));
+		}else {
+			mbutton.setIcon(MainWindow.gameUI.resizeIcon(myic,   wb, hb));
+		}
 
-		mbutton.setIcon(MainWindow.gameUI.resizeIcon(myic,  w/20, (int) ((w/20)*1.5)));
-		mbutton.setBounds( x, y, w/20, (int) ((w/20)*1.5));
+		
+		mbutton.setBounds( x, y,  wb, hb);
 		mbutton.setVisible(true);
 	}
 	
+	void computewbhb(int w, int h) {
+		wb = w/20;
+		hb = (int) (wb*1.5);		
+	}
 	public void DisplayFlipped() {
 		int h,w;
 		w = (int) MainWindow.gameUI.getSize().getWidth();
 		h = (int) MainWindow.gameUI.getSize().getHeight();
 
-		mbutton.setIcon(MainWindow.gameUI.resizeIcon(myic,  w/20, (int) ((w/20)*1.5)));
-		mbutton.setBounds( (w/32)+2*(w/20), (h/2)-(h/16), w/20, (int) ((w/20)*1.5));
+		computewbhb(w,h);
+		mbutton.setIcon(MainWindow.gameUI.resizeIcon(myic,  wb, hb));
+		mbutton.setBounds( (w/32)+2*wb, (h/2)-(hb/2), wb, hb);
 		mbutton.setVisible(true);
 	}
 	
@@ -76,12 +96,12 @@ public class CardUI extends JButton implements ActionListener{
 		w = (int) MainWindow.gameUI.getSize().getWidth();
 		h = (int) MainWindow.gameUI.getSize().getHeight();
 		
-		int x = (w/2)-(w/20);
-		int y = (h/2)-((int) ((w/20)*1.5))-(h/16) ;
+		int x = (w/2)-wb;
+		int y = (h/2)- hb-(h/16) ;
 		if (mplayer == 1) y = (h/2)+(h/16);
-
-		mbutton.setIcon(MainWindow.gameUI.resizeIcon(myic,  w/20, (int) ((w/20)*1.5)));
-		mbutton.setBounds( x, y, w/20, (int) ((w/20)*1.5));
+		computewbhb(w,h);
+		mbutton.setIcon(MainWindow.gameUI.resizeIcon(myic,   wb, hb));
+		mbutton.setBounds( x, y,  wb, hb);
 		mbutton.setVisible(true);
 		
 	}

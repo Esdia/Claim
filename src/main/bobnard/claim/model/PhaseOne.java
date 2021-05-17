@@ -51,6 +51,7 @@ public class PhaseOne extends Phase {
     void giveCentralCards() {
         this.players[this.getLastTrickWinner()].addFollower(this.flippedCard);
         this.players[this.getLastTrickLoser() ].addFollower(deck.draw());
+        MainWindow.gameUI.FlippedCard.myGui.setInvisible();
     }
 
     @Override
