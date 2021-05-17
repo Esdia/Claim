@@ -1,7 +1,5 @@
 package bobnard.claim.model;
 
-import bobnard.claim.UI.MainWindow;
-
 import javax.swing.*;
 import java.util.ArrayList;
 
@@ -73,27 +71,13 @@ public abstract class Phase {
 
         this.trick.addCard(card, currentPlayer == currentLeader);
         this.players[currentPlayer].removeCard(card);
-        if (currentPlayer == 0) {
-        	MainWindow.gameUI.PlayedCard1 = card;
-        }else {
-        	MainWindow.gameUI.PlayedCard2 = card;
-        }
-
-        if (this.trick.isReady()) {
-            // TODO Move this in view when the model is made independent again
-            Timer timer = new Timer(500, e -> endTrick());
-            timer.setRepeats(false);
-            timer.start();
-        } else {
-            this.changePlayer();
-        }
     }
 
     protected Card[] getPlayedCards() {
         Card[] cards = new Card[2];
 
-        cards[0] = this.trick.getC1();
-        cards[1] = this.trick.getC2();
+        cards[currentLeader] = this.trick.getC1();
+        cards[1-currentLeader] = this.trick.getC2();
 
         return cards;
     }
@@ -106,5 +90,9 @@ public abstract class Phase {
 
     int getCurrentPlayer() {
         return this.currentPlayer;
+    }
+
+    public boolean trickReady() {
+        return this.trick.isReady();
     }
 }

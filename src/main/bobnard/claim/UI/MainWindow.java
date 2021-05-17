@@ -37,9 +37,9 @@ public class MainWindow implements Runnable {
     	gameUI.repaint();
     }
 
-    public static void start() {
+    public static void start(Game game) {
         MainWindow bw = new MainWindow();
-        gameUI = new CFrame(null);
+        gameUI = new CFrame(game);
         SwingUtilities.invokeLater(bw);
     }
 }

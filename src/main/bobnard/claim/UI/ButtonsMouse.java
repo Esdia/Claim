@@ -54,9 +54,8 @@ public class ButtonsMouse extends MouseAdapter {
         if(menu.b1.equals(e.getSource())) {
             menu.frame.dispose();
             menu.song.stop();
-            MainWindow.start();
             Game game = new Game();
-            MainWindow.gameUI.setGame(game);
+            MainWindow.start(game);
         }
 
         if(menu.b2.equals(e.getSource())) {

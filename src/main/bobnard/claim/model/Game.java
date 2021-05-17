@@ -45,27 +45,44 @@ public class Game {
     public void playCard(Card card) {
         this.phase.playCard(card);
 
-        if (this.phase.isDone()) {
-            if (this.getPhaseNum() == 1) {
-                this.startPhaseTwo();
-            } else {
-                this.endGame();
-            }
-        }
+        /*
+
+         */
+    }
+
+    public boolean isLegalMove(Card card) {
+        return this.phase.isLegalMove(card);
+    }
+
+    public boolean trickReady() {
+        return this.phase.trickReady();
     }
 
     public void endGame() {
         this.isDone = true;
 
-        int factionsPlayerOne = 0;
+        int factionsPlayerZero = 0;
+
+        int n0, n1;
+        int nMax0, nMax1;
 
         for (Faction faction: Faction.values()) {
-            if (this.players[0].wonFaction(faction)) {
-                factionsPlayerOne++;
+            n0 = players[0].nbCardsFaction(faction);
+            n1 = players[1].nbCardsFaction(faction);
+
+            if (n0 > n1) {
+                factionsPlayerZero++;
+            } else if (n0 == n1) {
+                nMax0 = players[0].maxValueFaction(faction);
+                nMax1 = players[1].maxValueFaction(faction);
+
+                if (nMax0 > nMax1) {
+                    factionsPlayerZero++;
+                }
             }
         }
 
-        int winner = factionsPlayerOne >= 3 ? 1 : 2;
+        int winner = factionsPlayerZero >= 3 ? 1 : 2;
 
         System.out.println("Player " + winner + " won the game!");
     }
@@ -85,11 +102,11 @@ public class Game {
     public Player getPlayer(int index) {
         return this.players[index];
     }
-    
+
     public boolean getLegal(Card card) {
     	return this.phase.isLegalMove(card);
     }
-    
+
     public Card[] getPlayedCards() {
     	return this.phase.getPlayedCards();
     }
@@ -105,5 +122,29 @@ public class Game {
         System.out.println("\nPlayer 1 :");
         System.out.println(this.players[1]);
         System.out.println("---- END DEBUG ----");
+    }
+
+    public Card getFlippedCard() {
+        if (this.phase instanceof PhaseOne) {
+            return ((PhaseOne) this.phase).getFlippedCard();
+        } else {
+            return null;
+        }
+    }
+
+    public void changePlayer() {
+        this.phase.changePlayer();
+    }
+
+    public void endTrick() {
+        this.phase.endTrick();
+
+        if (this.phase.isDone()) {
+            if (this.getPhaseNum() == 1) {
+                this.startPhaseTwo();
+            } else {
+                this.endGame();
+            }
+        }
     }
 }

@@ -2,7 +2,9 @@ package bobnard.claim.model;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Stack;
+import java.util.stream.Stream;
 
 public class ScoreStack extends Stack<Card> {
     private final HashMap<Faction, Integer> occ;
@@ -31,18 +33,21 @@ public class ScoreStack extends Stack<Card> {
         return card;
     }
 
-    public boolean wonFaction(Faction faction) {
-        int max = switch (faction) {
-            case KNIGHTS -> 8;
-            case GOBLINS -> 14;
-            default -> 10;
-        };
+    private Stream<Card> getCards(Faction faction) {
+        return this.stream().filter(c -> c.faction == faction);
+    }
 
-        if (this.occ.get(faction) > max/2) {
-            return true;
+    public int nbCardsFaction(Faction faction) {
+        return (int) this.getCards(faction).count();
+    }
+
+    public int maxValueFaction(Faction faction) {
+        Optional<Card> maxCard = this.getCards(faction).max(Card::compareTo);
+
+        if (maxCard.isPresent()) {
+            return maxCard.get().value;
         } else {
-            // If there is a tie, the player with the 9 wins
-            return this.contains(new Card(faction, 9));
+            throw new IllegalStateException();
         }
     }
 }

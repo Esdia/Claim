@@ -3,8 +3,6 @@ package bobnard.claim.model;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import bobnard.claim.UI.*;
-
 public class Player {
     private final Hand hand;
     private final ScoreStack scoreStack;
@@ -21,8 +19,6 @@ public class Player {
 
     void addToScore(Card card) {
         this.scoreStack.push(card);
-        MainWindow.gameUI.getScoredCard(playerID, card);
-        
     }
 
     void addFollower(Card card) {
@@ -31,14 +27,6 @@ public class Player {
 
     void addCard(Card card) {
         this.hand.add(card);
-    }
-    
-    public void DrawHand() {
-    	int i = 1;
-        for (Card c: this.hand) {
-            c.myGui.setplayer(playerID, false);
-            c.myGui.Display(i++);
-        }   	
     }
 
     void removeCard(Card card) {
@@ -53,8 +41,12 @@ public class Player {
         return !this.hand.isEmpty();
     }
 
-    boolean wonFaction(Faction faction) {
-        return this.scoreStack.wonFaction(faction);
+    int nbCardsFaction(Faction faction) {
+        return this.scoreStack.nbCardsFaction(faction);
+    }
+
+    int maxValueFaction(Faction faction) {
+        return this.scoreStack.maxValueFaction(faction);
     }
 
     void followersToHand() {
@@ -104,5 +96,9 @@ public class Player {
     @Override
     public String toString() {
         return "Hand : " + this.hand + "\nScore : " + this.scoreStack + "\nFollowers : " + this.followers;
+    }
+
+    public ScoreStack getScoreStack() {
+        return this.scoreStack;
     }
 }

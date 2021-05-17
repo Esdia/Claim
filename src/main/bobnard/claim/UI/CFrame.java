@@ -3,6 +3,8 @@ package bobnard.claim.UI;
 
 import bobnard.claim.model.*;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,13 +12,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
+import java.util.HashMap;
+import java.util.Iterator;
 
 
-public class CFrame extends JComponent implements ActionListener{
+public class CFrame extends JComponent implements ActionListener {
 
 	boolean phase;
 	Game game;
@@ -30,34 +30,40 @@ public class CFrame extends JComponent implements ActionListener{
 	JButton PlayedButton2;
 	ImageIcon PBimage2;
 
-	static String path = "src/main/bobnard/claim/UI/resources/";
+	static final String path = "src/main/bobnard/claim/UI/resources/";
+	static BufferedImage back;
 
-	
+	static {
+		try {
+			back = ImageIO.read(new File(path + "CARDBACK.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	BufferedImage image;
 	BufferedImage image2;
-	BufferedImage ImPlayed1;
-	BufferedImage ImPlayed2;
 
 	BufferedImage[] FactionIm =  new BufferedImage[5];
 
-	Player Myp0, Myp1;
+	Player[] players;
 	public Card FlippedCard;
 	public Card PlayedCard1;
 	public Card PlayedCard2;
 
 	int[][] Score = new int[2][5];
 
-	public void setplayers (Player p0, Player p1) {
-		Myp0 = p0;
-		Myp1 = p1;
-	}
 
-	public void setGame(Game game) {
-		this.game = game;
-	}
+	CustomPanel[][] handPanels;
+	CustomPanel flippedPanel;
+	CustomPanel[] playedPanels;
+
+	int w;
+	int h;
+	int imgWidth;
+	int imgHeight;
+
 	public CFrame(Game game) {
-		Myp0 = null;
-		Myp1 = null;
 		FlippedCard = null;
 		PlayedCard1 = null;
 		PlayedCard2 = null;
@@ -80,7 +86,7 @@ public class CFrame extends JComponent implements ActionListener{
 		for (int i=0; i<5; i++) {
 			try {
 				FactionIm[i] = ImageIO.read(new File(path+"SCORE"+i+".png"));
-			} catch (IOException  ee) {}
+			} catch (IOException ignored) {}
 		}
 
 
@@ -89,7 +95,7 @@ public class CFrame extends JComponent implements ActionListener{
 
 		Color mycolor = new Color(0, 0, 0, 0);
 
-		b1 =  new JButton(icb1);
+		b1 =  new JButton();
 
 		b1.setBackground(mycolor);
 		b1.setBorderPainted(false);
@@ -97,7 +103,7 @@ public class CFrame extends JComponent implements ActionListener{
 		this.add(b1);
 		b1.addActionListener(this);
 
-		b2 =  new JButton(icb2);
+		b2 =  new JButton();
 		b2.setBackground(mycolor);
 		b2.setBorderPainted(false);
 		b2.setVisible(false);
@@ -110,19 +116,72 @@ public class CFrame extends JComponent implements ActionListener{
 
 		try {
 			image = ImageIO.read(new File(path+"Wood.jpg"));
-		} catch (IOException  ee) {}	
+		} catch (IOException ignored) {}
 
 		try {
 			image2 = ImageIO.read(new File(path+"CARDBACK.png"));
-		} catch (IOException  ee) {}
+		} catch (IOException ignored) {}
 
+		this.setPlayers();
+
+		this.initHandButtons();
+		this.initFlippedButton();
+		this.initPlayedButton();
+	}
+
+	public void setPlayers() {
+		this.players = new Player[2];
+		this.players[0] = game.getPlayer(0);
+		this.players[1] = game.getPlayer(1);
+	}
+
+	void initHandButtons() {
+		this.handPanels = new CustomPanel[2][13];
+
+
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 13; j++) {
+				this.handPanels[i][j] = new CustomPanel(this);
+				this.add(handPanels[i][j]);
+			}
+		}
+	}
+
+	void initFlippedButton() {
+		this.flippedPanel = new CustomPanel(this);
+		this.add(flippedPanel);
+	}
+
+	void initPlayedButton() {
+		this.playedPanels = new CustomPanel[2];
+
+		for (int i = 0; i < 2; i++) {
+			this.playedPanels[i] = new CustomPanel(this);
+			this.add(playedPanels[i]);
+		}
 	}
 
 
 
-	public void paintComponent(Graphics g) {
-		int h = (int) getSize().getHeight();
-		int w = (int) getSize().getWidth();
+	@Override
+	public void paintComponent(Graphics g1) {
+		Graphics2D g = (Graphics2D) g1;
+
+		boolean resize = false;
+		if (h != getHeight() || w != getWidth()) {
+			resize = true;
+			this.h = getHeight();
+			this.w = getWidth();
+			this.imgWidth = w / 20;
+			this.imgHeight = imgWidth * 3 / 2;
+		}
+
+		g.clearRect(0, 0, w, h);
+
+		this.drawHands(resize);
+		this.displayFlipped(resize);
+		this.displayPlayed();
+
 		int wb = w/18;
 		int hb = (int) (wb*1.5);
 
@@ -141,13 +200,64 @@ public class CFrame extends JComponent implements ActionListener{
 		b2.setVisible(true);
 
 		this.setVisible(true);
+	}
 
-		if (Myp0 != null) Myp0.DrawHand();
-		if (Myp1 != null) Myp1.DrawHand();
-		if (FlippedCard != null) FlippedCard.myGui.DisplayFlipped();
-		if (PlayedCard1 != null) PlayedCard1.myGui.DisplayPlayed();
-		if (PlayedCard2 != null) PlayedCard2.myGui.DisplayPlayed();
+	void drawHands(boolean resize) {
+		int x;
+		int[] y = {5, h - imgHeight - 5};
 
+		int currentPlayer = this.game.getCurrentPlayer();
+
+		Iterator<Card> it;
+		Card c;
+
+		for (int j = 0; j < 2; j++) {
+			x = w / 8;
+			it = players[j].getCards().iterator();
+			for (int i = 0; i < 13; i++) {
+				this.handPanels[j][i].setVisible(it.hasNext());
+
+				if (it.hasNext()) {
+					if (resize) {
+						this.handPanels[j][i].setBounds(x, y[j], imgWidth, imgHeight);
+					}
+					c = it.next();
+					this.handPanels[j][i].setCard(c, j == currentPlayer);
+				}
+				x += imgWidth;
+			}
+		}
+	}
+
+	void displayFlipped(boolean resize) {
+		this.FlippedCard = this.game.getFlippedCard();
+
+		this.flippedPanel.setVisible(this.FlippedCard != null);
+
+		if (this.FlippedCard != null) {
+			if (resize) {
+				this.flippedPanel.setBounds((w/32) + 2*imgWidth, (7*h/16), imgWidth, imgHeight);
+			}
+			this.flippedPanel.setCard(this.FlippedCard);
+		}
+	}
+
+	void displayPlayed() {
+		int x = w/2 - imgWidth;
+		int[] y = {
+				(h / 2) - imgHeight - (h / 16),
+				(h / 2) + (h / 16)
+		};
+
+		Card[] cards = this.game.getPlayedCards();
+
+		for (int i = 0; i < 2; i++) {
+			this.playedPanels[i].setVisible(cards[i] != null);
+			if (cards[i] != null) {
+				this.playedPanels[i].setBounds(x, y[i], imgWidth, imgHeight);
+				this.playedPanels[i].setCard(cards[i]);
+			}
+		}
 	}
 
 	@Override
@@ -191,15 +301,28 @@ public class CFrame extends JComponent implements ActionListener{
 
 
 	public void getScoredCard(int id, Card card) {
-		switch(card.faction) {
-		case GOBLINS : Score[id][0]++; break;
-		case KNIGHTS : Score[id][1]++; break;
-		case UNDEADS : Score[id][2]++; break;
-		case DWARVES : Score[id][3]++; break;
-		case DOPPELGANGERS : Score[id][4]++; break;
-
+		switch (card.faction) {
+			case GOBLINS -> Score[id][0]++;
+			case KNIGHTS -> Score[id][1]++;
+			case UNDEADS -> Score[id][2]++;
+			case DWARVES -> Score[id][3]++;
+			case DOPPELGANGERS -> Score[id][4]++;
 		}
 
+	}
+
+	public Game getGame() {
+		return this.game;
+	}
+
+	public void updateScore() {
+		ScoreStack stack;
+		this.Score = new int[2][5];
+		for (int i = 0; i < 2; i++) {
+			stack = players[i].getScoreStack();
+			int finalI = i;
+			stack.forEach((c) -> this.getScoredCard(finalI, c));
+		}
 	}
 }
 
