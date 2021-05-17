@@ -1,8 +1,9 @@
 package bobnard.claim.model;
 
-import java.util.ArrayList;
-
 import bobnard.claim.UI.MainWindow;
+
+import javax.swing.*;
+import java.util.ArrayList;
 
 public abstract class Phase {
     protected final Player[] players;
@@ -79,7 +80,10 @@ public abstract class Phase {
         }
 
         if (this.trick.isReady()) {
-            this.endTrick();
+            // TODO Move this in view when the model is made independent again
+            Timer timer = new Timer(500, e -> endTrick());
+            timer.setRepeats(false);
+            timer.start();
         } else {
             this.changePlayer();
         }
