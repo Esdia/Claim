@@ -6,6 +6,7 @@ import bobnard.claim.model.Game;
 import bobnard.claim.model.Player;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -36,6 +37,8 @@ public class Menu extends JComponent {
 
     ButtonsMouse m = new ButtonsMouse(this);
 
+    Clip song;
+
     public Menu(JFrame frame) {
 
         this.frame = frame;
@@ -43,6 +46,8 @@ public class Menu extends JComponent {
         ng =  new ImageIcon(path+"new_game.png");
         ru =  new ImageIcon(path+"rules.png");
         ex =  new ImageIcon(path+"exit.png");
+
+        song = Audio.play("happiness_of_marionette_omake.wav",true);
 
         b1 =  new JButton();
         b1.setVisible(false);
@@ -61,7 +66,7 @@ public class Menu extends JComponent {
 
         try {
             image = ImageIO.read(new File(path+"menu.png"));
-        } catch (IOException  exeption) {
+        } catch (IOException  exception) {
 
         }
 

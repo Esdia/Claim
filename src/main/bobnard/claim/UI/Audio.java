@@ -11,9 +11,9 @@ public class Audio  {
 
     private static String path = "src/main/bobnard/claim/UI/resources/audio/";
 
-    public static void play(String name, boolean loop){
+    public static Clip play(String name, boolean loop){
         File song = new File(path+name);
-        Clip clip;
+        Clip clip = null;
 
         try{
             clip = AudioSystem.getClip();
@@ -30,5 +30,7 @@ public class Audio  {
         } catch (Exception e){
             e.printStackTrace();
         }
+
+        return clip;
     }
 }

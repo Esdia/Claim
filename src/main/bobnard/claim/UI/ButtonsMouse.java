@@ -53,6 +53,7 @@ public class ButtonsMouse extends MouseAdapter {
 
         if(menu.b1.equals(e.getSource())) {
             menu.frame.dispose();
+            menu.song.stop();
             MainWindow.start();
             Game game = new Game();
             MainWindow.gameUI.setGame(game);
@@ -68,6 +69,7 @@ public class ButtonsMouse extends MouseAdapter {
         }
 
         if(menu.b3.equals(e.getSource())) {
+            menu.song.stop();
             menu.frame.dispose();
         }
     }

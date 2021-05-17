@@ -77,8 +77,8 @@ public class CFrame extends JComponent implements ActionListener{
 		PlayedButton2 = null;
 		PBimage1 = null;
 		PBimage2 = null;
-		
-	
+
+		Audio.play("organ_shokyoku_nioku_hachi.wav",true);
 		
 		
 		try {
