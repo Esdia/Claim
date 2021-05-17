@@ -2,34 +2,40 @@ package bobnard.claim.model;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ScoreStackTest {
 
     @Test
-    void testWonFaction() {
-        ScoreStack scoreStack = new ScoreStack();
+    void testStack() {
+        ScoreStack stack = new ScoreStack();
+        Random random = new Random();
 
-        Card dwa0 = new Card(Faction.DWARVES, 0);
+        Faction[] factions = Faction.values();
 
-        for (int i = 0; i < 6; i++) {
-            assertFalse(scoreStack.wonFaction(Faction.DWARVES));
-            scoreStack.push(dwa0);
+        Faction x;
+        int nbDwarves = 0;
+
+        int tmp;
+        int max = 0;
+
+        for (int i = 0; i < 50; i++) {
+            x = factions[random.nextInt(5)];
+            if (x == Faction.DWARVES) {
+                nbDwarves++;
+            }
+
+            tmp = random.nextInt(8) + 2;
+            if (tmp > max) {
+                max = tmp;
+            }
+
+            stack.push(new Card(x, tmp));
         }
 
-        assertTrue(scoreStack.wonFaction(Faction.DWARVES));
-
-        scoreStack.pop();
-        scoreStack.pop();
-
-        assertFalse(scoreStack.wonFaction(Faction.DWARVES));
-        scoreStack.push(new Card(Faction.DWARVES, 9));
-        assertTrue(scoreStack.wonFaction(Faction.DWARVES));
-
-        scoreStack.pop();
-
-        assertFalse(scoreStack.wonFaction(Faction.DWARVES));
-        scoreStack.push(new Card(Faction.DWARVES, 8));
-        assertFalse(scoreStack.wonFaction(Faction.DWARVES));
+        assertEquals(nbDwarves, stack.nbCardsFaction(Faction.DWARVES));
+        assertEquals(max, stack.maxValueFaction(Faction.DWARVES));
     }
 }
