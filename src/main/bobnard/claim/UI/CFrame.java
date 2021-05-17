@@ -283,15 +283,16 @@ public class CFrame extends JComponent implements ActionListener {
 		int x = w-2*(t);
 		int y = ((int) ((w/20)*1.5))+(h/30);
 		int xx  = x + (t/2)-5 ;		
+		int fsize = h/54;
 
-		Font fonte = new Font("Serif", Font.BOLD, 20);
+		Font fonte = new Font("Serif", Font.BOLD, fsize);
 		g.setColor(Color.WHITE);
 		g.setFont(fonte);
 		
 		for(int i=0; i<5; i++) {
 			g.drawImage(FactionIm[i], x, y, t, th, null);
-			g.drawString( "" + Score[0][i]  , xx ,y + 25);
-			g.drawString( "" +Score[1][i] , xx,y + th -15);
+			g.drawString( "" + Score[0][i]  , xx ,y  + (int) (fsize*1.5));
+			g.drawString( "" +Score[1][i] , xx,y + th -(int)(fsize/1.5));
 			y+=th;
 		}
 
