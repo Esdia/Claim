@@ -11,7 +11,7 @@ public class Audio  {
 
     private static String path = "src/main/bobnard/claim/UI/resources/audio/";
 
-    public static void play(String name){
+    public static void play(String name, boolean loop){
         File song = new File(path+name);
         Clip clip;
 
@@ -24,8 +24,8 @@ public class Audio  {
             double gain = 0.15;
             float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
             gainControl.setValue(dB);
-
-            clip.loop(100);
+            if(loop) clip.loop(Clip.LOOP_CONTINUOUSLY);
+            else clip.start();
 
         } catch (Exception e){
             e.printStackTrace();

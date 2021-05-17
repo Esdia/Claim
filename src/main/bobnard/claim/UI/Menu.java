@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class Menu extends JComponent implements ActionListener{
+public class Menu extends JComponent {
 
     BufferedImage image;
 
@@ -34,6 +34,8 @@ public class Menu extends JComponent implements ActionListener{
     ImageIcon ru;
     ImageIcon ex;
 
+    ButtonsMouse m = new ButtonsMouse(this);
+
     public Menu(JFrame frame) {
 
         this.frame = frame;
@@ -45,17 +47,17 @@ public class Menu extends JComponent implements ActionListener{
         b1 =  new JButton();
         b1.setVisible(false);
         this.add(b1);
-        b1.addActionListener(this);
+        b1.addMouseListener(m);
 
         b2 =  new JButton();
         b2.setVisible(false);
         this.add(b2);
-        b2.addActionListener(this);
+        b2.addMouseListener(m);
 
         b3 =  new JButton();
         b3.setVisible(false);
         this.add(b3);
-        b3.addActionListener(this);
+        b3.addMouseListener(m);
 
         try {
             image = ImageIO.read(new File(path+"menu.png"));
@@ -113,28 +115,7 @@ public class Menu extends JComponent implements ActionListener{
     }
 
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == b1) {
-            this.frame.dispose();
-            MainWindow.start();
-            Game game = new Game();
-            MainWindow.gameUI.setGame(game);
-        }
-            if(e.getSource() == b2) {
-                File pdfFile = new File("src/main/bobnard/claim/UI/resources/rules/rules.pdf");
-                try {
-                    Desktop.getDesktop().open(pdfFile);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-            }
 
-        if(e.getSource() == b3) {
-            this.frame.dispose();
-        }
-
-    }
 }
 	
 
