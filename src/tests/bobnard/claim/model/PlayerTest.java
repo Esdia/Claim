@@ -39,7 +39,7 @@ class PlayerTest {
             }
         }
 
-        Player player = new Player(0); //TODO
+        Player player = new Player();
 
         for (Faction faction: Faction.values()) {
             cards.get(faction).forEach(player::addCard);
@@ -61,7 +61,7 @@ class PlayerTest {
 
     @Test
     void playableCards2() {
-        Player player = new Player(0); //TODO
+        Player player = new Player();
 
         Card kni = new Card(Faction.KNIGHTS, 5);
         Card und = new Card(Faction.UNDEADS, 5);

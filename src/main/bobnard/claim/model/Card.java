@@ -3,9 +3,10 @@ package bobnard.claim.model;
 public class Card implements Comparable<Card> {
     public final Faction faction;
     public final int value;
-    public String name;
 
-    public Card(Faction faction, int value) {
+    public final String name;
+
+    Card(Faction faction, int value) {
         if (value < 0 || value > 9) {
             throw new IllegalArgumentException();
         }
@@ -21,7 +22,7 @@ public class Card implements Comparable<Card> {
 
     @Override
     public String toString() {
-        return this.faction.name() + " " + this.value;
+        return this.name;
     }
 
     @Override

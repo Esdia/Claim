@@ -7,22 +7,16 @@ public class Player {
     private final Hand hand;
     private final ScoreStack scoreStack;
     private final Stack<Card> followers;
-    private int playerID;
-    
 
-    Player(int id ) {
+    Player() {
         this.hand = new Hand();
         this.scoreStack = new ScoreStack();
         this.followers = new Stack<>();
-        playerID = id;
     }
 
-    void addToScore(Card card) {
-        this.scoreStack.push(card);
-    }
-
-    void addFollower(Card card) {
-        this.followers.push(card);
+    //region HAND MANAGEMENT
+    boolean hasCards() {
+        return !this.hand.isEmpty();
     }
 
     void addCard(Card card) {
@@ -37,16 +31,18 @@ public class Player {
         this.hand.sort();
     }
 
-    boolean hasCards() {
-        return !this.hand.isEmpty();
+    /*
+     * Return the cards the player can play, given the faction played
+     * by the leader
+     */
+    ArrayList<Card> playableCards(Faction faction) {
+        return this.hand.playableCards(faction);
     }
+    //endregion
 
-    int nbCardsFaction(Faction faction) {
-        return this.scoreStack.nbCardsFaction(faction);
-    }
-
-    int maxValueFaction(Faction faction) {
-        return this.scoreStack.maxValueFaction(faction);
+    //region FOLLOWERS MANAGEMENT
+    void addFollower(Card card) {
+        this.followers.push(card);
     }
 
     void followersToHand() {
@@ -56,49 +52,36 @@ public class Player {
 
         this.hand.sort();
     }
+    //endregion
 
-    public Hand getCards() {
-        return this.hand;
+    //region SCORE MANAGEMENT
+    void addToScore(Card card) {
+        this.scoreStack.push(card);
     }
 
-    /*
-    * Return the cards the player can play, given the faction played
-    * by the leader
-    */
-    ArrayList<Card> playableCards(Faction faction) {
-        ArrayList<Card> cards = new ArrayList<>();
-        boolean canFollow = false;
-
-        for (Card c: this.hand) {
-            if (c.faction == faction) {
-                canFollow = true;
-                cards.add(c);
-            }
-        }
-
-        if (canFollow) {
-            // We only need to add the doppelgangers, if they are not the asked faction
-            if (faction != Faction.DOPPELGANGERS) {
-                for (Card c : this.hand) {
-                    if (c.faction == Faction.DOPPELGANGERS) {
-                        cards.add(c);
-                    }
-                }
-            }
-        } else {
-            // We can play anything
-            cards.addAll(this.hand);
-        }
-
-        return cards;
+    int nbCardsFaction(Faction faction) {
+        return this.scoreStack.getNbCardsFaction(faction);
     }
 
+    int maxValueFaction(Faction faction) {
+        return this.scoreStack.maxValueFaction(faction);
+    }
+    //endregion
+
+    //region OVERRIDES
     @Override
     public String toString() {
         return "Hand : " + this.hand + "\nScore : " + this.scoreStack + "\nFollowers : " + this.followers;
+    }
+    //endregion
+
+    //region GETTERS
+    public Hand getCards() {
+        return this.hand;
     }
 
     public ScoreStack getScoreStack() {
         return this.scoreStack;
     }
+    //endregion
 }

@@ -1,6 +1,6 @@
 package bobnard.claim.model;
 
-public class Trick {
+class Trick {
     private Card c1; /* Card played by the leader */
     private Card c2; /* Card played by the other player */
 
@@ -13,6 +13,11 @@ public class Trick {
         this.leader = leader;
     }
 
+    //region UTILS
+    boolean isReady() {
+        return this.c1 != null && this.c2 != null;
+    }
+
     void addCard(Card card, boolean leader) {
         if (leader) {
             this.c1 = card;
@@ -20,11 +25,9 @@ public class Trick {
             this.c2 = card;
         }
     }
+    //endregion
 
-    boolean isReady() {
-        return this.c1 != null && this.c2 != null;
-    }
-
+    //region GETTERS
     int getWinner() {
         if (!this.isReady()) {
             throw new IllegalStateException();
@@ -43,19 +46,20 @@ public class Trick {
         return (c1.value >= c2.value) ? leader : 1 - leader;
     }
 
-    public Card getC1() {
+    Card getC1() {
         return c1;
     }
 
-    public Card getC2() {
+    Card getC2() {
         return c2;
     }
 
-    public Faction getFaction() {
+    Faction getFaction() {
         if (this.c1 == null) {
             throw new IllegalStateException();
         }
 
         return this.c1.faction;
     }
+    //endregion
 }

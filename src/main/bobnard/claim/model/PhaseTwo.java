@@ -1,13 +1,14 @@
 package bobnard.claim.model;
 
-public class PhaseTwo extends Phase {
-    public PhaseTwo(Player[] players) {
+class PhaseTwo extends Phase {
+    PhaseTwo(Player[] players) {
         super(players);
 
         this.players[0].followersToHand();
         this.players[1].followersToHand();
     }
 
+    //region OVERRIDES
     @Override
     void dealWithPlayedCards() {
         for (Card card: this.getPlayedCards()) {
@@ -18,4 +19,5 @@ public class PhaseTwo extends Phase {
             }
         }
     }
+    //endregion
 }

@@ -1,17 +1,16 @@
 package bobnard.claim.model;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
-public abstract class Phase {
+abstract class Phase {
     protected final Player[] players;
 
-    protected int currentLeader;
+    private int currentLeader;
     private int currentPlayer;
 
     private Trick trick;
 
-    public Phase(Player[] players) {
+    Phase(Player[] players) {
         if (players.length != 2 || players[0] == null || players[1] == null) {
             throw new IllegalArgumentException();
         }
@@ -22,37 +21,17 @@ public abstract class Phase {
         this.resetTrick();
     }
 
-    int getLastTrickWinner() {
-        return this.currentLeader;
-    }
-
-    int getLastTrickLoser() {
-        return 1 - this.currentLeader;
-    }
-
+    //region PHASE MANAGEMENT
     void changePlayer() {
         this.currentPlayer = 1 - this.currentPlayer;
     }
 
-    void endTrick() {
-        if (!this.trick.isReady()) {
-            throw new IllegalStateException();
-        }
-
-        this.currentLeader = this.trick.getWinner();
-        this.currentPlayer = this.getLastTrickWinner();
-
-        System.out.println("Player " + currentPlayer + " won the trick");
-
-        this.dealWithPlayedCards();
-
-        this.resetTrick();
+    boolean isDone() {
+        return !this.players[this.getLastTrickLoser()].hasCards();
     }
+    //endregion
 
-    void resetTrick() {
-        this.trick = new Trick(currentLeader);
-    }
-
+    //region TRICK MANAGEMENT
     boolean isLegalMove(Card card) {
         if (this.currentPlayer == this.currentLeader) {
             return true;
@@ -73,7 +52,48 @@ public abstract class Phase {
         this.players[currentPlayer].removeCard(card);
     }
 
-    protected Card[] getPlayedCards() {
+    public boolean trickReady() {
+        return this.trick.isReady();
+    }
+
+    void endTrick() {
+        if (!this.trick.isReady()) {
+            throw new IllegalStateException();
+        }
+
+        this.currentLeader = this.trick.getWinner();
+        this.currentPlayer = this.getLastTrickWinner();
+
+        System.out.println("Player " + currentPlayer + " won the trick");
+
+        this.dealWithPlayedCards();
+
+        this.resetTrick();
+    }
+
+    private void resetTrick() {
+        this.trick = new Trick(currentLeader);
+    }
+    //endregion
+
+    //region ABSTRACT
+    abstract void dealWithPlayedCards();
+    //endregion
+
+    //region GETTERS
+    protected int getLastTrickWinner() {
+        return this.currentLeader;
+    }
+
+    protected int getLastTrickLoser() {
+        return 1 - this.currentLeader;
+    }
+
+    int getCurrentPlayer() {
+        return this.currentPlayer;
+    }
+
+    Card[] getPlayedCards() {
         Card[] cards = new Card[2];
 
         cards[currentLeader] = this.trick.getC1();
@@ -81,18 +101,5 @@ public abstract class Phase {
 
         return cards;
     }
-
-    abstract void dealWithPlayedCards();
-
-    boolean isDone() {
-        return !this.players[this.getLastTrickLoser()].hasCards();
-    }
-
-    int getCurrentPlayer() {
-        return this.currentPlayer;
-    }
-
-    public boolean trickReady() {
-        return this.trick.isReady();
-    }
+    //endregion
 }

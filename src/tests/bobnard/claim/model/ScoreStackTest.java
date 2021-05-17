@@ -35,7 +35,7 @@ class ScoreStackTest {
             stack.push(new Card(x, tmp));
         }
 
-        assertEquals(nbDwarves, stack.nbCardsFaction(Faction.DWARVES));
+        assertEquals(nbDwarves, stack.getNbCardsFaction(Faction.DWARVES));
         assertEquals(max, stack.maxValueFaction(Faction.DWARVES));
     }
 }

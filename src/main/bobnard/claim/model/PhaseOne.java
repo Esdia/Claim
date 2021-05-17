@@ -1,11 +1,11 @@
 package bobnard.claim.model;
 
-public class PhaseOne extends Phase {
+class PhaseOne extends Phase {
     private final Deck deck;
 
     private Card flippedCard;
 
-    public PhaseOne(Player[] players) {
+    PhaseOne(Player[] players) {
         super(players);
 
         this.deck = new Deck();
@@ -13,7 +13,8 @@ public class PhaseOne extends Phase {
         this.flipCard();
     }
 
-    void dealCards() {
+    //region INIT
+    private void dealCards() {
         for (int i = 0; i < 13; i++) {
             this.players[0].addCard(this.deck.draw());
             this.players[1].addCard(this.deck.draw());
@@ -21,13 +22,22 @@ public class PhaseOne extends Phase {
 
         this.players[0].sortHand();
         this.players[1].sortHand();
-     }
+    }
+    //endregion
 
-    void flipCard() {
+    //region MANAGE CENTRAL CARDS
+    private void flipCard() {
         this.flippedCard = deck.draw();
         System.out.println("Flipped card : " + this.flippedCard);
-        }
+    }
 
+    private void giveCentralCards() {
+        this.players[this.getLastTrickWinner()].addFollower(this.flippedCard);
+        this.players[this.getLastTrickLoser() ].addFollower(deck.draw());
+    }
+    //endregion
+
+    //region OVERRIDES
     @Override
     void endTrick() {
         super.endTrick();
@@ -35,11 +45,6 @@ public class PhaseOne extends Phase {
         if (!this.isDone()) {
             this.flipCard();
         }
-    }
-
-    void giveCentralCards() {
-        this.players[this.getLastTrickWinner()].addFollower(this.flippedCard);
-        this.players[this.getLastTrickLoser() ].addFollower(deck.draw());
     }
 
     @Override
@@ -50,8 +55,11 @@ public class PhaseOne extends Phase {
             }
         }
     }
+    //endregion
 
-    public Card getFlippedCard() {
+    //region GETTERS
+    Card getFlippedCard() {
         return flippedCard;
     }
+    //endregion
 }

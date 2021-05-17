@@ -3,10 +3,10 @@ package bobnard.claim.model;
 import java.util.Collections;
 import java.util.Stack;
 
-public class Deck {
+class Deck {
     private final Stack<Card> deck;
 
-    public Deck() {
+    Deck() {
         this.deck = new Stack<>();
         for (int i = 0; i < 10; i++) {
             this.deck.push(new Card(Faction.GOBLINS, i));
@@ -30,15 +30,15 @@ public class Deck {
         Collections.shuffle(this.deck);
     }
 
-    public int remainingCards() {
+    int remainingCards() {
         return this.deck.size();
     }
 
-    public boolean isEmpty() {
+    boolean isEmpty() {
         return this.deck.isEmpty();
     }
 
-    public Card draw() {
+    Card draw() {
         if (this.isEmpty()) {
             throw new IllegalStateException();
         }

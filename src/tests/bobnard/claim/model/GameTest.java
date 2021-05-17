@@ -15,9 +15,9 @@ public class GameTest {
         Card card;
 
         while (!game.isDone()) {
-            currentPlayer = game.getCurrentPlayer();
+            currentPlayer = game.getCurrentPlayerID();
             cards = game.getCards(currentPlayer);
-            System.out.println("Player " + game.getCurrentPlayer() + "'s turn");
+            System.out.println("Player " + game.getCurrentPlayerID() + "'s turn");
             System.out.println(cards);
             do {
                 System.out.print("Input card index : ");
@@ -28,11 +28,11 @@ public class GameTest {
             card = cards.get(n);
             game.playCard(card);
 
-            currentPlayer = game.getCurrentPlayer();
+            currentPlayer = game.getCurrentPlayerID();
             cards = game.getCards(currentPlayer);
-            System.out.println("Player " + game.getCurrentPlayer() + "'s turn");
+            System.out.println("Player " + game.getCurrentPlayerID() + "'s turn");
             System.out.println(cards);
-            cards = game.getPlayableCard(currentPlayer, card.faction);
+            cards = game.getPlayableCards(currentPlayer, card.faction);
             System.out.println("Playable cards : " + cards);
 
             do {

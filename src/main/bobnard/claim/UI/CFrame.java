@@ -11,8 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 
@@ -206,13 +204,13 @@ public class CFrame extends JComponent implements ActionListener {
 		int x;
 		int[] y = {5, h - imgHeight - 5};
 
-		int currentPlayer = this.game.getCurrentPlayer();
+		int currentPlayer = this.game.getCurrentPlayerID();
 
 		Iterator<Card> it;
 		Card c;
 
 		for (int j = 0; j < 2; j++) {
-			x = w / 8;
+			x = w / 8 + imgWidth;
 			it = players[j].getCards().iterator();
 			for (int i = 0; i < 13; i++) {
 				this.handPanels[j][i].setVisible(it.hasNext());
@@ -236,7 +234,7 @@ public class CFrame extends JComponent implements ActionListener {
 
 		if (this.FlippedCard != null) {
 			if (resize) {
-				this.flippedPanel.setBounds((w/32) + 2*imgWidth, (7*h/16), imgWidth, imgHeight);
+				this.flippedPanel.setBounds((w/32) + 2*imgWidth, (h - imgHeight) / 2, imgWidth, imgHeight);
 			}
 			this.flippedPanel.setCard(this.FlippedCard);
 		}
@@ -299,29 +297,17 @@ public class CFrame extends JComponent implements ActionListener {
 
 	}
 
-
-	public void getScoredCard(int id, Card card) {
-		switch (card.faction) {
-			case GOBLINS -> Score[id][0]++;
-			case KNIGHTS -> Score[id][1]++;
-			case UNDEADS -> Score[id][2]++;
-			case DWARVES -> Score[id][3]++;
-			case DOPPELGANGERS -> Score[id][4]++;
-		}
-
-	}
-
 	public Game getGame() {
 		return this.game;
 	}
 
 	public void updateScore() {
 		ScoreStack stack;
-		this.Score = new int[2][5];
 		for (int i = 0; i < 2; i++) {
 			stack = players[i].getScoreStack();
-			int finalI = i;
-			stack.forEach((c) -> this.getScoredCard(finalI, c));
+			for (int j = 0; j < 5; j++) {
+				Score[i][j] = stack.getNbCardsFaction(Faction.values()[j]);
+			}
 		}
 	}
 }
