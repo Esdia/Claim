@@ -6,22 +6,17 @@ import bobnard.claim.model.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-
-public class CFrame extends JComponent implements ActionListener {
+public class CFrame extends JComponent {
 
 	boolean phase;
 	Game game;
-	JButton b1;
-	ImageIcon icb1;
-	JButton b2;
-	ImageIcon icb2;
+	CardUI b1;
+	CardUI b2;
 
 	JButton PlayedButton1;
 	ImageIcon PBimage1;
@@ -52,9 +47,9 @@ public class CFrame extends JComponent implements ActionListener {
 	int[][] Score = new int[2][5];
 
 
-	CustomPanel[][] handPanels;
-	CustomPanel flippedPanel;
-	CustomPanel[] playedPanels;
+	CardUI[][] handPanels;
+	CardUI flippedPanel;
+	CardUI[] playedPanels;
 
 	int w;
 	int h;
@@ -87,27 +82,11 @@ public class CFrame extends JComponent implements ActionListener {
 			} catch (IOException ignored) {}
 		}
 
-
-		icb1 =  new ImageIcon(path+"CARDBACK.png");
-		icb2 =  new ImageIcon(path+"CARDBACK.png");
-
-		Color mycolor = new Color(0, 0, 0, 0);
-
-		b1 =  new JButton();
-
-		b1.setBackground(mycolor);
-		b1.setBorderPainted(false);
-		b1.setVisible(false);
+		b1 = new CardUI(this);
 		this.add(b1);
-		b1.addActionListener(this);
 
-		b2 =  new JButton();
-		b2.setBackground(mycolor);
-		b2.setBorderPainted(false);
-		b2.setVisible(false);
+		b2 =  new CardUI(this);
 		this.add(b2);
-		b2.addActionListener(this);
-
 
 		setLayout(null);		
 		this.setVisible(true);
@@ -134,32 +113,30 @@ public class CFrame extends JComponent implements ActionListener {
 	}
 
 	void initHandButtons() {
-		this.handPanels = new CustomPanel[2][13];
+		this.handPanels = new CardUI[2][13];
 
 
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 13; j++) {
-				this.handPanels[i][j] = new CustomPanel(this);
+				this.handPanels[i][j] = new CardUI(this);
 				this.add(handPanels[i][j]);
 			}
 		}
 	}
 
 	void initFlippedButton() {
-		this.flippedPanel = new CustomPanel(this);
+		this.flippedPanel = new CardUI(this);
 		this.add(flippedPanel);
 	}
 
 	void initPlayedButton() {
-		this.playedPanels = new CustomPanel[2];
+		this.playedPanels = new CardUI[2];
 
 		for (int i = 0; i < 2; i++) {
-			this.playedPanels[i] = new CustomPanel(this);
+			this.playedPanels[i] = new CardUI(this);
 			this.add(playedPanels[i]);
 		}
 	}
-
-
 
 	@Override
 	public void paintComponent(Graphics g1) {
@@ -189,12 +166,12 @@ public class CFrame extends JComponent implements ActionListener {
 
 		paintscore(g, h, w);
 
-		b1.setIcon(resizeIcon(icb1, wb, hb));
 		b1.setBounds(w/32, 10, wb, hb);
+		b1.setCard(null, false);
 		b1.setVisible(true);
 
-		b2.setIcon(resizeIcon(icb2, wb, hb));
 		b2.setBounds(w/32, h-10-((int) ((w/18)*1.5)), wb, hb);
+		b2.setCard(null, false);
 		b2.setVisible(true);
 
 		this.setVisible(true);
@@ -257,17 +234,6 @@ public class CFrame extends JComponent implements ActionListener {
 			}
 		}
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
-		if( e.getSource() == b1) {
-			System.out.println("B1");
-		}
-
-
-	}
-
 
 	public Icon resizeIcon(ImageIcon i, int w, int h) {
 		Image im = i.getImage();
