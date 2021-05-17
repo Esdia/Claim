@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class CustomPanel extends JPanel {
+public class CardUI extends JPanel {
     private static final HashMap<String, BufferedImage> images = new HashMap<>();
     private static final String path = "src/main/bobnard/claim/UI/resources/";
 
@@ -24,7 +24,7 @@ public class CustomPanel extends JPanel {
 
     private boolean isFlipped;
 
-    public CustomPanel(CFrame frame) {
+    public CardUI(CFrame frame) {
         super();
 
         this.frame = frame;
