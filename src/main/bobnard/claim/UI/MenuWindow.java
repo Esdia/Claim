@@ -13,7 +13,7 @@ public class MenuWindow implements Runnable {
     public void run() {
 
 		SkinSelect ss =  new SkinSelect();
-		if(ss.selected == false) System.exit(0);
+		if(!ss.selected) System.exit(0);
 
     	frame = new JFrame("Claim menu");
 
@@ -28,8 +28,8 @@ public class MenuWindow implements Runnable {
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-    	if(ss.skin == "Umineko") frame.add(new MenuUmineko(frame));
-    	else frame.add(new MenuVanilla(frame));
+    	frame.add(new Menu(frame,ss.skin));
+
     	frame.setVisible(true);
 
     }

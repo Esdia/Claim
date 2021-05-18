@@ -1,6 +1,7 @@
 package bobnard.claim.UI;
 
 
+import bobnard.claim.UI.CardUI;
 import bobnard.claim.model.*;
 
 import javax.imageio.ImageIO;
