@@ -47,7 +47,7 @@ public class Menu extends JComponent {
         ru =  new ImageIcon(path+"rules.png");
         ex =  new ImageIcon(path+"exit.png");
 
-        song = Audio.play("happiness_of_marionette_omake.wav",true);
+        Audio.playBGM(0);
 
         b1 =  new JButton();
         b1.setVisible(false);

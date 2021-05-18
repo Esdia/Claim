@@ -49,11 +49,11 @@ public class ButtonsMouse extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
 
-        Audio.play("zyosys1.wav", false);
+        Audio.playSE(0);
 
         if(menu.b1.equals(e.getSource())) {
             menu.frame.dispose();
-            menu.song.stop();
+            Audio.getBGM().stop();
             Game game = new Game();
             MainWindow.start(game);
         }

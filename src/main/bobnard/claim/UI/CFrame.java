@@ -68,12 +68,8 @@ public class CFrame extends JComponent {
 		PBimage1 = null;
 		PBimage2 = null;
 
-		if(Math.random()>0.5){
-			Audio.play("organ_shokyoku_nioku_hachi.wav",true);
-		}
-		else{
-			Audio.play("Fishy_aroma.wav",true);
-		}
+
+		Audio.playBGM(1);
 
 
 		for (int i=0; i<5; i++) {
