@@ -9,10 +9,10 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class ButtonsMouse extends MouseAdapter {
-    Menu menu;
+public class ButtonsMouseVanilla extends MouseAdapter {
+    MenuVanilla menu;
 
-    public ButtonsMouse(Menu menu) {
+    public ButtonsMouseVanilla(MenuVanilla menu) {
         this.menu = menu;
     }
 

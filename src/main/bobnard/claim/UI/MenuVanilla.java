@@ -1,25 +1,14 @@
 package bobnard.claim.UI;
 
-
-import bobnard.claim.model.Card;
-import bobnard.claim.model.Game;
-import bobnard.claim.model.Player;
-
 import javax.imageio.ImageIO;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 
 
-public class Menu extends JComponent {
+public class MenuVanilla extends JComponent{
 
     BufferedImage image;
     BufferedImage image2;
@@ -38,9 +27,9 @@ public class Menu extends JComponent {
     ImageIcon ru;
     ImageIcon ex;
 
-    ButtonsMouse m = new ButtonsMouse(this);
+    ButtonsMouseVanilla m = new ButtonsMouseVanilla(this);
 
-    public Menu(JFrame frame) {
+    public MenuVanilla(JFrame frame) {
         this.isStart = false;
         this.frame = frame;
 
@@ -66,7 +55,7 @@ public class Menu extends JComponent {
         b3.addMouseListener(m);
 
         try {
-            image = ImageIO.read(new File(path+"menu.png"));
+            image = ImageIO.read(new File(path+".png"));
             image2 = ImageIO.read(new File(path+"ware.png"));
         } catch (IOException  exception) {
 
@@ -77,7 +66,7 @@ public class Menu extends JComponent {
 
     public Icon resizeIcon(ImageIcon i, int w, int h) {
         Image im = i.getImage();
-        Image resIm = im.getScaledInstance (w, h, java.awt.Image.SCALE_SMOOTH);
+        Image resIm = im.getScaledInstance (w, h, Image.SCALE_SMOOTH);
         return new ImageIcon(resIm);
 
     }

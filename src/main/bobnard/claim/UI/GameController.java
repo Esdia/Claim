@@ -1,16 +1,13 @@
 package bobnard.claim.UI;
 
+import bobnard.claim.UI.CFrame;
 import bobnard.claim.model.Game;
-import bobnard.claim.model.Hand;
-import bobnard.claim.model.Player;
-
-import javax.swing.*;
 
 public class GameController {
-    private final CFrame gameUI ;
+    private final bobnard.claim.UI.CFrame gameUI ;
     private final Game game;
 
-    public GameController(Game game, CFrame frame) {
+    public GameController(Game game, bobnard.claim.UI.CFrame frame) {
         this.gameUI = frame;
         this.game = game;
     }

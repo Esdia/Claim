@@ -1,8 +1,7 @@
 package bobnard.claim;
 
 
-import bobnard.claim.UI.*;
-import bobnard.claim.model.Game;
+import bobnard.claim.UI.MenuWindow;
 
 public class Claim {
     public static void main(String[] args) {
