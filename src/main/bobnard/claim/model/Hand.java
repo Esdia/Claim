@@ -8,7 +8,7 @@ public class Hand extends ArrayList<Card> {
         this.sort(Card::compareTo);
     }
 
-    private Stream<Card> getCards(Faction faction) {
+    Stream<Card> getCards(Faction faction) {
         return this.stream().filter(c -> c.faction == faction);
     }
 
@@ -16,8 +16,8 @@ public class Hand extends ArrayList<Card> {
      * Return the cards the player can play, given the faction played
      * by the leader
      */
-    ArrayList<Card> playableCards(Faction faction) {
-        ArrayList<Card> cards = new ArrayList<>();
+    Hand playableCards(Faction faction) {
+        Hand cards = new Hand();
 
         getCards(faction).forEach(cards::add);
 

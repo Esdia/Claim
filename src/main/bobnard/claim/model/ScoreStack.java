@@ -26,11 +26,7 @@ public class ScoreStack extends Stack<Card> {
     int maxValueFaction(Faction faction) {
         Optional<Card> maxCard = this.getCards(faction).max(Card::compareTo);
 
-        if (maxCard.isPresent()) {
-            return maxCard.get().value;
-        } else {
-            throw new IllegalStateException();
-        }
+        return maxCard.map(card -> card.value).orElse(-1);
     }
     //endregion
 

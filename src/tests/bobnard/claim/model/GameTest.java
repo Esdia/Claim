@@ -1,50 +1,87 @@
 package bobnard.claim.model;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import org.junit.jupiter.api.Test;
 
-public class GameTest {
-    public static void main(String[] args) {
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class GameTest {
+    Random random = new Random();
+
+    void testGame() {
         Game game = new Game();
-        Scanner scanner = new Scanner(System.in);
+        assertFalse(game.isDone());
 
         int currentPlayer;
-        ArrayList<Card> cards;
-        int n;
-
+        Hand cards;
         Card card;
 
-        while (!game.isDone()) {
-            currentPlayer = game.getCurrentPlayerID();
-            cards = game.getCards(currentPlayer);
-            System.out.println("Player " + game.getCurrentPlayerID() + "'s turn");
-            System.out.println(cards);
-            do {
-                System.out.print("Input card index : ");
-                n = scanner.nextInt();
-            } while (n < 0 || n >= cards.size());
-            System.out.println();
+        assertThrows(IllegalStateException.class, game::getWinnerID);
 
-            card = cards.get(n);
-            game.playCard(card);
+        for (int j = 1; j < 3; j++) {
+            for (int i = 0; i < 13; i++) {
+                assertFalse(game.isDone());
+                assertEquals(j, game.getPhaseNum());
 
-            currentPlayer = game.getCurrentPlayerID();
-            cards = game.getCards(currentPlayer);
-            System.out.println("Player " + game.getCurrentPlayerID() + "'s turn");
-            System.out.println(cards);
-            cards = game.getPlayableCards(currentPlayer, card.faction);
-            System.out.println("Playable cards : " + cards);
+                currentPlayer = game.getCurrentPlayerID();
+                cards = game.getCards(currentPlayer);
+                //System.out.println("Player " + game.getCurrentPlayerID() + "'s turn");
+                //System.out.println(cards);
+                card = cards.get(random.nextInt(cards.size()));
+                game.playCard(card);
+                game.changePlayer();
+                assertFalse(game.trickReady());
 
-            do {
-                System.out.print("Input card index : ");
-                n = scanner.nextInt();
-            } while (n < 0 || n >= cards.size());
-            System.out.println();
 
-            card = cards.get(n);
-            game.playCard(card);
+                currentPlayer = game.getCurrentPlayerID();
+                //cards = game.getCards(currentPlayer);
+                //System.out.println("Player " + game.getCurrentPlayerID() + "'s turn");
+                //System.out.println(cards);
+                cards = game.getPlayableCards(currentPlayer, card.faction);
+                card = cards.get(random.nextInt(cards.size()));
+                assertTrue(game.isLegalMove(card));
+                game.playCard(card);
+                assertTrue(game.trickReady());
 
-            game.printDebugInfo();
+                game.printDebugInfo();
+                game.endTrick();
+            }
+        }
+
+        assertTrue(game.isDone());
+
+        ScoreStack[] scoreStacks = new ScoreStack[] {
+                game.getPlayer(0).getScoreStack(),
+                game.getPlayer(1).getScoreStack()
+        };
+
+        int factionsPlayerZero = 0;
+
+        int nb0, nb1;
+        for (Faction faction: Faction.values()) {
+            nb0 = scoreStacks[0].getNbCardsFaction(faction);
+            nb1 = scoreStacks[1].getNbCardsFaction(faction);
+            if (nb0 > nb1) {
+                factionsPlayerZero++;
+            } else if (nb0 == nb1) {
+                nb0 = scoreStacks[0].maxValueFaction(faction);
+                nb1 = scoreStacks[1].maxValueFaction(faction);
+                if (nb0 > nb1) {
+                    factionsPlayerZero++;
+                }
+            }
+        }
+
+        int expectedWinner = factionsPlayerZero >= 3 ? 1 : 2;
+
+        assertEquals(expectedWinner, game.getWinnerID());
+    }
+
+    @Test
+    void testGames() {
+        for (int i = 0; i < 100; i++) {
+            this.testGame();
         }
     }
 }

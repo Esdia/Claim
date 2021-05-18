@@ -1,6 +1,5 @@
 package bobnard.claim.model;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 public class Player {
@@ -35,7 +34,7 @@ public class Player {
      * Return the cards the player can play, given the faction played
      * by the leader
      */
-    ArrayList<Card> playableCards(Faction faction) {
+    Hand playableCards(Faction faction) {
         return this.hand.playableCards(faction);
     }
     //endregion
@@ -50,7 +49,7 @@ public class Player {
 
         this.hand.addAll(this.followers);
 
-        this.hand.sort();
+        this.sortHand();
     }
     //endregion
 

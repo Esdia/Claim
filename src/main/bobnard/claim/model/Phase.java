@@ -11,6 +11,10 @@ abstract class Phase {
     private Trick trick;
 
     Phase(Player[] players) {
+        if (players == null) {
+            throw new IllegalArgumentException();
+        }
+
         if (players.length != 2 || players[0] == null || players[1] == null) {
             throw new IllegalArgumentException();
         }

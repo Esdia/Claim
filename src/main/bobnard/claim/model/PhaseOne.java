@@ -32,7 +32,7 @@ class PhaseOne extends Phase {
     }
 
     private void giveCentralCards() {
-        this.players[this.getLastTrickWinner()].addFollower(this.flippedCard);
+        this.players[this.getLastTrickWinner()].addFollower(this.getFlippedCard());
         this.players[this.getLastTrickLoser() ].addFollower(deck.draw());
     }
     //endregion

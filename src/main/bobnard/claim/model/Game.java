@@ -1,12 +1,11 @@
 package bobnard.claim.model;
 
-import java.util.ArrayList;
-
 public class Game {
     private Phase phase;
     private final Player[] players;
 
     private boolean isDone;
+    private int winnerID;
 
     public Game() {
         players = new Player[2];
@@ -52,14 +51,14 @@ public class Game {
             }
         }
 
-        int winner = factionsPlayerZero >= 3 ? 1 : 2;
+        this.winnerID = factionsPlayerZero >= 3 ? 1 : 2;
 
-        System.out.println("Player " + winner + " won the game!");
+        System.out.println("Player " + winnerID + " won the game!");
     }
     //endregion
 
     //region PHASE MANAGEMENT
-    private int getPhaseNum() {
+    int getPhaseNum() {
         if (this.phase instanceof PhaseOne) {
             return 1;
         } else {
@@ -73,10 +72,6 @@ public class Game {
     }
 
     private void startPhaseTwo() {
-        if (this.getPhaseNum() != 1) {
-            throw new IllegalStateException();
-        }
-
         System.out.println("Beginning phase 2");
         this.phase = new PhaseTwo(players);
     }
@@ -117,7 +112,7 @@ public class Game {
         return this.players[id];
     }
 
-    public ArrayList<Card> getCards(int playerID) {
+    public Hand getCards(int playerID) {
         return this.players[playerID].getCards();
     }
 
@@ -133,18 +128,32 @@ public class Game {
         }
     }
 
-    public ArrayList<Card> getPlayableCards(int player, Faction faction) {
+    public Hand getPlayableCards(int player, Faction faction) {
         return this.players[player].playableCards(faction);
+    }
+
+    public int getWinnerID() {
+        if (!this.isDone()) {
+            throw new IllegalStateException();
+        }
+        return this.winnerID;
     }
     //endregion
 
     //region DEBUG PRINT
     public void printDebugInfo() {
+        Card[] playedCards = this.getPlayedCards();
+
         System.out.println("------ DEBUG ------");
+        if (this.getFlippedCard() != null) {
+            System.out.println("flipped card : " + this.getFlippedCard());
+        }
         System.out.println("Player 0 :");
         System.out.println(this.players[0]);
+        System.out.println("Played card : " + playedCards[0]);
         System.out.println("\nPlayer 1 :");
         System.out.println(this.players[1]);
+        System.out.println("Played card : " + playedCards[1]);
         System.out.println("---- END DEBUG ----");
     }
     //endregion
