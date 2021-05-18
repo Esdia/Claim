@@ -81,7 +81,7 @@ public class CFrame extends JComponent {
 		b2 =  new CardUI(this);
 		this.add(b2);
 
-		setLayout(null);		
+		setLayout(null);
 		this.setVisible(true);
 
 		try {
@@ -241,13 +241,13 @@ public class CFrame extends JComponent {
 		int th = (int) (t * 1.5);
 		int x = w-2*(t);
 		int y = ((int) ((w/20)*1.5))+(h/30);
-		int xx  = x + (t/2)-5 ;		
+		int xx  = x + (t/2)-5 ;
 		int fsize = h/54;
 
 		Font fonte = new Font("Serif", Font.BOLD, fsize);
 		g.setColor(Color.WHITE);
 		g.setFont(fonte);
-		
+
 		for(int i=0; i<5; i++) {
 			g.drawImage(FactionIm[i], x, y, t, th, null);
 			g.drawString( "" + Score[0][i]  , xx ,y  + (int) (fsize*1.5));
