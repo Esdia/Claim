@@ -2,8 +2,6 @@ package bobnard.claim.model;
 
 import bobnard.claim.UI.Audio;
 
-import java.util.ArrayList;
-
 public class Game {
     private Phase phase;
     private final Player[] players;
