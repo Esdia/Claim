@@ -1,5 +1,6 @@
 package bobnard.claim.UI;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class MenuVanilla extends JComponent{
+public class Menu extends JComponent {
 
     BufferedImage image;
     BufferedImage image2;
@@ -27,11 +28,15 @@ public class MenuVanilla extends JComponent{
     ImageIcon ru;
     ImageIcon ex;
 
-    ButtonsMouseVanilla m = new ButtonsMouseVanilla(this);
+    ButtonsMouse m = new ButtonsMouse(this);
 
-    public MenuVanilla(JFrame frame) {
+    Object skin;
+
+    public Menu(JFrame frame, Object skin) {
+        this.skin = skin;
         this.isStart = false;
         this.frame = frame;
+
 
         ng =  new ImageIcon(path+"new_game.png");
         ru =  new ImageIcon(path+"rules.png");
@@ -55,8 +60,14 @@ public class MenuVanilla extends JComponent{
         b3.addMouseListener(m);
 
         try {
-            image = ImageIO.read(new File(path+".png"));
-            image2 = ImageIO.read(new File(path+"ware.png"));
+            if(this.skin == "Umineko"){
+                image = ImageIO.read(new File(path+"menu.png"));
+                image2 = ImageIO.read(new File(path+"ware.png"));
+            }else{
+                image = ImageIO.read(new File(path+"menuVanilla.png"));
+
+            }
+
         } catch (IOException  exception) {
 
         }

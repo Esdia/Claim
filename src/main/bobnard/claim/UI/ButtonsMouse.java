@@ -10,10 +10,10 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class ButtonsMouseUmineko extends MouseAdapter {
-    MenuUmineko menu;
+public class ButtonsMouse extends MouseAdapter {
+    Menu menu;
 
-    public ButtonsMouseUmineko(MenuUmineko menu) {
+    public ButtonsMouse(Menu menu) {
         this.menu = menu;
     }
 
@@ -54,16 +54,19 @@ public class ButtonsMouseUmineko extends MouseAdapter {
         Audio.playSE(0);
 
         if(menu.b1.equals(e.getSource())) {
-            menu.isStart = true;
-            synchronized (menu) {
-                try {
-                    menu.refresh();
-                    Audio.playSE(1);
-                    menu.wait(2500);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
+            if(menu.skin == "Umineko"){
+                menu.isStart = true;
+                synchronized (menu) {
+                    try {
+                        menu.refresh();
+                        Audio.playSE(1);
+                        menu.wait(2500);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
                 }
             }
+
             menu.frame.dispose();
             Audio.getBGM().stop();
             Game game = new Game();
