@@ -22,14 +22,29 @@ public class ButtonsMouse extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
 
+        ImageIcon ng = null;
+        ImageIcon ru = null;
+        ImageIcon ex = null;
+
+        if(menu.skin == "Umineko"){
+
+            ng = new ImageIcon(menu.path+"new_game2.png");
+            ru = new ImageIcon(menu.path+"rules2.png");
+            ex = new ImageIcon(menu.path+"exit2.png");
+
+        }
+        setHover(e, ng, ru, ex);
+    }
+
+    private void setHover(MouseEvent e, ImageIcon ng, ImageIcon ru, ImageIcon ex) {
         if (menu.b1.equals(e.getSource())) {
-            menu.ng = new ImageIcon(menu.path+"new_game2.png");
+            menu.ng = ng;
         }
         if (menu.b2.equals(e.getSource())) {
-            menu.ru = new ImageIcon(menu.path+"rules2.png");
+            menu.ru = ru;
         }
         if (menu.b3.equals(e.getSource())) {
-            menu.ex = new ImageIcon(menu.path+"exit2.png");
+            menu.ex = ex;
         }
     }
 
@@ -37,15 +52,18 @@ public class ButtonsMouse extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
         super.mouseEntered(e);
 
-        if (menu.b1.equals(e.getSource())) {
-            menu.ng = new ImageIcon(menu.path+"new_game.png");
+        ImageIcon ng = null;
+        ImageIcon ru = null;
+        ImageIcon ex = null;
+
+        if(menu.skin == "Umineko"){
+
+            ng = new ImageIcon(menu.path+"new_game.png");
+            ru = new ImageIcon(menu.path+"rules.png");
+            ex = new ImageIcon(menu.path+"exit.png");
+
         }
-        if (menu.b2.equals(e.getSource())) {
-            menu.ru = new ImageIcon(menu.path+"rules.png");
-        }
-        if (menu.b3.equals(e.getSource())) {
-            menu.ex = new ImageIcon(menu.path+"exit.png");
-        }
+        setHover(e, ng, ru, ex);
     }
 
     @Override
