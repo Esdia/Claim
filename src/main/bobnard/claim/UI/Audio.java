@@ -12,10 +12,13 @@ public class Audio  {
 
     private static File p1bf = new File("src/main/bobnard/claim/UI/resources/audio/phase1/bgm");
     private static final File[] p1blf = p1bf.listFiles();
+    private static File p2bf = new File("src/main/bobnard/claim/UI/resources/audio/phase2/bgm");
+    private static final File[] p2blf = p2bf.listFiles();
 
     private static Clip bgm;
 
     private static Integer NB_SONG_P1 = p1blf.length;
+    private static Integer NB_SONG_P2 = p2blf.length;
 
     public static void playBGM(int phase){
         File song;
@@ -23,6 +26,7 @@ public class Audio  {
         song = switch (phase) {
             case 0 -> new File("src/main/bobnard/claim/UI/resources/audio/menu/bgm/happiness_of_marionette_omake.wav");
             case 1 -> p1blf[rand.nextInt(NB_SONG_P1)];
+            case 2 -> p2blf[rand.nextInt(NB_SONG_P2)];
             default -> throw new IllegalStateException("Unexpected value: " + phase);
         };
 
