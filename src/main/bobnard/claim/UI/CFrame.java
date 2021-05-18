@@ -69,9 +69,6 @@ public class CFrame extends JComponent {
 		PBimage2 = null;
 
 
-		Audio.playBGM(1);
-
-
 		for (int i=0; i<5; i++) {
 			try {
 				FactionIm[i] = ImageIO.read(new File(path+"SCORE"+i+".png"));

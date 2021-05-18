@@ -52,6 +52,16 @@ public class ButtonsMouse extends MouseAdapter {
         Audio.playSE(0);
 
         if(menu.b1.equals(e.getSource())) {
+            menu.isStart = true;
+            synchronized (menu) {
+                try {
+                    menu.refresh();
+                    Audio.playSE(1);
+                    menu.wait(2500);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+            }
             menu.frame.dispose();
             Audio.getBGM().stop();
             Game game = new Game();
@@ -68,7 +78,7 @@ public class ButtonsMouse extends MouseAdapter {
         }
 
         if(menu.b3.equals(e.getSource())) {
-            menu.song.stop();
+            Audio.getBGM().stop();
             menu.frame.dispose();
         }
     }

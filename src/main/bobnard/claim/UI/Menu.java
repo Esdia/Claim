@@ -22,6 +22,9 @@ import java.util.ArrayList;
 public class Menu extends JComponent {
 
     BufferedImage image;
+    BufferedImage image2;
+
+    Boolean isStart;
 
     String path = "src/main/bobnard/claim/UI/resources/menu/";
 
@@ -37,10 +40,8 @@ public class Menu extends JComponent {
 
     ButtonsMouse m = new ButtonsMouse(this);
 
-    Clip song;
-
     public Menu(JFrame frame) {
-
+        this.isStart = false;
         this.frame = frame;
 
         ng =  new ImageIcon(path+"new_game.png");
@@ -66,6 +67,7 @@ public class Menu extends JComponent {
 
         try {
             image = ImageIO.read(new File(path+"menu.png"));
+            image2 = ImageIO.read(new File(path+"ware.png"));
         } catch (IOException  exception) {
 
         }
@@ -80,12 +82,15 @@ public class Menu extends JComponent {
 
     }
 
+    public void refresh(){
+        paintComponent(this.getGraphics());
+    }
+
     public void paintComponent(Graphics g) {
         int h = (int) getSize().getHeight();
         int w = (int) getSize().getWidth();
 
         g.drawImage(image, 0, 0, w, h, null);
-
         Color color = new Color(0,0,0,0);
 
         b1.setBounds((int) (w/1.35), (int) (h/2.7), w/5, h/17);
@@ -114,6 +119,8 @@ public class Menu extends JComponent {
         b3.setContentAreaFilled(false);
 
         b3.setVisible(true);
+
+        if(isStart) g.drawImage(image2, 0, 0, w, h, null);
 
         this.setVisible(true);
 

@@ -1,5 +1,7 @@
 package bobnard.claim.model;
 
+import bobnard.claim.UI.Audio;
+
 import java.util.ArrayList;
 
 public class Game {
@@ -68,6 +70,7 @@ public class Game {
     }
 
     private void startPhaseOne() {
+        Audio.playBGM(1);
         System.out.println("Beginning phase 1");
         this.phase = new PhaseOne(this.players);
     }
@@ -76,7 +79,8 @@ public class Game {
         if (this.getPhaseNum() != 1) {
             throw new IllegalStateException();
         }
-
+        Audio.getBGM().stop();
+        Audio.playBGM(2);
         System.out.println("Beginning phase 2");
         this.phase = new PhaseTwo(players);
     }
