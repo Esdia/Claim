@@ -15,6 +15,8 @@ public class MenuWindow implements Runnable {
 		SkinSelect ss =  new SkinSelect();
 		if(!ss.selected) System.exit(0);
 
+		Audio.setSkin(ss.skin);
+
     	frame = new JFrame("Claim menu");
 
 
