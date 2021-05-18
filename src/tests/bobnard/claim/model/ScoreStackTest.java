@@ -23,13 +23,14 @@ class ScoreStackTest {
 
         for (int i = 0; i < 50; i++) {
             x = factions[random.nextInt(5)];
+            tmp = random.nextInt(8) + 2;
+
             if (x == Faction.DWARVES) {
                 nbDwarves++;
-            }
 
-            tmp = random.nextInt(8) + 2;
-            if (tmp > max) {
-                max = tmp;
+                if (tmp > max) {
+                    max = tmp;
+                }
             }
 
             stack.push(new Card(x, tmp));
