@@ -1,27 +1,20 @@
 package bobnard.claim.UI;
 
 
-import bobnard.claim.model.Card;
-import bobnard.claim.model.Game;
-import bobnard.claim.model.Player;
-
 import javax.imageio.ImageIO;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 
 
 public class Menu extends JComponent {
 
     BufferedImage image;
+    BufferedImage image2;
+
+    Boolean isStart;
 
     String path = "src/main/bobnard/claim/UI/resources/menu/";
 
@@ -37,17 +30,19 @@ public class Menu extends JComponent {
 
     ButtonsMouse m = new ButtonsMouse(this);
 
-    Clip song;
+    Object skin;
 
-    public Menu(JFrame frame) {
-
+    public Menu(JFrame frame, Object skin) {
+        this.skin = skin;
+        this.isStart = false;
         this.frame = frame;
+
 
         ng =  new ImageIcon(path+"new_game.png");
         ru =  new ImageIcon(path+"rules.png");
         ex =  new ImageIcon(path+"exit.png");
 
-        song = Audio.play("happiness_of_marionette_omake.wav",true);
+        Audio.playBGM(0);
 
         b1 =  new JButton();
         b1.setVisible(false);
@@ -65,7 +60,14 @@ public class Menu extends JComponent {
         b3.addMouseListener(m);
 
         try {
-            image = ImageIO.read(new File(path+"menu.png"));
+            if(this.skin == "Umineko"){
+                image = ImageIO.read(new File(path+"menu.png"));
+                image2 = ImageIO.read(new File(path+"ware.png"));
+            }else{
+                image = ImageIO.read(new File(path+"menuVanilla.png"));
+
+            }
+
         } catch (IOException  exception) {
 
         }
@@ -75,9 +77,13 @@ public class Menu extends JComponent {
 
     public Icon resizeIcon(ImageIcon i, int w, int h) {
         Image im = i.getImage();
-        Image resIm = im.getScaledInstance (w, h, java.awt.Image.SCALE_SMOOTH);
+        Image resIm = im.getScaledInstance (w, h, Image.SCALE_SMOOTH);
         return new ImageIcon(resIm);
 
+    }
+
+    public void refresh(){
+        paintComponent(this.getGraphics());
     }
 
     public void paintComponent(Graphics g) {
@@ -85,7 +91,6 @@ public class Menu extends JComponent {
         int w = (int) getSize().getWidth();
 
         g.drawImage(image, 0, 0, w, h, null);
-
         Color color = new Color(0,0,0,0);
 
         b1.setBounds((int) (w/1.35), (int) (h/2.7), w/5, h/17);
@@ -114,6 +119,8 @@ public class Menu extends JComponent {
         b3.setContentAreaFilled(false);
 
         b3.setVisible(true);
+
+        if(isStart) g.drawImage(image2, 0, 0, w, h, null);
 
         this.setVisible(true);
 

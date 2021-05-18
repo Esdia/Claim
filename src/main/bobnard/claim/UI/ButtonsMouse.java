@@ -1,5 +1,6 @@
 package bobnard.claim.UI;
 
+
 import bobnard.claim.model.Game;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class ButtonsMouse extends MouseAdapter {
     public ButtonsMouse(Menu menu) {
         this.menu = menu;
     }
+
 
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -49,11 +51,24 @@ public class ButtonsMouse extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
 
-        Audio.play("zyosys1.wav", false);
+        Audio.playSE(0);
 
         if(menu.b1.equals(e.getSource())) {
+            if(menu.skin == "Umineko"){
+                menu.isStart = true;
+                synchronized (menu) {
+                    try {
+                        menu.refresh();
+                        Audio.playSE(1);
+                        menu.wait(2500);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
+                }
+            }
+
             menu.frame.dispose();
-            menu.song.stop();
+            Audio.getBGM().stop();
             Game game = new Game();
             MainWindow.start(game);
         }
@@ -68,7 +83,7 @@ public class ButtonsMouse extends MouseAdapter {
         }
 
         if(menu.b3.equals(e.getSource())) {
-            menu.song.stop();
+            Audio.getBGM().stop();
             menu.frame.dispose();
         }
     }

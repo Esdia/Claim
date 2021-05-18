@@ -1,20 +1,22 @@
 package bobnard.claim.UI;
 
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MenuWindow implements Runnable {
     private JFrame frame;
-    public static Menu gameUI;
-
 
     
     
     @Override
     public void run() {
 
+		SkinSelect ss =  new SkinSelect();
+		if(!ss.selected) System.exit(0);
+
     	frame = new JFrame("Claim menu");
-		gameUI = new Menu(frame);
+
 
     	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     	frame.setMinimumSize(new Dimension(480, 360));
@@ -26,7 +28,8 @@ public class MenuWindow implements Runnable {
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-    	frame.add(gameUI);
+    	frame.add(new Menu(frame,ss.skin));
+
     	frame.setVisible(true);
 
     }
