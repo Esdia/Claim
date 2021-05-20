@@ -83,4 +83,12 @@ public class Player {
         return this.scoreStack;
     }
     //endregion
+
+    //region RESET
+    public void reset() {
+        this.hand.clear();
+        this.scoreStack.clear();
+        this.followers.clear();
+    }
+    //endregion
 }

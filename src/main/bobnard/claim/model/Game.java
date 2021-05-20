@@ -21,8 +21,7 @@ public class Game {
 
         this.isDone = false;
 
-        this.startPhaseOne();
-        this.playIfAI(); // To start the loop if the first player is an AI
+        this.start();
     }
 
     //region GAME MANAGEMENT
@@ -61,6 +60,19 @@ public class Game {
         this.winnerID = factionsPlayerZero >= 3 ? 1 : 2;
 
         System.out.println("Player " + winnerID + " won the game!");
+    }
+
+    private void start() {
+        this.startPhaseOne();
+        this.playIfAI(); // To start the loop if the first player is an AI
+    }
+
+    public void reset() {
+        this.isDone = false;
+        for (Player player: players) {
+            player.reset();
+        }
+        this.start();
     }
     //endregion
 
@@ -133,7 +145,7 @@ public class Game {
         Player currentPlayer = this.getPlayer(this.getCurrentPlayerID());
 
         if (currentPlayer instanceof AI) {
-            Timer timer = new Timer(1500, e -> ((AI) currentPlayer).action());
+            Timer timer = new Timer(250, e -> ((AI) currentPlayer).action());
             timer.setRepeats(false);
             timer.start();
         }

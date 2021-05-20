@@ -3,8 +3,6 @@ package bobnard.claim.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TrickTest {
@@ -89,7 +87,7 @@ class TrickTest {
     void testFaction() {
         Trick trick = new Trick(1);
 
-        assertThrows(IllegalStateException.class, trick::getFaction);
+        assertNull(trick.getFaction());
 
         Card c1 = new Card(Faction.GOBLINS, 0);
         Card c2 = new Card(Faction.DWARVES, 0);

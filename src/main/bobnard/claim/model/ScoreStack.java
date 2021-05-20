@@ -50,5 +50,11 @@ public class ScoreStack extends Stack<Card> {
         this.occ.computeIfPresent(card.faction, (k, v) -> v - 1);
         return card;
     }
+
+    @Override
+    public void clear() {
+        super.clear();
+        this.occ.replaceAll((f, v) -> 0);
+    }
     //endregion
 }

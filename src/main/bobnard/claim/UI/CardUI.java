@@ -93,9 +93,18 @@ public class CardUI extends JPanel {
             if (game.trickReady()) {
                 Timer timer = new Timer(500, e -> {
                     game.endTrick();
-                    frame.updateScore();
                     frame.repaint();
-                    game.playIfAI();
+
+                    if (game.isDone()) {
+                        Timer t2 = new Timer(500, f -> {
+                            game.reset();
+                            frame.repaint();
+                        });
+                        t2.setRepeats(false);
+                        t2.start();
+                    } else {
+                        game.playIfAI();
+                    }
                 });
                 timer.setRepeats(false);
                 timer.start();

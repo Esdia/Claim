@@ -2,7 +2,6 @@ package bobnard.claim.UI;
 
 
 import bobnard.claim.AI.AI;
-import bobnard.claim.UI.CardUI;
 import bobnard.claim.model.*;
 
 import javax.imageio.ImageIO;
@@ -165,6 +164,7 @@ public class CFrame extends JComponent {
 
 		g.drawImage(image2, w/32, (h/2)-(hb/2), wb, hb, null);
 
+		this.updateScore();
 		paintscore(g, h, w);
 
 		b1.setBounds(w/32, 10, wb, hb);
