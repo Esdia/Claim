@@ -1,6 +1,10 @@
 package bobnard.claim.model;
 
+import bobnard.claim.AI.AI;
+import bobnard.claim.AI.AIRandom;
 import bobnard.claim.UI.Audio;
+
+import javax.swing.*;
 
 public class Game {
     private Phase phase;
@@ -12,12 +16,13 @@ public class Game {
     public Game() {
         players = new Player[2];
 
-        players[0] = new Player();
-        players[1] = new Player();
+        players[0] = new AIRandom(this);
+        players[1] = new AIRandom(this);
 
         this.isDone = false;
 
         this.startPhaseOne();
+        this.playIfAI(); // To start the loop if the first player is an AI
     }
 
     //region GAME MANAGEMENT
@@ -98,6 +103,10 @@ public class Game {
         return this.phase.trickReady();
     }
 
+    public Faction getPlayedFaction() {
+        return this.phase.getPlayedFaction();
+    }
+
     public void endTrick() {
         this.phase.endTrick();
 
@@ -107,6 +116,26 @@ public class Game {
             } else {
                 this.endGame();
             }
+        }
+    }
+    //endregion
+
+    //region AI
+    public boolean isCurrentPlayerAI() {
+        Player currentPlayer = this.getPlayer(this.getCurrentPlayerID());
+
+        return currentPlayer instanceof AI;
+    }
+
+    public void playIfAI() {
+        if (this.isDone()) return;
+
+        Player currentPlayer = this.getPlayer(this.getCurrentPlayerID());
+
+        if (currentPlayer instanceof AI) {
+            Timer timer = new Timer(1500, e -> ((AI) currentPlayer).action());
+            timer.setRepeats(false);
+            timer.start();
         }
     }
     //endregion

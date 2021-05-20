@@ -19,6 +19,11 @@ public class Hand extends ArrayList<Card> {
     Hand playableCards(Faction faction) {
         Hand cards = new Hand();
 
+        if (faction == null) {
+            cards.addAll(this);
+            return cards;
+        }
+
         getCards(faction).forEach(cards::add);
 
         if (cards.size() > 0) {

@@ -60,6 +60,10 @@ abstract class Phase {
         return this.trick.isReady();
     }
 
+    public Faction getPlayedFaction() {
+        return this.trick.getFaction();
+    }
+
     void endTrick() {
         if (!this.trick.isReady()) {
             throw new IllegalStateException();

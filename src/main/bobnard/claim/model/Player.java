@@ -7,7 +7,7 @@ public class Player {
     private final ScoreStack scoreStack;
     private final Stack<Card> followers;
 
-    Player() {
+    protected Player() {
         this.hand = new Hand();
         this.scoreStack = new ScoreStack();
         this.followers = new Stack<>();
@@ -34,7 +34,7 @@ public class Player {
      * Return the cards the player can play, given the faction played
      * by the leader
      */
-    Hand playableCards(Faction faction) {
+    protected Hand playableCards(Faction faction) {
         return this.hand.playableCards(faction);
     }
     //endregion

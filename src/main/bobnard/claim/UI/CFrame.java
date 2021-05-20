@@ -1,6 +1,7 @@
 package bobnard.claim.UI;
 
 
+import bobnard.claim.AI.AI;
 import bobnard.claim.UI.CardUI;
 import bobnard.claim.model.*;
 
@@ -93,22 +94,28 @@ public class CFrame extends JComponent {
 			image2 = ImageIO.read(new File(path+"CARDBACK.png"));
 		} catch (IOException ignored) {}
 
-		this.setPlayers();
-
 		this.initHandButtons();
 		this.initFlippedButton();
 		this.initPlayedButton();
+
+		this.setPlayers();
 	}
 
 	public void setPlayers() {
 		this.players = new Player[2];
-		this.players[0] = game.getPlayer(0);
-		this.players[1] = game.getPlayer(1);
+
+		for (int i = 0; i < 2; i++) {
+			Player player = game.getPlayer(i);
+			this.players[i] = player;
+
+			if (player instanceof AI) {
+				((AI) player).setCardUIs(this.handPanels[i]);
+			}
+		}
 	}
 
 	void initHandButtons() {
 		this.handPanels = new CardUI[2][13];
-
 
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 13; j++) {

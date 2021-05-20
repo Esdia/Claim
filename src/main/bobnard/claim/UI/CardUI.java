@@ -1,7 +1,9 @@
 package bobnard.claim.UI;
 
+import bobnard.claim.AI.AI;
 import bobnard.claim.model.Card;
 import bobnard.claim.model.Game;
+import bobnard.claim.model.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,9 +34,15 @@ public class CardUI extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                action();
+                if (!frame.getGame().isCurrentPlayerAI()) {
+                    action();
+                }
             }
         });
+    }
+
+    public Card getCard() {
+        return this.card;
     }
 
     private static BufferedImage getImage(String name) {
@@ -69,7 +77,7 @@ public class CardUI extends JPanel {
         this.setCard(card, true);
     }
 
-    void action() {
+    public void action() {
         if (!this.isFlipped) {
             System.out.println("Played card : " + this.card.name);
 
@@ -87,13 +95,14 @@ public class CardUI extends JPanel {
                     game.endTrick();
                     frame.updateScore();
                     frame.repaint();
+                    game.playIfAI();
                 });
                 timer.setRepeats(false);
                 timer.start();
             } else {
                 game.changePlayer();
+                game.playIfAI();
             }
-
         }
     }
 

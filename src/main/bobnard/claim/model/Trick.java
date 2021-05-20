@@ -55,11 +55,7 @@ class Trick {
     }
 
     Faction getFaction() {
-        if (this.c1 == null) {
-            throw new IllegalStateException();
-        }
-
-        return this.c1.faction;
+        return this.c1 == null ? null : c1.faction;
     }
     //endregion
 }
