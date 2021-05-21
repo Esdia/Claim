@@ -60,7 +60,7 @@ public class CFrame extends JComponent {
 	int imgWidth;
 	int imgHeight;
 
-	private final Timer nextStepTimer = new Timer(500, null);
+	private final Timer nextStepTimer = new Timer(1500, null);
 
 	public CFrame(Game game) {
 		FlippedCard = null;
