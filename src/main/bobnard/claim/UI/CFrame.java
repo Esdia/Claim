@@ -57,6 +57,8 @@ public class CFrame extends JComponent {
 	int imgWidth;
 	int imgHeight;
 
+	private final Timer nextStepTimer = new Timer(500, null);
+
 	public CFrame(Game game) {
 		FlippedCard = null;
 		PlayedCard1 = null;
@@ -98,6 +100,30 @@ public class CFrame extends JComponent {
 		this.initPlayedButton();
 
 		this.setPlayers();
+
+		this.startLoop();
+	}
+
+	void startLoop() {
+		this.nextStepTimer.addActionListener(e -> {
+			game.nextStep();
+			repaint();
+			if (game.isWaitingHumanAction()) {
+				stopLoop();
+			}
+		});
+		this.nextStepTimer.setRepeats(true);
+		this.nextStepTimer.start();
+	}
+
+	void stopLoop() {
+		this.nextStepTimer.stop();
+	}
+
+	void resumeLoop() {
+		if (!this.nextStepTimer.isRunning()) {
+			this.nextStepTimer.start();
+		}
 	}
 
 	public void setPlayers() {

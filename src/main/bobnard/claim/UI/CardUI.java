@@ -20,8 +20,6 @@ public class CardUI extends JPanel {
     private final CFrame frame;
     private final Game game;
 
-    private Timer nextStepTimer = null;
-
     private Card card;
     private Image image;
 
@@ -32,15 +30,6 @@ public class CardUI extends JPanel {
 
         this.frame = frame;
         this.game = frame.getGame();
-
-        this.nextStepTimer = new Timer(500, e -> {
-            game.nextStep();
-            frame.repaint();
-            if (game.isWaitingAction()) {
-                nextStepTimer.stop();
-            }
-        });
-        this.nextStepTimer.setRepeats(true);
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -95,8 +84,8 @@ public class CardUI extends JPanel {
             game.playCard(card);
             frame.repaint();
 
-            if (!game.isWaitingAction()) {
-                this.nextStepTimer.start();
+            if (!game.isWaitingHumanAction()) {
+                frame.resumeLoop();
             }
         }
     }

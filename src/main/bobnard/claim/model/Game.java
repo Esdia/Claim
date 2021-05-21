@@ -3,8 +3,6 @@ package bobnard.claim.model;
 import bobnard.claim.AI.AI;
 import bobnard.claim.UI.Audio;
 
-import javax.swing.*;
-
 public class Game {
     GameState state;
 
@@ -25,7 +23,6 @@ public class Game {
         this.setState(GameState.WAITING_LEADER_ACTION);
 
         this.startPhaseOne();
-        this.nextStep();
     }
 
     //region GAME MANAGEMENT
@@ -66,22 +63,17 @@ public class Game {
         System.out.println("Player " + winnerID + " won the game!");
     }
 
-    private void start() {
-        this.startPhaseOne();
-        this.playIfAI(); // To start the loop if the first player is an AI
-    }
-
     public void reset() {
         this.isDone = false;
         for (Player player: players) {
             player.reset();
         }
         Audio.getBGM().stop();
-        this.start();
+        this.startPhaseOne();
     }
 
-    public boolean isWaitingAction() {
-        return this.state == GameState.WAITING_LEADER_ACTION || this.state == GameState.WAITING_FOLLOW_ACTION;
+    public boolean isWaitingHumanAction() {
+        return (this.state == GameState.WAITING_LEADER_ACTION || this.state == GameState.WAITING_FOLLOW_ACTION) && !this.isCurrentPlayerAI();
     }
 
     private void setState(GameState state) {
@@ -198,18 +190,6 @@ public class Game {
     //region AI
     public boolean isCurrentPlayerAI() {
         return this.getCurrentPlayer() instanceof AI;
-    }
-
-    public void playIfAI() {
-        if (this.isDone()) return;
-
-        Player currentPlayer = this.getPlayer(this.getCurrentPlayerID());
-
-        if (currentPlayer instanceof AI) {
-            Timer timer = new Timer(250, e -> ((AI) currentPlayer).action());
-            timer.setRepeats(false);
-            timer.start();
-        }
     }
     //endregion
 
