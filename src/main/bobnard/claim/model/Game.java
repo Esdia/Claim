@@ -1,12 +1,13 @@
 package bobnard.claim.model;
 
 import bobnard.claim.AI.AI;
-import bobnard.claim.AI.AIRandom;
 import bobnard.claim.UI.Audio;
 
 import javax.swing.*;
 
 public class Game {
+    GameState state;
+
     private Phase phase;
     private final Player[] players;
 
@@ -16,12 +17,15 @@ public class Game {
     public Game() {
         players = new Player[2];
 
-        players[0] = new AIRandom(this);
-        players[1] = new AIRandom(this);
+        players[0] = new Player();
+        players[1] = new Player();
 
         this.isDone = false;
 
-        this.start();
+        this.setState(GameState.WAITING_LEADER_ACTION);
+
+        this.startPhaseOne();
+        this.nextStep();
     }
 
     //region GAME MANAGEMENT
@@ -75,6 +79,58 @@ public class Game {
         Audio.getBGM().stop();
         this.start();
     }
+
+    public boolean isWaitingAction() {
+        return this.state == GameState.WAITING_LEADER_ACTION || this.state == GameState.WAITING_FOLLOW_ACTION;
+    }
+
+    private void setState(GameState state) {
+        System.out.println("state = " + state);
+        this.state = state;
+    }
+
+    public void nextStep() {
+        switch (this.state) {
+            case WAITING_LEADER_ACTION, WAITING_FOLLOW_ACTION -> {
+                /*
+                * Here, the method playCard (called by AI.action,
+                * or when a player clicks on a card) changes the state
+                * for us.
+                */
+                if (this.isCurrentPlayerAI()) {
+                    ((AI) this.getCurrentPlayer()).action();
+                }
+            }
+            case TRICK_FINISHED -> {
+                this.endTrick();
+                if (this.phase.isDone()) {
+                    if (this.getPhaseNum() == 1) {
+                        this.setState(GameState.FIRST_PHASE_FINISHED);
+                    } else {
+                        this.setState(GameState.SECOND_PHASE_FINISHED);
+                    }
+                } else {
+                    this.setState(GameState.WAITING_LEADER_ACTION);
+                }
+            }
+            case FIRST_PHASE_FINISHED -> {
+                this.startPhaseTwo();
+                this.setState(GameState.WAITING_LEADER_ACTION);
+            }
+            case SECOND_PHASE_FINISHED -> {
+                this.endGame();
+                this.setState(GameState.GAME_FINISHED);
+            }
+            case GAME_FINISHED -> {
+                this.reset();
+                this.setState(GameState.WAITING_LEADER_ACTION);
+            }
+        }
+    }
+
+    public GameState getState() {
+        return this.state;
+    }
     //endregion
 
     //region PHASE MANAGEMENT
@@ -109,7 +165,21 @@ public class Game {
     }
 
     public void playCard(Card card) {
+        if (!this.isLegalMove(card)) {
+            return;
+        }
+
         this.phase.playCard(card);
+
+        this.setState(switch (this.state) {
+            case WAITING_LEADER_ACTION -> GameState.WAITING_FOLLOW_ACTION;
+            case WAITING_FOLLOW_ACTION -> GameState.TRICK_FINISHED;
+            default -> throw new IllegalStateException();
+        });
+
+        if (this.state == GameState.WAITING_FOLLOW_ACTION) {
+            this.changePlayer();
+        }
     }
 
     public boolean trickReady() {
@@ -122,22 +192,12 @@ public class Game {
 
     public void endTrick() {
         this.phase.endTrick();
-
-        if (this.phase.isDone()) {
-            if (this.getPhaseNum() == 1) {
-                this.startPhaseTwo();
-            } else {
-                this.endGame();
-            }
-        }
     }
     //endregion
 
     //region AI
     public boolean isCurrentPlayerAI() {
-        Player currentPlayer = this.getPlayer(this.getCurrentPlayerID());
-
-        return currentPlayer instanceof AI;
+        return this.getCurrentPlayer() instanceof AI;
     }
 
     public void playIfAI() {
@@ -156,6 +216,10 @@ public class Game {
     //region GETTERS
     public int getCurrentPlayerID() {
         return this.phase.getCurrentPlayer();
+    }
+
+    public Player getCurrentPlayer() {
+        return this.getPlayer(this.getCurrentPlayerID());
     }
 
     public Player getPlayer(int id) {

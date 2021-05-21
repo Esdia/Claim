@@ -1,0 +1,10 @@
+package bobnard.claim.model;
+
+public enum GameState {
+    WAITING_LEADER_ACTION,
+    WAITING_FOLLOW_ACTION,
+    TRICK_FINISHED,
+    FIRST_PHASE_FINISHED,
+    SECOND_PHASE_FINISHED,
+    GAME_FINISHED
+}

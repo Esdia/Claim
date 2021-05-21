@@ -1,9 +1,7 @@
 package bobnard.claim.UI;
 
-import bobnard.claim.AI.AI;
 import bobnard.claim.model.Card;
 import bobnard.claim.model.Game;
-import bobnard.claim.model.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,7 +17,10 @@ public class CardUI extends JPanel {
     private static final HashMap<String, BufferedImage> images = new HashMap<>();
     private static final String path = "src/main/bobnard/claim/UI/resources/";
 
-    CFrame frame;
+    private final CFrame frame;
+    private final Game game;
+
+    private Timer nextStepTimer = null;
 
     private Card card;
     private Image image;
@@ -30,6 +31,16 @@ public class CardUI extends JPanel {
         super();
 
         this.frame = frame;
+        this.game = frame.getGame();
+
+        this.nextStepTimer = new Timer(500, e -> {
+            game.nextStep();
+            frame.repaint();
+            if (game.isWaitingAction()) {
+                nextStepTimer.stop();
+            }
+        });
+        this.nextStepTimer.setRepeats(true);
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -79,38 +90,13 @@ public class CardUI extends JPanel {
 
     public void action() {
         if (!this.isFlipped) {
-            System.out.println("Played card : " + this.card.name);
-
-            Game game = this.frame.getGame();
-
-            if (!game.isLegalMove(card)) {
-                return;
-            }
+            //System.out.println("Played card : " + this.card.name);
 
             game.playCard(card);
             frame.repaint();
 
-            if (game.trickReady()) {
-                Timer timer = new Timer(500, e -> {
-                    game.endTrick();
-                    frame.repaint();
-
-                    if (game.isDone()) {
-                        Timer t2 = new Timer(500, f -> {
-                            game.reset();
-                            frame.repaint();
-                        });
-                        t2.setRepeats(false);
-                        t2.start();
-                    } else {
-                        game.playIfAI();
-                    }
-                });
-                timer.setRepeats(false);
-                timer.start();
-            } else {
-                game.changePlayer();
-                game.playIfAI();
+            if (!game.isWaitingAction()) {
+                this.nextStepTimer.start();
             }
         }
     }
