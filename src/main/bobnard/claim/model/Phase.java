@@ -110,4 +110,20 @@ abstract class Phase {
         return cards;
     }
     //endregion
+
+    abstract Phase getInstance(Player[] players);
+
+    Phase copy() {
+        Player[] players = new Player[] {
+                this.players[0].copy(),
+                this.players[1].copy()
+        };
+
+        Phase phase = this.getInstance(players);
+        phase.currentPlayer = this.currentPlayer;
+        phase.currentLeader = this.currentLeader;
+        phase.trick = this.trick.copy();
+
+        return phase;
+    }
 }

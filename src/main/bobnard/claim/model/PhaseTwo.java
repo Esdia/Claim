@@ -19,5 +19,14 @@ class PhaseTwo extends Phase {
             }
         }
     }
+
+    @Override
+    Phase getInstance(Player[] players) {
+        return new PhaseTwo(players);
+    }
     //endregion
+
+    PhaseTwo copy() {
+        return (PhaseTwo) super.copy();
+    }
 }

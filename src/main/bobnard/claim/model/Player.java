@@ -91,4 +91,14 @@ public class Player {
         this.followers.clear();
     }
     //endregion
+
+    Player copy() {
+        Player player = new Player();
+
+        player.hand.addAll(this.hand);
+        player.scoreStack.addAll(this.scoreStack);
+        player.followers.addAll(this.followers);
+
+        return player;
+    }
 }

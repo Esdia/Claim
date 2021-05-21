@@ -23,6 +23,11 @@ class PhaseOne extends Phase {
         this.players[0].sortHand();
         this.players[1].sortHand();
     }
+
+    private void replaceDeck(Deck newDeck) {
+        this.deck.clear();
+        this.deck.addAll(newDeck);
+    }
     //endregion
 
     //region MANAGE CENTRAL CARDS
@@ -55,6 +60,11 @@ class PhaseOne extends Phase {
             }
         }
     }
+
+    @Override
+    Phase getInstance(Player[] players) {
+        return new PhaseOne(players);
+    }
     //endregion
 
     //region GETTERS
@@ -62,4 +72,13 @@ class PhaseOne extends Phase {
         return flippedCard;
     }
     //endregion
+
+    PhaseOne copy() {
+        PhaseOne phase = (PhaseOne) super.copy();
+
+        phase.replaceDeck((Deck) this.deck.clone());
+        phase.flippedCard = this.flippedCard;
+
+        return phase;
+    }
 }

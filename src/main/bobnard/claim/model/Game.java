@@ -207,4 +207,19 @@ public class Game {
         System.out.println("---- END DEBUG ----");
     }
     //endregion
+
+    public Game copy() {
+        Game game = new Game();
+
+        for (int i = 0; i < 2; i++) {
+            game.players[i] = this.players[i].copy();
+        }
+
+        game.phase = this.phase.copy();
+
+        game.isDone = this.isDone;
+        game.winnerID = this.winnerID;
+
+        return game;
+    }
 }

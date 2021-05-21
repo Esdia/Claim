@@ -58,4 +58,11 @@ class Trick {
         return this.c1 == null ? null : c1.faction;
     }
     //endregion
+
+    Trick copy() {
+        Trick trick = new Trick(this.leader);
+        trick.addCard(this.getC1(), true);
+        trick.addCard(this.getC2(), false);
+        return trick;
+    }
 }
