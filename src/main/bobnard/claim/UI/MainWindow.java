@@ -26,6 +26,7 @@ public class MainWindow implements Runnable {
     			screenSize.width * 3 / 4,
     			screenSize.height * 3 / 4
     			);
+    	// TODO Implement a restriction to rectangular ration
     	frame.setLocationRelativeTo(null);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

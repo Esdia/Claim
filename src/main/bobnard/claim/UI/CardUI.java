@@ -8,6 +8,8 @@ import bobnard.claim.model.Player;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -25,6 +27,13 @@ public class CardUI extends JPanel {
     private Image image;
 
     private boolean isFlipped;
+    
+    int dx;
+	int dy;
+	int x = getX();
+	int y = getY();
+	
+	
 
     public CardUI(CFrame frame) {
         super();
@@ -119,4 +128,7 @@ public class CardUI extends JPanel {
     public void paintComponent(Graphics g) {
         g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
     }
+    
+
+    
 }

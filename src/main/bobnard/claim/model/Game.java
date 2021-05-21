@@ -16,9 +16,12 @@ public class Game {
     public Game() {
         players = new Player[2];
 
-        players[0] = new AIRandom(this);
-        players[1] = new AIRandom(this);
-
+        //players[0] = new AIRandom(this);
+        //players[1] = new AIRandom(this);
+        
+        players[0] = new Player();
+        players[1] = new Player();
+        
         this.isDone = false;
 
         this.start();
