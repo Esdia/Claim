@@ -72,6 +72,7 @@ public class Game {
         for (Player player: players) {
             player.reset();
         }
+        Audio.getBGM().stop();
         this.start();
     }
     //endregion
