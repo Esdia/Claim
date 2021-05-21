@@ -56,7 +56,7 @@ public class Menu extends JComponent {
                 image = ImageIO.read(new File(path + "menu.png"));
                 image2 = ImageIO.read(new File(path + "ware.png"));
             } else {
-                image = ImageIO.read(new File(path + "menu2.png"));
+                image = ImageIO.read(new File(path + "menu2.jpg"));
             }
         }catch(IOException e){
                 e.printStackTrace();
