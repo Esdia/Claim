@@ -16,7 +16,7 @@ public class Menu extends JComponent {
 
     Boolean isStart;
 
-    String path = "src/main/bobnard/claim/UI/resources/menu/";
+    String path;
 
     JButton b1;
     JButton b2;
@@ -30,13 +30,15 @@ public class Menu extends JComponent {
 
     ButtonsMouse m = new ButtonsMouse(this);
 
-    Object skin;
+    public static Object skin;
 
     public Menu(JFrame frame, Object skin) {
         this.skin = skin;
         this.isStart = false;
         this.frame = frame;
-
+        this.path = "src/main/bobnard/claim/UI/resources/"+skin+"/menu/";
+        this.frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/"+skin+"/Icon/icon.png").getImage());
+        Audio.setFiles();
         Audio.playBGM(0);
 
         creatButtons();
@@ -48,16 +50,13 @@ public class Menu extends JComponent {
     private void setImages() {
 
         try {
-
-            if (this.skin == "Umineko") {
                 ng =  new ImageIcon(path+"new_game.png");
                 ru =  new ImageIcon(path+"rules.png");
                 ex =  new ImageIcon(path+"exit.png");
+            System.out.println(path);
                 image = ImageIO.read(new File(path + "menu.png"));
                 image2 = ImageIO.read(new File(path + "ware.png"));
-            } else {
-                image = ImageIO.read(new File(path + "menu2.jpg"));
-            }
+
         }catch(IOException e){
                 e.printStackTrace();
             }
@@ -67,7 +66,6 @@ public class Menu extends JComponent {
 
 
     private void creatButtons(){
-        if(skin == "Umineko"){
 
             b1 =  new JButton();
             b1.setVisible(false);
@@ -83,8 +81,6 @@ public class Menu extends JComponent {
             b3.setVisible(false);
             this.add(b3);
             b3.addMouseListener(m);
-        }
-
     }
 
 
@@ -101,7 +97,7 @@ public class Menu extends JComponent {
     }
 
     private void setButtons(int h, int w){
-        if(skin == "Umineko"){
+
             Color color = new Color(0,0,0,0);
 
             b1.setBounds((int) (w/1.35), (int) (h/2.7), w/5, h/17);
@@ -130,7 +126,6 @@ public class Menu extends JComponent {
             b3.setContentAreaFilled(false);
 
             b3.setVisible(true);
-        }
 
     }
 
@@ -148,6 +143,8 @@ public class Menu extends JComponent {
         this.setVisible(true);
 
     }
+
+
 }
 	
 

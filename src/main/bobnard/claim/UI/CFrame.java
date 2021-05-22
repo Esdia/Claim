@@ -25,7 +25,7 @@ public class CFrame extends JComponent {
 	JButton PlayedButton2;
 	ImageIcon PBimage2;
 
-	static final String path = "src/main/bobnard/claim/UI/resources/";
+	static final String path = "src/main/bobnard/claim/UI/resources/"+Menu.skin+"/gameboard/";
 	static BufferedImage back;
 	
 	boolean ToAnimate = false;

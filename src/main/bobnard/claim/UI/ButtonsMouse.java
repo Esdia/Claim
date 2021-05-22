@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ButtonsMouse extends MouseAdapter {
-    Menu menu;
+    final Menu menu;
 
     public ButtonsMouse(Menu menu) {
         this.menu = menu;
@@ -26,13 +26,10 @@ public class ButtonsMouse extends MouseAdapter {
         ImageIcon ru = null;
         ImageIcon ex = null;
 
-        if(menu.skin == "Umineko"){
-
             ng = new ImageIcon(menu.path+"new_game2.png");
             ru = new ImageIcon(menu.path+"rules2.png");
             ex = new ImageIcon(menu.path+"exit2.png");
 
-        }
         setHover(e, ng, ru, ex);
     }
 
@@ -56,13 +53,12 @@ public class ButtonsMouse extends MouseAdapter {
         ImageIcon ru = null;
         ImageIcon ex = null;
 
-        if(menu.skin == "Umineko"){
 
             ng = new ImageIcon(menu.path+"new_game.png");
             ru = new ImageIcon(menu.path+"rules.png");
             ex = new ImageIcon(menu.path+"exit.png");
 
-        }
+
         setHover(e, ng, ru, ex);
     }
 
