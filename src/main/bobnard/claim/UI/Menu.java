@@ -47,7 +47,6 @@ public class Menu extends JComponent {
         skin = this.listSkin[currentSkin].getName();
         this.isStart = false;
         this.frame = frame;
-        this.frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/"+skin+"/Icon/icon.png").getImage());
 
 
         Audio.setFiles();
@@ -67,6 +66,7 @@ public class Menu extends JComponent {
     }
 
     private void setImages() {
+        this.frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/"+skin+"/Icon/icon.png").getImage());
         this.path = "src/main/bobnard/claim/UI/resources/"+skin+"/menu/";
         try {
                 ng =  new ImageIcon(path+"new_game.png");
