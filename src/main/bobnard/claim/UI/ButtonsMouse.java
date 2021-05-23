@@ -24,16 +24,20 @@ public class ButtonsMouse extends MouseAdapter {
 
         ImageIcon ng = null;
         ImageIcon ru = null;
+        ImageIcon cf = null;
+        ImageIcon sk = null;
         ImageIcon ex = null;
 
             ng = new ImageIcon(menu.path+"new_game2.png");
             ru = new ImageIcon(menu.path+"rules2.png");
+            cf = new ImageIcon(menu.path+"config2.png");
+            sk = new ImageIcon(menu.path+"skin2.png");
             ex = new ImageIcon(menu.path+"exit2.png");
 
-        setHover(e, ng, ru, ex);
+        setHover(e, ng, ru, cf, sk, ex);
     }
 
-    private void setHover(MouseEvent e, ImageIcon ng, ImageIcon ru, ImageIcon ex) {
+    private void setHover(MouseEvent e, ImageIcon ng, ImageIcon ru, ImageIcon cf, ImageIcon sk, ImageIcon ex) {
         if (menu.b1.equals(e.getSource())) {
             menu.ng = ng;
         }
@@ -41,6 +45,12 @@ public class ButtonsMouse extends MouseAdapter {
             menu.ru = ru;
         }
         if (menu.b3.equals(e.getSource())) {
+            menu.cf = cf;
+        }
+        if (menu.b4.equals(e.getSource())) {
+            menu.sk = sk;
+        }
+        if (menu.b5.equals(e.getSource())) {
             menu.ex = ex;
         }
     }
@@ -51,15 +61,19 @@ public class ButtonsMouse extends MouseAdapter {
 
         ImageIcon ng = null;
         ImageIcon ru = null;
+        ImageIcon cf = null;
+        ImageIcon sk = null;
         ImageIcon ex = null;
 
 
             ng = new ImageIcon(menu.path+"new_game.png");
             ru = new ImageIcon(menu.path+"rules.png");
+            cf = new ImageIcon(menu.path+"config.png");
+            sk = new ImageIcon(menu.path+"skin.png");
             ex = new ImageIcon(menu.path+"exit.png");
 
 
-        setHover(e, ng, ru, ex);
+        setHover(e, ng, ru, cf, sk, ex);
     }
 
     @Override
@@ -68,7 +82,7 @@ public class ButtonsMouse extends MouseAdapter {
         Audio.playSE(0);
 
         if(menu.b1.equals(e.getSource())) {
-            if(menu.skin == "Umineko"){
+            if(Menu.skin.equals("Umineko")){
                 menu.isStart = true;
                 synchronized (menu) {
                     try {
@@ -88,7 +102,7 @@ public class ButtonsMouse extends MouseAdapter {
         }
 
         if(menu.b2.equals(e.getSource())) {
-            File pdfFile = new File("src/main/bobnard/claim/UI/resources/rules/rules.pdf");
+            File pdfFile = new File("src/main/bobnard/claim/UI/resources/"+menu.skin+"/rules/rules.pdf");
             try {
                 Desktop.getDesktop().open(pdfFile);
             } catch (IOException ioException) {
@@ -96,7 +110,11 @@ public class ButtonsMouse extends MouseAdapter {
             }
         }
 
-        if(menu.b3.equals(e.getSource())) {
+        if(menu.b4.equals(e.getSource())) {
+            menu.changeSkin();
+        }
+
+        if(menu.b5.equals(e.getSource())) {
             Audio.getBGM().stop();
             menu.frame.dispose();
         }
