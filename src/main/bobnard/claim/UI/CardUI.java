@@ -114,11 +114,7 @@ public class CardUI extends JPanel implements MouseInputListener {
 
     }
     
-	public void mouseClicked(MouseEvent e) {
-		if (!frame.getGame().isCurrentPlayerAI() && frame.game.getCurrentPlayer().getCards().contains(this.card)) {
-              action();
-          }
-	}
+	public void mouseClicked(MouseEvent e) {}
 	
 	public void mousePressed(MouseEvent e) {}
 
