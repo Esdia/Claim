@@ -14,33 +14,31 @@ public class Audio  {
     private static File[] p1blf;
     private static File p2bf;
     private static File[] p2blf;
+    private static File[] menuBGM;
 
-    private static File menuBGM;
     private static File menuSE1;
     private static File menuSE2;
 
     private static Clip bgm;
-    private static Object skin;
 
+    private static Integer NB_SONG_MENU;
     private static Integer NB_SONG_P1;
     private static Integer NB_SONG_P2;
 
-    public static void setSkin(Object skin){
-        Audio.skin = skin;
-        setFiles();
-    }
+
     public static void setFiles(){
-        if(skin == "Umineko"){
-            p1bf = new File("src/main/bobnard/claim/UI/resources/audio/umineko/phase1/bgm");
-            p2bf = new File("src/main/bobnard/claim/UI/resources/audio/umineko/phase2/bgm");
+            System.out.println(Menu.skin);
+            p1bf = new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/phase1/bgm");
+            p2bf = new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/phase2/bgm");
             p1blf = p1bf.listFiles();
             p2blf = p2bf.listFiles();
             NB_SONG_P1 = p1blf.length;
             NB_SONG_P2 = p2blf.length;
-            menuBGM = new File("src/main/bobnard/claim/UI/resources/audio/umineko/menu/bgm/happiness_of_marionette_omake.wav");
-            menuSE1 =  new File("src/main/bobnard/claim/UI/resources/audio/umineko/menu/se/zyosys1.wav");
-            menuSE2 = new File("src/main/bobnard/claim/UI/resources/audio/umineko/menu/se/ZS1.WAV");
-        }
+            menuBGM = new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/menu/bgm/").listFiles();
+            NB_SONG_MENU = menuBGM.length;
+            menuSE1 =  new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/menu/se/sysb.wav");
+            if(Menu.skin.equals("Umineko")) menuSE2 = new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/menu/se/ZS1.WAV");
+
 
     }
 
@@ -48,7 +46,7 @@ public class Audio  {
         File song;
         Random rand = new Random();
         song = switch (phase) {
-            case 0 -> menuBGM;
+            case 0 -> menuBGM[rand.nextInt(NB_SONG_MENU)];
             case 1 -> p1blf[rand.nextInt(NB_SONG_P1)];
             case 2 -> p2blf[rand.nextInt(NB_SONG_P2)];
             default -> throw new IllegalStateException("Unexpected value: " + phase);
@@ -92,6 +90,12 @@ public class Audio  {
             e.printStackTrace();
         }
 
+    }
+
+    public static void reload(){
+        bgm.stop();
+        setFiles();
+        Audio.playBGM(0);
     }
 
     public static Clip getBGM(){

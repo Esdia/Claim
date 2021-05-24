@@ -33,6 +33,7 @@ public class MainWindow implements Runnable {
     	//frame.addMouseListener(new Mouse(controller));
 
     	frame.add(gameUI);
+		frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/Icon/icon.png").getImage());
     	frame.setVisible(true);
     	frame.repaint(0);
     	gameUI.repaint();

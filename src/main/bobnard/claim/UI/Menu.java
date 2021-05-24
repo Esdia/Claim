@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class Menu extends JComponent {
@@ -16,27 +17,39 @@ public class Menu extends JComponent {
 
     Boolean isStart;
 
-    String path = "src/main/bobnard/claim/UI/resources/menu/";
+    String path;
 
     JButton b1;
     JButton b2;
     JButton b3;
+    JButton b4;
+    JButton b5;
 
     JFrame frame;
 
     ImageIcon ng;
     ImageIcon ru;
+    ImageIcon cf;
+    ImageIcon sk;
     ImageIcon ex;
 
     ButtonsMouse m = new ButtonsMouse(this);
 
-    Object skin;
+    private File[] listSkin;
+    private int currentSkin;
+    public static String skin;
 
-    public Menu(JFrame frame, Object skin) {
-        this.skin = skin;
+
+    public Menu(JFrame frame) {
+        File repsk = new File("src/main/bobnard/claim/UI/resources/");
+        this.currentSkin=1;
+        this.listSkin = repsk.listFiles();
+        skin = this.listSkin[currentSkin].getName();
         this.isStart = false;
         this.frame = frame;
 
+
+        Audio.setFiles();
         Audio.playBGM(0);
 
         creatButtons();
@@ -44,20 +57,27 @@ public class Menu extends JComponent {
 
     }
 
+    public void changeSkin(){
+        this.currentSkin = (currentSkin+1)%listSkin.length;
+        skin = this.listSkin[currentSkin].getName();
+        setImages();
+        refresh();
+        Audio.reload();
+    }
 
     private void setImages() {
-
+        this.frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/"+skin+"/Icon/icon.png").getImage());
+        this.path = "src/main/bobnard/claim/UI/resources/"+skin+"/menu/";
         try {
-
-            if (this.skin == "Umineko") {
                 ng =  new ImageIcon(path+"new_game.png");
                 ru =  new ImageIcon(path+"rules.png");
+                cf =  new ImageIcon(path+"config.png");
+                sk =  new ImageIcon(path+"skin.png");
                 ex =  new ImageIcon(path+"exit.png");
+
                 image = ImageIO.read(new File(path + "menu.png"));
-                image2 = ImageIO.read(new File(path + "ware.png"));
-            } else {
-                image = ImageIO.read(new File(path + "menu2.jpg"));
-            }
+                if(skin.equals("Umineko")) image2 = ImageIO.read(new File(path + "ware.png"));
+
         }catch(IOException e){
                 e.printStackTrace();
             }
@@ -67,7 +87,6 @@ public class Menu extends JComponent {
 
 
     private void creatButtons(){
-        if(skin == "Umineko"){
 
             b1 =  new JButton();
             b1.setVisible(false);
@@ -83,8 +102,16 @@ public class Menu extends JComponent {
             b3.setVisible(false);
             this.add(b3);
             b3.addMouseListener(m);
-        }
 
+            b4 =  new JButton();
+            b4.setVisible(false);
+            this.add(b4);
+            b4.addMouseListener(m);
+
+            b5 =  new JButton();
+            b5.setVisible(false);
+            this.add(b5);
+            b5.addMouseListener(m);
     }
 
 
@@ -101,7 +128,7 @@ public class Menu extends JComponent {
     }
 
     private void setButtons(int h, int w){
-        if(skin == "Umineko"){
+
             Color color = new Color(0,0,0,0);
 
             b1.setBounds((int) (w/1.35), (int) (h/2.7), w/5, h/17);
@@ -124,13 +151,30 @@ public class Menu extends JComponent {
 
             b3.setBounds((int) (w/1.35), (int) (h/1.93), w/5, h/17);
             b3.setBackground(color);
-            b3.setIcon(resizeIcon(ex, w/5, h/17));
+            b3.setIcon(resizeIcon(cf, w/5, h/17));
             b3.setBorderPainted(false);
             b3.setOpaque(false);
             b3.setContentAreaFilled(false);
 
             b3.setVisible(true);
-        }
+
+            b4.setBounds((int) (w/1.35), (int) (h/1.69), w/5, h/17);
+            b4.setBackground(color);
+            b4.setIcon(resizeIcon(sk, w/5, h/17));
+            b4.setBorderPainted(false);
+            b4.setOpaque(false);
+            b4.setContentAreaFilled(false);
+
+            b4.setVisible(true);
+
+            b5.setBounds((int) (w/1.35), (int) (h/1.50), w/5, h/17);
+            b5.setBackground(color);
+            b5.setIcon(resizeIcon(ex, w/5, h/17));
+            b5.setBorderPainted(false);
+            b5.setOpaque(false);
+            b5.setContentAreaFilled(false);
+
+            b5.setVisible(true);
 
     }
 
@@ -148,6 +192,8 @@ public class Menu extends JComponent {
         this.setVisible(true);
 
     }
+
+
 }
 	
 

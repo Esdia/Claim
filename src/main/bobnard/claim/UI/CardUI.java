@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class CardUI extends JPanel implements MouseInputListener {
     private static final HashMap<String, BufferedImage> images = new HashMap<>();
-    private static final String path = "src/main/bobnard/claim/UI/resources/";
+    private static final String path = "src/main/bobnard/claim/UI/resources/"+Menu.skin+"/gameboard/";
 
     private final CFrame frame;
     private final Game game;
