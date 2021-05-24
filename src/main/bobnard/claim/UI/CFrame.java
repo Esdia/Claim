@@ -185,7 +185,6 @@ public class CFrame extends JComponent {
 
 		this.drawHands(resize);
 		this.displayFlipped(resize);
-		//this.displayPlayed();
 		
 		if (this.game.trickReady() && ToAnimate) animateEndTrick();
 
@@ -245,7 +244,6 @@ public class CFrame extends JComponent {
 	void displayFlipped(boolean resize) {
 		Card c = this.game.getFlippedCard();
 		if (c == null) return;
-		////
 		if (this.FlippedCard == c) return;
 		this.FlippedCard = c;
 		
@@ -285,7 +283,7 @@ public class CFrame extends JComponent {
 		}
 
 		ToAnimate = false;
-		//////
+		
 		Timer t = new Timer (1200, e -> {
 			for (int i=0; i<2; i++) {
 				if (game.getState() == GameState.TRICK_FINISHED) 
@@ -294,50 +292,7 @@ public class CFrame extends JComponent {
 		});
 		t.setRepeats(false);
 		t.start();
-        //////
 	}
-	
-	//TODO Animated Version of displayPlayed method
-	
-/*	void displayPlayed() {
-		Point p2 = new Point(w/2 - imgWidth,(h / 2) - imgHeight - (h / 16));
-		Point p3 = new Point(w/2 - imgWidth, (h/2) + (h / 16));
-		
-
-		Card[] cards = this.game.getPlayedCards();
-		
-		AnimatedPanel played = new AnimatedPanel(cards[0], p1, p2);
-		
-
-		for (int i = 0; i < 2; i++) {
-			this.playedPanels[i].setVisible(cards[i] != null);
-			if (cards[i] != null) {
-				this.playedPanels[i].setSize(imgWidth, imgHeight);
-				this.playedPanels[i].setCard(cards[i]);
-				if (i == 0)  played
-				
-			}
-		}
-	}
-*/
-	
-//	void displayPlayed() {
-//		int x = w/2 - imgWidth;
-//		int[] y = {
-//				(h / 2) - imgHeight - (h / 16),
-//				(h / 2) + (h / 16)
-//		};
-//
-//		Card[] cards = this.game.getPlayedCards();
-//
-//		for (int i = 0; i < 2; i++) {
-//			this.playedPanels[i].setVisible(cards[i] != null);
-//			if (cards[i] != null) {
-//				this.playedPanels[i].setBounds(x, y[i], imgWidth, imgHeight);
-//				this.playedPanels[i].setCard(cards[i]);
-//			}
-//		}
-//	}
 	
 
 	public Icon resizeIcon(ImageIcon i, int w, int h) {

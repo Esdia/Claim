@@ -25,8 +25,6 @@ public class AnimatedPanel {
 		sy = (mypdest.y - mypinit.y)/step;
 		myc.setVisible(true);
 		myc.setLocation(mypinit);
-		//System.out.println("Anime "+ p1.x + " " + p1.y + " " + p2.x + " " + p2.y + "  " + sx + " " + sy);
-		
 	}
 		
 	public AnimatedPanel(CardUI c, Point p2) {
@@ -38,8 +36,6 @@ public class AnimatedPanel {
 		sy = (mypdest.y - mypinit.y)/step;
 		myc.setVisible(true);
 		myc.setLocation(mypinit);
-		//System.out.println("Anime "+ p2.x + " " + p2.y + "  " + sx + " " + sy);
-		
 	}
 	
 	
@@ -55,7 +51,6 @@ public class AnimatedPanel {
 			} else {
 				myc.setLocation(mypinit);
 				myc.repaint();
-				//System.out.println("Anime "+ mypinit.x + " " + mypinit.y + " " + step );
 			}
 			
         });

@@ -48,17 +48,7 @@ public class CardUI extends JPanel implements MouseInputListener {
         this.addMouseMotionListener(this);
         this.addMouseListener(this);
         dragged = false;
-        	
-        	
 
-//        this.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseReleased(MouseEvent e) {
-//                if (!frame.getGame().isCurrentPlayerAI()) {
-//                    action();
-//                }
-//            }
-//        });
     }
 
     public Card getCard() {
@@ -120,26 +110,19 @@ public class CardUI extends JPanel implements MouseInputListener {
 
     @Override
     public void paintComponent(Graphics g) {
-    	//if (ap == null && !frame.game.EndTrick()) {
-    		g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
-    	//}
+    	g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
+
     }
     
 	public void mouseClicked(MouseEvent e) {
-		//setFocusable(false);
 		if (!frame.getGame().isCurrentPlayerAI() && frame.game.getCurrentPlayer().getCards().contains(this.card)) {
               action();
           }
 	}
 	
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {}
 
-		
-	}
-
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
+	public void mouseMoved(MouseEvent e) {}
 	
 
 	public void mouseDragged(MouseEvent e) {
@@ -163,16 +146,10 @@ public class CardUI extends JPanel implements MouseInputListener {
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 
  
 
