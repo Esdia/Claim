@@ -5,17 +5,20 @@ import bobnard.claim.model.Game;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.MouseInputListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class CardUI extends JPanel {
+public class CardUI extends JPanel implements MouseInputListener {
     private static final HashMap<String, BufferedImage> images = new HashMap<>();
     private static final String path = "src/main/bobnard/claim/UI/resources/";
 
@@ -32,22 +35,30 @@ public class CardUI extends JPanel {
 	int x = getX();
 	int y = getY();
 	
+	private AnimatedPanel ap;
 	
+	public boolean dragged;
 
     public CardUI(CFrame frame) {
         super();
 
         this.frame = frame;
         this.game = frame.getGame();
+        
+        this.addMouseMotionListener(this);
+        this.addMouseListener(this);
+        dragged = false;
+        	
+        	
 
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (!frame.getGame().isCurrentPlayerAI()) {
-                    action();
-                }
-            }
-        });
+//        this.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseReleased(MouseEvent e) {
+//                if (!frame.getGame().isCurrentPlayerAI()) {
+//                    action();
+//                }
+//            }
+//        });
     }
 
     public Card getCard() {
@@ -66,7 +77,7 @@ public class CardUI extends JPanel {
     }
 
     private void setImage() {
-        if (this.isFlipped) {
+        if (this.isFlipped ) {
             this.image = getImage("CARDBACK");
         } else {
             this.image = getImage(this.card.name);
@@ -88,9 +99,17 @@ public class CardUI extends JPanel {
 
     public void action() {
         if (!this.isFlipped) {
-            //System.out.println("Played card : " + this.card.name);
-
+        	/////
+        	CardUI cui = frame.playedPanels[frame.getGame().getCurrentPlayerID()];
+    		cui.setLocation(this.getLocation());
+    		cui.setSize(this.getSize());
+    		cui.setCard(this.card);        	
+			this.setVisible(false);
+    		ap = new AnimatedPanel(cui, frame.getPlayedLocation());
+			ap.startanimation();
+			/////
             game.playCard(card);
+            System.out.println(card.name);
             frame.repaint();
 
             if (!game.isWaitingHumanAction()) {
@@ -101,9 +120,61 @@ public class CardUI extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
+    	//if (ap == null && !frame.game.EndTrick()) {
+    		g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
+    	//}
     }
     
+	public void mouseClicked(MouseEvent e) {
+		//setFocusable(false);
+		if (!frame.getGame().isCurrentPlayerAI() && frame.game.getCurrentPlayer().getCards().contains(this.card)) {
+              action();
+          }
+	}
+	
+	public void mousePressed(MouseEvent e) {
+
+		
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+	
+
+	public void mouseDragged(MouseEvent e) {
+		if (frame.game.getLegalCard(this.card)) {
+			setFocusable(true);
+			this.requestFocus();
+			dragged = true;
+			Point pe = e.getLocationOnScreen();
+			Point pf = frame.getLocationOnScreen();
+			Point p = new Point(pe.x-pf.x,pe.y-pf.y);
+			setLocation(p.x-(getWidth()/2), p.y-(getHeight()/2));		
+			setVisible(true);
+		}
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		dragged = false;
+		if (!frame.getGame().isCurrentPlayerAI() && frame.game.getLegalCard(this.card)) {
+			action();
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+ 
 
     
 }

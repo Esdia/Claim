@@ -53,7 +53,7 @@ public class CFrame extends JComponent {
 
 	CardUI[][] handPanels;
 	CardUI flippedPanel;
-	CardUI[] playedPanels;
+	public CardUI[] playedPanels;
 
 	int w;
 	int h;
@@ -185,7 +185,7 @@ public class CFrame extends JComponent {
 
 		this.drawHands(resize);
 		this.displayFlipped(resize);
-		this.displayPlayed();
+		//this.displayPlayed();
 		
 		if (this.game.trickReady() && ToAnimate) animateEndTrick();
 
@@ -223,16 +223,20 @@ public class CFrame extends JComponent {
 			x = w / 8 + imgWidth;
 			it = players[j].getCards().iterator();
 			for (int i = 0; i < 13; i++) {
+				if (this.handPanels[j][i].dragged) {
+					x += imgWidth;
+					continue;
+				}
 				this.handPanels[j][i].setVisible(it.hasNext());
-
 				if (it.hasNext()) {
 					if (resize) {
-						this.handPanels[j][i].setBounds(x, y[j], imgWidth, imgHeight);
+						this.handPanels[j][i].setSize(imgWidth, imgHeight);
 					}
 					c = it.next();
 					this.handPanels[j][i].setCard(c, j == currentPlayer);
-				}
+					this.handPanels[j][i].setLocation(x, y[j]);
 				x += imgWidth;
+				}
 			}
 		}
 	}
@@ -261,14 +265,14 @@ public class CFrame extends JComponent {
 	}
 	
 	void animateEndTrick() {
-		
+
 		int wb = w/18;
 		int hb = (int) (wb*1.5);
 		//Point p0 = new Point(w/32, (h/2)-(hb/2));
 		Point p1 = new Point((w/32) + 3*imgWidth, (h - imgHeight) / 2);
 		Point p2 = new Point(w/32, 10);
 		Point p3 = new Point(w/32,  h-10-((int) ((w/18)*1.5)));
-		if (this.game.getCurrentPlayerID() == 0) { 
+		if (this.game.getTrickWinnerID() == 0) { 
 			//AnimatedPanel back = new AnimatedPanel(this.flippedPanel, p0, p3);
 			AnimatedPanel flipped = new AnimatedPanel(this.flippedPanel, p1, p2);
 			flipped.startanimation();
@@ -279,9 +283,18 @@ public class CFrame extends JComponent {
 			flipped.startanimation();
 			//back.startanimation();
 		}
-		
+
 		ToAnimate = false;
-		
+		//////
+		Timer t = new Timer (1200, e -> {
+			for (int i=0; i<2; i++) {
+				if (game.getState() == GameState.TRICK_FINISHED) 
+					playedPanels[i].setVisible(false);
+			}
+		});
+		t.setRepeats(false);
+		t.start();
+        //////
 	}
 	
 	//TODO Animated Version of displayPlayed method
@@ -308,23 +321,23 @@ public class CFrame extends JComponent {
 	}
 */
 	
-	void displayPlayed() {
-		int x = w/2 - imgWidth;
-		int[] y = {
-				(h / 2) - imgHeight - (h / 16),
-				(h / 2) + (h / 16)
-		};
-
-		Card[] cards = this.game.getPlayedCards();
-
-		for (int i = 0; i < 2; i++) {
-			this.playedPanels[i].setVisible(cards[i] != null);
-			if (cards[i] != null) {
-				this.playedPanels[i].setBounds(x, y[i], imgWidth, imgHeight);
-				this.playedPanels[i].setCard(cards[i]);
-			}
-		}
-	}
+//	void displayPlayed() {
+//		int x = w/2 - imgWidth;
+//		int[] y = {
+//				(h / 2) - imgHeight - (h / 16),
+//				(h / 2) + (h / 16)
+//		};
+//
+//		Card[] cards = this.game.getPlayedCards();
+//
+//		for (int i = 0; i < 2; i++) {
+//			this.playedPanels[i].setVisible(cards[i] != null);
+//			if (cards[i] != null) {
+//				this.playedPanels[i].setBounds(x, y[i], imgWidth, imgHeight);
+//				this.playedPanels[i].setCard(cards[i]);
+//			}
+//		}
+//	}
 	
 
 	public Icon resizeIcon(ImageIcon i, int w, int h) {
@@ -369,6 +382,19 @@ public class CFrame extends JComponent {
 			}
 		}
 	}
+	
+	public Point getPlayedLocation() {
+		int x = w/2 - imgWidth;
+		int y;
+		if (game.getCurrentPlayerID() == 0) {
+			y =(h / 2) - imgHeight - (h / 16);
+		}else {
+			y =(h / 2) + (h / 16);
+		}
+
+		return new Point(x,y);
+	}
+	
 }
 
 
