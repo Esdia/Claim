@@ -22,6 +22,7 @@ abstract class Phase {
         this.players = players;
 
         this.currentLeader = 0;
+        this.currentPlayer = 0;
         this.resetTrick();
     }
 
@@ -117,12 +118,7 @@ abstract class Phase {
 
     abstract Phase getInstance(Player[] players);
 
-    Phase copy() {
-        Player[] players = new Player[] {
-                this.players[0].copy(),
-                this.players[1].copy()
-        };
-
+    Phase copy(Player[] players) {
         Phase phase = this.getInstance(players);
         phase.currentPlayer = this.currentPlayer;
         phase.currentLeader = this.currentLeader;

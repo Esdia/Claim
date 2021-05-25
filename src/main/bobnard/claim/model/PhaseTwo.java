@@ -1,11 +1,17 @@
 package bobnard.claim.model;
 
 class PhaseTwo extends Phase {
-    PhaseTwo(Player[] players) {
+    private PhaseTwo(Player[] players, boolean copy) {
         super(players);
 
-        this.players[0].followersToHand();
-        this.players[1].followersToHand();
+        if (!copy) {
+            this.players[0].followersToHand();
+            this.players[1].followersToHand();
+        }
+    }
+
+    PhaseTwo(Player[] players) {
+        this(players, false);
     }
 
     //region OVERRIDES
@@ -22,11 +28,11 @@ class PhaseTwo extends Phase {
 
     @Override
     Phase getInstance(Player[] players) {
-        return new PhaseTwo(players);
+        return new PhaseTwo(players, true);
     }
     //endregion
 
-    PhaseTwo copy() {
-        return (PhaseTwo) super.copy();
+    PhaseTwo copy(Player[] players) {
+        return (PhaseTwo) super.copy(players);
     }
 }

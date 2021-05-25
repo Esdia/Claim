@@ -25,6 +25,14 @@ public class Game {
         this.startPhaseOne();
     }
 
+    private Game(Player[] players, Phase phase, boolean isDone, int winnerID, GameState state) {
+        this.players = players;
+        this.phase = phase;
+        this.isDone = isDone;
+        this.winnerID = winnerID;
+        this.setState(state);
+    }
+
     //region GAME MANAGEMENT
     public void changePlayer() {
         this.phase.changePlayer();
@@ -261,17 +269,17 @@ public class Game {
     //endregion
 
     public Game copy() {
-        Game game = new Game();
+        Player[] players = new Player[] {
+                this.players[0].copy(),
+                this.players[1].copy()
+        };
 
-        for (int i = 0; i < 2; i++) {
-            game.players[i] = this.players[i].copy();
-        }
-
-        game.phase = this.phase.copy();
-
-        game.isDone = this.isDone;
-        game.winnerID = this.winnerID;
-
-        return game;
+        return new Game(
+                players,
+                this.phase.copy(players),
+                this.isDone,
+                this.winnerID,
+                this.getState()
+        );
     }
 }

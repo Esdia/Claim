@@ -13,6 +13,13 @@ class PhaseOne extends Phase {
         this.flipCard();
     }
 
+    /* Copy constructor */
+    PhaseOne(Player[] players, Deck deck, Card flippedCard) {
+        super(players);
+        this.deck = (Deck) deck.clone();
+        this.flippedCard = flippedCard;
+    }
+
     //region INIT
     private void dealCards() {
         for (int i = 0; i < 13; i++) {
@@ -63,7 +70,7 @@ class PhaseOne extends Phase {
 
     @Override
     Phase getInstance(Player[] players) {
-        return new PhaseOne(players);
+        return new PhaseOne(players, this.deck, this.flippedCard);
     }
     //endregion
 
@@ -73,12 +80,7 @@ class PhaseOne extends Phase {
     }
     //endregion
 
-    PhaseOne copy() {
-        PhaseOne phase = (PhaseOne) super.copy();
-
-        phase.replaceDeck((Deck) this.deck.clone());
-        phase.flippedCard = this.flippedCard;
-
-        return phase;
+    PhaseOne copy(Player[] players) {
+        return (PhaseOne) super.copy(players);
     }
 }
