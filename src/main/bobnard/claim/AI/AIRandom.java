@@ -15,7 +15,7 @@ public class AIRandom extends AI {
     @Override
     public void action() {
         this.play(
-                random.nextInt(this.getPlayableCards().size())
+                random.nextInt(this.game.getPlayableCards().size())
         );
     }
 }

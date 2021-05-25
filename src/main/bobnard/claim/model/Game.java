@@ -234,6 +234,14 @@ public class Game {
         return this.players[player].playableCards(faction);
     }
 
+    public Hand getPlayableCards(int player) {
+        return this.getPlayableCards(player, this.getPlayedFaction());
+    }
+
+    public Hand getPlayableCards() {
+        return this.getPlayableCards(this.getCurrentPlayerID());
+    }
+
     public int getWinnerID() {
         if (!this.isDone()) {
             throw new IllegalStateException();

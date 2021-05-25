@@ -15,17 +15,13 @@ public abstract class AI extends Player {
         this.cardUIs = cardUIs;
     }
 
-    Hand getPlayableCards() {
-        return this.playableCards(this.game.getPlayedFaction());
-    }
-
     /* Expected param : the index of the card in the PLAYABLE cards */
     protected void play(int index) {
         if (this.cardUIs == null) {
             throw new IllegalStateException();
         }
 
-        Card card = this.getPlayableCards().get(index);
+        Card card = this.game.getPlayableCards().get(index);
 
         for (CardUI cardUI: this.cardUIs) {
             if (cardUI.getCard().equals(card)) {
