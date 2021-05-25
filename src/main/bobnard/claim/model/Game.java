@@ -80,8 +80,12 @@ public class Game {
         this.startPhaseOne();
     }
 
+    public boolean isWaitingAction() {
+        return (this.state == GameState.WAITING_LEADER_ACTION || this.state == GameState.WAITING_FOLLOW_ACTION);
+    }
+
     public boolean isWaitingHumanAction() {
-        return (this.state == GameState.WAITING_LEADER_ACTION || this.state == GameState.WAITING_FOLLOW_ACTION) && !this.isCurrentPlayerAI();
+        return this.isWaitingAction() && !this.isCurrentPlayerAI();
     }
 
     private void setState(GameState state) {
@@ -198,6 +202,13 @@ public class Game {
     //region AI
     public boolean isCurrentPlayerAI() {
         return this.getCurrentPlayer() instanceof AI;
+    }
+
+    public void simulatePlay(Card card) {
+        this.playCard(card);
+        while (!this.isWaitingAction()) {
+            this.nextStep();
+        }
     }
     //endregion
 

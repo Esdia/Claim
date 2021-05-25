@@ -5,7 +5,7 @@ import bobnard.claim.model.*;
 
 public abstract class AI extends Player {
     private CardUI[] cardUIs = null;
-    private final Game game;
+    protected final Game game;
 
     AI(Game game) {
         this.game = game;
