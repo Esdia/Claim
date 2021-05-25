@@ -9,8 +9,6 @@ abstract class Phase {
     private int currentPlayer;
 
     private Trick trick;
-    
-    public boolean endtrick = false; // TODO Added by me
 
     Phase(Player[] players) {
         if (players == null) {
@@ -71,8 +69,6 @@ abstract class Phase {
             throw new IllegalStateException();
         }
         
-        endtrick = true; //TODO Added by me
-        
         this.currentLeader = this.trick.getWinner();
         this.currentPlayer = this.getLastTrickWinner();
 
@@ -85,8 +81,6 @@ abstract class Phase {
 
     private void resetTrick() {
         this.trick = new Trick(currentLeader);
-        
-        endtrick = false; // TODO Added by me
     }
     //endregion
 

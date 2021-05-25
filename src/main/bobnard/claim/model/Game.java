@@ -240,15 +240,6 @@ public class Game {
     public boolean getLegalCard(Card card) {
     	return getPlayableCards(getCurrentPlayerID(), getPlayedFaction()).contains(card);
     }
-    
-    public boolean IsPlayedCard(Card card) {
-    	return (card == getPlayedCards()[0] || card == getPlayedCards()[1]);
-    }
-    
-    public boolean EndTrick() {
-    	return phase.endtrick;
-    }
-    
     //endregion
 
     //region DEBUG PRINT
