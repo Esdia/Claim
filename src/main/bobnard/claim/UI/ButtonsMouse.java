@@ -110,7 +110,6 @@ public class ButtonsMouse extends MouseAdapter {
                     }
                 }
             }
-
             menu.frame.dispose();
             Audio.getBGM().stop();
             Game game = new Game();
