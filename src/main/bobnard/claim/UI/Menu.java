@@ -24,6 +24,8 @@ public class Menu extends JComponent {
     JButton b3;
     JButton b4;
     JButton b5;
+    JButton b1a;
+    JButton b1b;
 
     JFrame frame;
 
@@ -32,6 +34,8 @@ public class Menu extends JComponent {
     ImageIcon cf;
     ImageIcon sk;
     ImageIcon ex;
+    ImageIcon pvp;
+    ImageIcon pve;
 
     ButtonsMouse m = new ButtonsMouse(this);
 
@@ -74,6 +78,8 @@ public class Menu extends JComponent {
                 cf =  new ImageIcon(path+"config.png");
                 sk =  new ImageIcon(path+"skin.png");
                 ex =  new ImageIcon(path+"exit.png");
+                pvp = new ImageIcon(path+"pvp.png");
+                pve = new ImageIcon(path+"pve.png");
 
                 image = ImageIO.read(new File(path + "menu.png"));
                 if(skin.equals("Umineko")) image2 = ImageIO.read(new File(path + "ware.png"));
@@ -112,6 +118,16 @@ public class Menu extends JComponent {
             b5.setVisible(false);
             this.add(b5);
             b5.addMouseListener(m);
+            
+            b1a = new JButton();
+            b1a.setVisible(false);
+            this.add(b1a);
+            b1a.addMouseListener(m);
+            
+            b1b = new JButton();
+            b1b.setVisible(false);
+            this.add(b1b);
+            b1b.addMouseListener(m);
     }
 
 
@@ -175,6 +191,23 @@ public class Menu extends JComponent {
             b5.setContentAreaFilled(false);
 
             b5.setVisible(true);
+            
+            b1a.setBounds(((int) (w/1.35) - w/5 - w/20), (int) (h/2.7), w/5, h/17);
+            b1a.setBackground(color);
+            b1a.setIcon(resizeIcon(pvp, w/5, h/17));
+            b1a.setBorderPainted(false);
+            b1a.setOpaque(false);
+            b1a.setContentAreaFilled(false);
+            
+            
+            b1b.setBounds(((int) (w/1.35) - w/5 - w/20), (int) (h/2.25), w/5, h/17);
+            b1b.setBackground(color);
+            b1b.setIcon(resizeIcon(pve, w/5, h/17));
+            b1b.setBorderPainted(false);
+            b1b.setOpaque(false);
+            b1b.setContentAreaFilled(false);
+            
+
 
     }
 

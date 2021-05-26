@@ -27,17 +27,22 @@ public class ButtonsMouse extends MouseAdapter {
         ImageIcon cf = null;
         ImageIcon sk = null;
         ImageIcon ex = null;
+        ImageIcon pvp = null;
+        ImageIcon pve = null;
 
             ng = new ImageIcon(menu.path+"new_game2.png");
             ru = new ImageIcon(menu.path+"rules2.png");
             cf = new ImageIcon(menu.path+"config2.png");
             sk = new ImageIcon(menu.path+"skin2.png");
             ex = new ImageIcon(menu.path+"exit2.png");
+            pvp = new ImageIcon(menu.path+"pvp2.png");
+            pve = new ImageIcon(menu.path+"pve2.png");
+            
 
-        setHover(e, ng, ru, cf, sk, ex);
+        setHover(e, ng, ru, cf, sk, ex, pvp, pve);
     }
 
-    private void setHover(MouseEvent e, ImageIcon ng, ImageIcon ru, ImageIcon cf, ImageIcon sk, ImageIcon ex) {
+    private void setHover(MouseEvent e, ImageIcon ng, ImageIcon ru, ImageIcon cf, ImageIcon sk, ImageIcon ex, ImageIcon pvp, ImageIcon pve) {
         if (menu.b1.equals(e.getSource())) {
             menu.ng = ng;
         }
@@ -53,6 +58,13 @@ public class ButtonsMouse extends MouseAdapter {
         if (menu.b5.equals(e.getSource())) {
             menu.ex = ex;
         }
+        if (menu.b1a.equals(e.getSource())) {
+        	menu.pvp = pvp;
+        }
+        if(menu.b1b.equals(e.getSource())) {
+        	menu.pve = pve;
+        }
+        
     }
 
     @Override
@@ -64,6 +76,8 @@ public class ButtonsMouse extends MouseAdapter {
         ImageIcon cf = null;
         ImageIcon sk = null;
         ImageIcon ex = null;
+        ImageIcon pvp = null;
+        ImageIcon pve = null;
 
 
             ng = new ImageIcon(menu.path+"new_game.png");
@@ -71,9 +85,11 @@ public class ButtonsMouse extends MouseAdapter {
             cf = new ImageIcon(menu.path+"config.png");
             sk = new ImageIcon(menu.path+"skin.png");
             ex = new ImageIcon(menu.path+"exit.png");
+            pvp = new ImageIcon(menu.path+"pvp.png");
+            pve = new ImageIcon(menu.path+"pve.png");
 
 
-        setHover(e, ng, ru, cf, sk, ex);
+        setHover(e, ng, ru, cf, sk, ex, pvp, pve);
     }
 
     @Override
