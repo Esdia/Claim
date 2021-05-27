@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class TestGame {
     public static void main(String[] args) {
-        Game game = new Game(false);
+        Game game = new Game();
         Scanner scanner = new Scanner(System.in);
 
         int currentPlayer;

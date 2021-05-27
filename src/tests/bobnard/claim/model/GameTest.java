@@ -10,7 +10,7 @@ class GameTest {
     Random random = new Random();
 
     void testGame() {
-        Game game = new Game(false);
+        Game game = new Game();
         assertFalse(game.isDone());
 
         int currentPlayer;
