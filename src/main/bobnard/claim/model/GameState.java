@@ -1,6 +1,8 @@
 package bobnard.claim.model;
 
 public enum GameState {
+    WAITING_PLAYER_INITIALISATION,
+    READY_TO_START,
     WAITING_LEADER_ACTION,
     WAITING_FOLLOW_ACTION,
     TRICK_FINISHED,

@@ -16,18 +16,13 @@ public class Game {
 
     private boolean isSimulator;
 
-    public Game(boolean vsAI) {
+    public Game() {
         players = new Player[2];
-        players[1] = new Player(1);
-        if(vsAI) players[0] = new AIMinimax(this, 0, Difficulty.EASY);
-        else players[0] = new Player(0);
 
         this.isDone = false;
         this.isSimulator = false;
 
-        this.setState(GameState.WAITING_LEADER_ACTION);
-
-        this.startPhaseOne();
+        this.setState(GameState.WAITING_PLAYER_INITIALISATION);
     }
 
     private Game(Player[] players, Phase phase, boolean isDone, int winnerID, GameState state) {
@@ -36,6 +31,12 @@ public class Game {
         this.isDone = isDone;
         this.winnerID = winnerID;
         this.setState(state);
+    }
+
+    public void setPlayers(Player[] players) {
+        this.players[0] = players[0];
+        this.players[1] = players[1];
+        this.setState(GameState.READY_TO_START);
     }
 
     public void setSimulator() {
@@ -87,7 +88,14 @@ public class Game {
             player.reset();
         }
         Audio.getBGM().stop();
+    }
+
+    public void start() {
+        if (this.state != GameState.READY_TO_START) {
+            throw new IllegalStateException();
+        }
         this.startPhaseOne();
+        this.setState(GameState.WAITING_LEADER_ACTION);
     }
 
     public boolean isWaitingAction() {
@@ -105,6 +113,10 @@ public class Game {
 
     public void nextStep() {
         switch (this.state) {
+            case READY_TO_START -> {
+                this.start();
+                this.setState(GameState.WAITING_LEADER_ACTION);
+            }
             case WAITING_LEADER_ACTION, WAITING_FOLLOW_ACTION -> {
                 /*
                 * Here, the method playCard (called by AI.action,
@@ -137,7 +149,7 @@ public class Game {
             }
             case GAME_FINISHED -> {
                 this.reset();
-                this.setState(GameState.WAITING_LEADER_ACTION);
+                this.setState(GameState.READY_TO_START);
             }
         }
     }

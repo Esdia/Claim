@@ -119,14 +119,24 @@ public class ButtonsMouse extends MouseAdapter {
             }
             Menu.frame.dispose();
             Audio.getBGM().stop();
-            Game game;
+
+            Game game = new Game();
+            Player[] players = new Player[] {
+                    null,
+                    new Player(1)
+            };
+
             if(menu.b1b.equals(e.getSource())){
                 System.out.println("ddd");
-                game = new Game(true);
+                players[0] = new AIMinimax(game, 0, Difficulty.EASY);
             }
             else{
-                game = new Game(false);
+                players[0] = new Player(0);
             }
+
+            game.setPlayers(players);
+            game.start();
+
             MainWindow.start(game);
         }
 
