@@ -24,7 +24,7 @@ class PlayerTest {
 
     @Test
     void testFollowerToHand() {
-        Player player = new Player();
+        Player player = new Player(0);
 
         Hand hand = randomHand();
         hand.forEach(player::addCard);

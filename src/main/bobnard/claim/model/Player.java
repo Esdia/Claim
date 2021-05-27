@@ -3,11 +3,14 @@ package bobnard.claim.model;
 import java.util.Stack;
 
 public class Player {
+    private final int id;
+
     private final Hand hand;
     private final ScoreStack scoreStack;
     private final Stack<Card> followers;
 
-    protected Player() {
+    protected Player(int id) {
+        this.id = id;
         this.hand = new Hand();
         this.scoreStack = new ScoreStack();
         this.followers = new Stack<>();
@@ -82,6 +85,10 @@ public class Player {
     public ScoreStack getScoreStack() {
         return this.scoreStack;
     }
+
+    public int getId() {
+        return this.id;
+    }
     //endregion
 
     //region RESET
@@ -93,7 +100,7 @@ public class Player {
     //endregion
 
     Player copy() {
-        Player player = new Player();
+        Player player = new Player(this.id);
 
         player.hand.addAll(this.hand);
         player.scoreStack.addAll(this.scoreStack);

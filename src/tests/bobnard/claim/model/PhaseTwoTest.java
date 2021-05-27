@@ -16,8 +16,8 @@ class PhaseTwoTest {
     @BeforeEach
     void init() {
         players = new Player[] {
-                new Player(),
-                new Player()
+                new Player(0),
+                new Player(1)
         };
         phase = new PhaseTwo(players);
     }

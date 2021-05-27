@@ -72,7 +72,7 @@ class HandTest {
 
     @Test
     void playableCards2() {
-        Player player = new Player();
+        Player player = new Player(0);
 
         Card kni = new Card(Faction.KNIGHTS, 5);
         Card und = new Card(Faction.UNDEADS, 5);

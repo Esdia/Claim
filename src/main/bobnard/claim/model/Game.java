@@ -17,9 +17,9 @@ public class Game {
 
     public Game(boolean vsAI) {
         players = new Player[2];
-        players[1] = new Player();
-        if(vsAI) players[0] = new AIMinimax(this, Difficulty.EASY);
-        else players[0] = new Player();
+        players[1] = new Player(1);
+        if(vsAI) players[0] = new AIMinimax(this, 0, Difficulty.EASY);
+        else players[0] = new Player(0);
 
         this.isDone = false;
 
