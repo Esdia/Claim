@@ -117,7 +117,7 @@ public class ButtonsMouse extends MouseAdapter {
                     }
                 }
             }
-            menu.frame.dispose();
+            Menu.frame.dispose();
             Audio.getBGM().stop();
             Game game;
             if(menu.b1b.equals(e.getSource())){
@@ -152,12 +152,14 @@ public class ButtonsMouse extends MouseAdapter {
         }
 
         if(menu.b4.equals(e.getSource())) {
-            menu.changeSkin();
+            menu.isSs = !menu.isSs;
+            menu.panel.refresh();
+            menu.refresh();
         }
 
         if(menu.b5.equals(e.getSource())) {
             Audio.getBGM().stop();
-            menu.frame.dispose();
+            Menu.frame.dispose();
         }
     }
 }

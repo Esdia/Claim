@@ -16,6 +16,7 @@ public class Menu extends JComponent {
     BufferedImage image2;
 
     Boolean isStart;
+    Boolean isSs;
 
     String path;
 
@@ -27,7 +28,7 @@ public class Menu extends JComponent {
     JButton b1a;
     JButton b1b;
 
-    JFrame frame;
+    static JFrame frame;
 
     ImageIcon ng;
     ImageIcon ru;
@@ -39,19 +40,18 @@ public class Menu extends JComponent {
 
     ButtonsMouse m = new ButtonsMouse(this);
 
-    private File[] listSkin;
-    private int currentSkin;
     public static String skin;
 
+    SkinSelect panel;
 
     public Menu(JFrame frame) {
-        File repsk = new File("src/main/bobnard/claim/UI/resources/");
-        this.currentSkin=1;
-        this.listSkin = repsk.listFiles();
-        skin = this.listSkin[currentSkin].getName();
+        skin = "Vanilla";
         this.isStart = false;
-        this.frame = frame;
+        Menu.frame = frame;
+        this. isSs = false;
 
+        panel = new SkinSelect(frame, this);
+        this.add(panel);
 
         Audio.setFiles();
         Audio.playBGM(0);
@@ -61,9 +61,8 @@ public class Menu extends JComponent {
 
     }
 
-    public void changeSkin(){
-        this.currentSkin = (currentSkin+1)%listSkin.length;
-        skin = this.listSkin[currentSkin].getName();
+    public void changeSkin(String name){
+        skin = name;
         setImages();
         refresh();
         Audio.reload();
@@ -71,7 +70,7 @@ public class Menu extends JComponent {
 
     private void setImages() {
 
-        this.frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/"+skin+"/Icon/icon.png").getImage());
+        frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/"+skin+"/Icon/icon.png").getImage());
         this.path = "src/main/bobnard/claim/UI/resources/"+skin+"/menu/";
 
         try {
@@ -218,9 +217,28 @@ public class Menu extends JComponent {
         int w = (int) getSize().getWidth();
 
         g.drawImage(image, 0, 0, w, h, null);
-        Color color = new Color(0,0,0,0);
 
         setButtons(h,w);
+
+        if(isSs){
+
+            panel.setBounds(0,0,w,h);
+            panel.setOpaque(false);
+
+            if(!panel.isVisible()) {
+                panel.setVisible(true);
+            }
+
+            b1.setVisible(false);
+            b2.setVisible(false);
+            b3.setVisible(false);
+            b4.setVisible(false);
+            b5.setVisible(false);
+
+
+        }else{
+            panel.setVisible(false);
+        }
 
         if(isStart) g.drawImage(image2, 0, 0, w, h, null);
 
