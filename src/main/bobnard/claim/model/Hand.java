@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.stream.Stream;
 
 public class Hand extends ArrayList<Card> {
-    void sort() {
+    public void sort() {
         this.sort(Card::compareTo);
     }
 

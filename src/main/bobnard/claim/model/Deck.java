@@ -3,8 +3,8 @@ package bobnard.claim.model;
 import java.util.Collections;
 import java.util.Stack;
 
-class Deck extends Stack<Card> {
-    Deck() {
+public class Deck extends Stack<Card> {
+    public Deck() {
         for (int i = 0; i < 10; i++) {
             this.push(new Card(Faction.GOBLINS, i));
             this.push(new Card(Faction.UNDEADS, i));
