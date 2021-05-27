@@ -1,19 +1,16 @@
 package bobnard.claim.AI;
 
 import bobnard.claim.model.Game;
+import bobnard.claim.model.Hand;
 
 public class NodeEasy extends Node {
-    NodeEasy(Game game, int sign) {
-        super(game, sign);
-    }
-
-    NodeEasy(Game game) {
-        super(game);
+    NodeEasy(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, boolean random) {
+        super(game, aiCards, opponentPossibleCards, aiID, random);
     }
 
     @Override
-    Node newInstance(Game game, int sign) {
-        return new NodeEasy(game, sign);
+    Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, boolean random) {
+        return new NodeEasy(game, aiCards, opponentPossibleCards, aiID, random);
     }
 
     @Override

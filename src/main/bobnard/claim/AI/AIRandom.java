@@ -7,8 +7,8 @@ import java.util.Random;
 public class AIRandom extends AI {
     private final Random random;
 
-    public AIRandom(Game game) {
-        super(game);
+    public AIRandom(Game game, int id) {
+        super(game, id);
         this.random = new Random();
     }
 

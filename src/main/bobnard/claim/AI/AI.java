@@ -7,7 +7,8 @@ public abstract class AI extends Player {
     private CardUI[] cardUIs = null;
     protected final Game game;
 
-    AI(Game game) {
+    AI(Game game, int id) {
+        super(id);
         this.game = game;
     }
 
