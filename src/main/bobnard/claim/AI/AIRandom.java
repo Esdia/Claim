@@ -1,5 +1,6 @@
 package bobnard.claim.AI;
 
+import bobnard.claim.model.Card;
 import bobnard.claim.model.Game;
 
 import java.util.Random;
@@ -18,4 +19,7 @@ public class AIRandom extends AI {
                 random.nextInt(this.game.getPlayableCards().size())
         );
     }
+
+    @Override
+    public void showCard(Card card) {}
 }

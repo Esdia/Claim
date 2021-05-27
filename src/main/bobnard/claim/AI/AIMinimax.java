@@ -25,6 +25,7 @@ public class AIMinimax extends AI {
     }
 
     /* Called when the AI can see a card that is not in its hand */
+    @Override
     public void showCard(Card card) {
         this.possibleOpponentCards.remove(card);
     }

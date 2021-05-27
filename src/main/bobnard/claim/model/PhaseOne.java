@@ -1,7 +1,5 @@
 package bobnard.claim.model;
 
-import bobnard.claim.AI.AIMinimax;
-
 class PhaseOne extends Phase {
     private final Deck deck;
 
@@ -44,9 +42,7 @@ class PhaseOne extends Phase {
         System.out.println("Flipped card : " + this.flippedCard);
 
         for (Player player: this.players) {
-            if (player instanceof AIMinimax) {
-                ((AIMinimax) player).showCard(this.flippedCard);
-            }
+            player.showCard(this.flippedCard);
         }
     }
 
@@ -55,9 +51,8 @@ class PhaseOne extends Phase {
 
         Player loser = this.players[this.getLastTrickLoser()];
         Card givenCard = deck.draw();
-        if (loser instanceof AIMinimax) {
-            ((AIMinimax) loser).showCard(givenCard);
-        }
+
+        loser.showCard(givenCard);
         loser.addFollower(givenCard);
     }
     //endregion
@@ -84,6 +79,11 @@ class PhaseOne extends Phase {
     @Override
     Phase getInstance(Player[] players) {
         return new PhaseOne(players, this.deck, this.flippedCard);
+    }
+
+    @Override
+    int getPhaseNum() {
+        return 1;
     }
     //endregion
 

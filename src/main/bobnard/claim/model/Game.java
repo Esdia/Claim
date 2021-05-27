@@ -1,8 +1,5 @@
 package bobnard.claim.model;
 
-import bobnard.claim.AI.AI;
-import bobnard.claim.AI.AIMinimax;
-import bobnard.claim.AI.Difficulty;
 import bobnard.claim.UI.Audio;
 
 public class Game {
@@ -124,7 +121,7 @@ public class Game {
                 * for us.
                 */
                 if (this.isCurrentPlayerAI()) {
-                    ((AI) this.getCurrentPlayer()).action();
+                    this.getCurrentPlayer().action();
                 }
             }
             case TRICK_FINISHED -> {
@@ -161,11 +158,7 @@ public class Game {
 
     //region PHASE MANAGEMENT
     int getPhaseNum() {
-        if (this.phase instanceof PhaseOne) {
-            return 1;
-        } else {
-            return 2;
-        }
+        return this.phase.getPhaseNum();
     }
 
     private void startPhaseOne() {
@@ -227,7 +220,7 @@ public class Game {
 
     //region AI
     public boolean isCurrentPlayerAI() {
-        return this.getCurrentPlayer() instanceof AI;
+        return this.getCurrentPlayer().isAI();
     }
 
     public void simulatePlay(Card card) {
@@ -273,7 +266,7 @@ public class Game {
     }
 
     public Card getFlippedCard() {
-        if (this.phase instanceof PhaseOne) {
+        if (this.getPhaseNum() == 1) {
             return ((PhaseOne) this.phase).getFlippedCard();
         } else {
             return null;

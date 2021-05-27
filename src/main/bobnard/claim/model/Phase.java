@@ -1,7 +1,5 @@
 package bobnard.claim.model;
 
-import bobnard.claim.AI.AIMinimax;
-
 import java.util.ArrayList;
 
 abstract class Phase {
@@ -67,9 +65,7 @@ abstract class Phase {
             this.players[currentPlayer].removeCard(card);
 
             Player otherPlayer = this.players[1 - currentPlayer];
-            if (otherPlayer instanceof AIMinimax) {
-                ((AIMinimax) otherPlayer).showCard(card);
-            }
+            otherPlayer.showCard(card);
         }
     }
 
@@ -103,6 +99,8 @@ abstract class Phase {
 
     //region ABSTRACT
     abstract void dealWithPlayedCards();
+
+    abstract int getPhaseNum();
     //endregion
 
     //region GETTERS

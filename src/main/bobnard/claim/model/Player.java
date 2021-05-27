@@ -9,7 +9,7 @@ public class Player {
     private final ScoreStack scoreStack;
     private final Stack<Card> followers;
 
-    protected Player(int id) {
+    public Player(int id) {
         this.id = id;
         this.hand = new Hand();
         this.scoreStack = new ScoreStack();
@@ -89,6 +89,10 @@ public class Player {
     public int getId() {
         return this.id;
     }
+
+    public boolean isAI() {
+        return false;
+    }
     //endregion
 
     //region RESET
@@ -98,6 +102,14 @@ public class Player {
         this.followers.clear();
     }
     //endregion
+
+    /*
+    * Meant to be overridden.
+    * These methods only exists in this class so that
+    * the model can be independent from the AI package
+    */
+    public void showCard(Card card) {}
+    public void action() {}
 
     Player copy() {
         Player player = new Player(this.id);

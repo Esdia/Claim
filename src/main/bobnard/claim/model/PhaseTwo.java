@@ -30,6 +30,11 @@ class PhaseTwo extends Phase {
     Phase getInstance(Player[] players) {
         return new PhaseTwo(players, true);
     }
+
+    @Override
+    int getPhaseNum() {
+        return 2;
+    }
     //endregion
 
     PhaseTwo copy(Player[] players) {

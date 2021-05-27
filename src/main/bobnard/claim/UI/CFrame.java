@@ -3,7 +3,6 @@ package bobnard.claim.UI;
 
 import bobnard.claim.AI.AI;
 import bobnard.claim.model.*;
-import bobnard.claim.UI.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -136,7 +135,7 @@ public class CFrame extends JComponent {
 			Player player = game.getPlayer(i);
 			this.players[i] = player;
 
-			if (player instanceof AI) {
+			if (player.isAI()) {
 				((AI) player).setCardUIs(this.handPanels[i]);
 			}
 		}

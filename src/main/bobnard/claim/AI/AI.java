@@ -32,5 +32,14 @@ public abstract class AI extends Player {
         }
     }
 
+    @Override
+    public boolean isAI() {
+        return true;
+    }
+
+    @Override
     public abstract void action();
+
+    @Override
+    public abstract void showCard(Card card);
 }
