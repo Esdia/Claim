@@ -1,5 +1,7 @@
 package bobnard.claim.model;
 
+import bobnard.claim.AI.AIMinimax;
+
 class PhaseOne extends Phase {
     private final Deck deck;
 
@@ -30,22 +32,33 @@ class PhaseOne extends Phase {
         this.players[0].sortHand();
         this.players[1].sortHand();
     }
-
-    private void replaceDeck(Deck newDeck) {
-        this.deck.clear();
-        this.deck.addAll(newDeck);
-    }
     //endregion
 
     //region MANAGE CENTRAL CARDS
+    void setFlippedCard(Card card) {
+        this.flippedCard = card;
+    }
+
     private void flipCard() {
-        this.flippedCard = deck.draw();
+        this.setFlippedCard(deck.draw());
         System.out.println("Flipped card : " + this.flippedCard);
+
+        for (Player player: this.players) {
+            if (player instanceof AIMinimax) {
+                ((AIMinimax) player).showCard(this.flippedCard);
+            }
+        }
     }
 
     private void giveCentralCards() {
         this.players[this.getLastTrickWinner()].addFollower(this.getFlippedCard());
-        this.players[this.getLastTrickLoser() ].addFollower(deck.draw());
+
+        Player loser = this.players[this.getLastTrickLoser()];
+        Card givenCard = deck.draw();
+        if (loser instanceof AIMinimax) {
+            ((AIMinimax) loser).showCard(givenCard);
+        }
+        loser.addFollower(givenCard);
     }
     //endregion
 
@@ -54,7 +67,7 @@ class PhaseOne extends Phase {
     void endTrick() {
         super.endTrick();
         this.giveCentralCards();
-        if (!this.isDone()) {
+        if (!this.isSimulator && !this.isDone()) {
             this.flipCard();
         }
     }

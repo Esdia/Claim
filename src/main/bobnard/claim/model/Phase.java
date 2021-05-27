@@ -1,5 +1,7 @@
 package bobnard.claim.model;
 
+import bobnard.claim.AI.AIMinimax;
+
 import java.util.ArrayList;
 
 abstract class Phase {
@@ -9,6 +11,8 @@ abstract class Phase {
     private int currentPlayer;
 
     private Trick trick;
+
+    protected boolean isSimulator = false;
 
     Phase(Player[] players) {
         if (players == null) {
@@ -24,6 +28,10 @@ abstract class Phase {
         this.currentLeader = 0;
         this.currentPlayer = 0;
         this.resetTrick();
+    }
+
+    void setSimulator() {
+        this.isSimulator = true;
     }
 
     //region PHASE MANAGEMENT
@@ -49,12 +57,20 @@ abstract class Phase {
     }
 
     void playCard(Card card) {
-        if (!this.isLegalMove(card)) {
+        if (!this.isSimulator && !this.isLegalMove(card)) {
             return;
         }
 
         this.trick.addCard(card, currentPlayer == currentLeader);
-        this.players[currentPlayer].removeCard(card);
+
+        if (!this.isSimulator) {
+            this.players[currentPlayer].removeCard(card);
+
+            Player otherPlayer = this.players[1 - currentPlayer];
+            if (otherPlayer instanceof AIMinimax) {
+                ((AIMinimax) otherPlayer).showCard(card);
+            }
+        }
     }
 
     public boolean trickReady() {
@@ -73,7 +89,7 @@ abstract class Phase {
         this.currentLeader = this.trick.getWinner();
         this.currentPlayer = this.getLastTrickWinner();
 
-        System.out.println("Player " + currentPlayer + " won the trick");
+        // System.out.println("Player " + currentPlayer + " won the trick");
 
         this.dealWithPlayedCards();
 
@@ -123,6 +139,7 @@ abstract class Phase {
         phase.currentPlayer = this.currentPlayer;
         phase.currentLeader = this.currentLeader;
         phase.trick = this.trick.copy();
+        phase.isSimulator = this.isSimulator;
 
         return phase;
     }

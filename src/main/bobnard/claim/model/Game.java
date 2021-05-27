@@ -2,7 +2,6 @@ package bobnard.claim.model;
 
 import bobnard.claim.AI.AI;
 import bobnard.claim.AI.AIMinimax;
-import bobnard.claim.AI.AIRandom;
 import bobnard.claim.AI.Difficulty;
 import bobnard.claim.UI.Audio;
 
@@ -15,6 +14,8 @@ public class Game {
     private boolean isDone;
     private int winnerID;
 
+    private boolean isSimulator;
+
     public Game(boolean vsAI) {
         players = new Player[2];
         players[1] = new Player(1);
@@ -22,6 +23,7 @@ public class Game {
         else players[0] = new Player(0);
 
         this.isDone = false;
+        this.isSimulator = false;
 
         this.setState(GameState.WAITING_LEADER_ACTION);
 
@@ -34,6 +36,11 @@ public class Game {
         this.isDone = isDone;
         this.winnerID = winnerID;
         this.setState(state);
+    }
+
+    public void setSimulator() {
+        this.isSimulator = true;
+        this.phase.setSimulator();
     }
 
     //region GAME MANAGEMENT
@@ -159,10 +166,14 @@ public class Game {
         if (this.getPhaseNum() != 1) {
             throw new IllegalStateException();
         }
-        Audio.getBGM().stop();
-        Audio.playBGM(2);
         System.out.println("Beginning phase 2");
         this.phase = new PhaseTwo(players);
+        if (this.isSimulator) {
+            this.phase.setSimulator();
+        } else {
+            Audio.getBGM().stop();
+            Audio.playBGM(2);
+        }
     }
     //endregion
 
@@ -172,7 +183,7 @@ public class Game {
     }
 
     public void playCard(Card card) {
-        if (!this.isLegalMove(card)) {
+        if (!this.isSimulator && !this.isLegalMove(card)) {
             return;
         }
 
@@ -208,7 +219,20 @@ public class Game {
     }
 
     public void simulatePlay(Card card) {
-        this.playCard(card);
+        if (!this.isSimulator) {
+            throw new IllegalStateException();
+        }
+
+        if (this.state == GameState.TRICK_FINISHED && this.getPhaseNum() == 1) {
+            ((PhaseOne) phase).setFlippedCard(card);
+            this.nextStep();
+        } else {
+            this.playCard(card);
+        }
+
+        if (this.state == GameState.TRICK_FINISHED && getPhaseNum() == 1 && !phase.isDone()) {
+            return;
+        }
         while (!this.isWaitingAction()) {
             this.nextStep();
         }
@@ -296,12 +320,18 @@ public class Game {
                 this.players[1].copy()
         };
 
-        return new Game(
+        Game copy = new Game(
                 players,
                 this.phase.copy(players),
                 this.isDone,
                 this.winnerID,
                 this.getState()
         );
+
+        if (this.isSimulator) {
+            copy.setSimulator();
+        }
+
+        return copy;
     }
 }
