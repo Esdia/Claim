@@ -70,8 +70,10 @@ public class Menu extends JComponent {
     }
 
     private void setImages() {
+
         this.frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/"+skin+"/Icon/icon.png").getImage());
         this.path = "src/main/bobnard/claim/UI/resources/"+skin+"/menu/";
+
         try {
                 ng =  new ImageIcon(path+"new_game.png");
                 ru =  new ImageIcon(path+"rules.png");
@@ -192,21 +194,21 @@ public class Menu extends JComponent {
 
             b5.setVisible(true);
             
-            b1a.setBounds(((int) (w/1.35) - w/5 - w/20), (int) (h/2.7), w/5, h/17);
+            b1a.setBounds(((int) ((w/1.35) - w/(5.25) )), (int) (h/3), w/5, h/17);
             b1a.setBackground(color);
-            b1a.setIcon(resizeIcon(pvp, w/5, h/17));
+            b1a.setIcon(resizeIcon(pvp, w/7, h/22));
             b1a.setBorderPainted(false);
             b1a.setOpaque(false);
             b1a.setContentAreaFilled(false);
-            
-            
-            b1b.setBounds(((int) (w/1.35) - w/5 - w/20), (int) (h/2.25), w/5, h/17);
+
+
+            b1b.setBounds(((int) ((w/1.35) - w/(5.25) )), (int) (h/2.5), w/5, h/17);
             b1b.setBackground(color);
-            b1b.setIcon(resizeIcon(pve, w/5, h/17));
+            b1b.setIcon(resizeIcon(pve, w/7, h/22));
             b1b.setBorderPainted(false);
             b1b.setOpaque(false);
             b1b.setContentAreaFilled(false);
-            
+
 
 
     }

@@ -2,9 +2,11 @@ package bobnard.claim.UI;
 
 
 import bobnard.claim.model.Game;
+import bobnard.claim.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -93,11 +95,16 @@ public class ButtonsMouse extends MouseAdapter {
     }
 
     @Override
+    public void mouseClicked(MouseEvent e) {
+        super.mouseClicked(e);
+    }
+
+    @Override
     public void mousePressed(MouseEvent e) {
 
         Audio.playSE(0);
 
-        if(menu.b1.equals(e.getSource())) {
+        if(menu.b1a.equals(e.getSource()) || menu.b1b.equals(e.getSource()) ) {
             if(Menu.skin.equals("Umineko")){
                 menu.isStart = true;
                 synchronized (menu) {
@@ -112,9 +119,28 @@ public class ButtonsMouse extends MouseAdapter {
             }
             menu.frame.dispose();
             Audio.getBGM().stop();
-            Game game = new Game();
+            Game game;
+            if(menu.b1b.equals(e.getSource())){
+                System.out.println("ddd");
+                game = new Game(true);
+            }
+            else{
+                game = new Game(false);
+            }
             MainWindow.start(game);
         }
+
+
+        if(menu.b1.equals(e.getSource())) {
+            if(menu.b1a.isVisible()) {
+                menu.b1a.setVisible(false);
+                menu.b1b.setVisible(false);
+            }else{
+                menu.b1a.setVisible(true);
+                menu.b1b.setVisible(true);
+            }
+        }
+
 
         if(menu.b2.equals(e.getSource())) {
             File pdfFile = new File("src/main/bobnard/claim/UI/resources/"+menu.skin+"/rules/rules.pdf");

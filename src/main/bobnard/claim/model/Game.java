@@ -1,6 +1,9 @@
 package bobnard.claim.model;
 
 import bobnard.claim.AI.AI;
+import bobnard.claim.AI.AIMinimax;
+import bobnard.claim.AI.AIRandom;
+import bobnard.claim.AI.Difficulty;
 import bobnard.claim.UI.Audio;
 
 public class Game {
@@ -12,11 +15,11 @@ public class Game {
     private boolean isDone;
     private int winnerID;
 
-    public Game() {
+    public Game(boolean vsAI) {
         players = new Player[2];
-
-        players[0] = new Player();
         players[1] = new Player();
+        if(vsAI) players[0] = new AIMinimax(this, Difficulty.EASY);
+        else players[0] = new Player();
 
         this.isDone = false;
 
