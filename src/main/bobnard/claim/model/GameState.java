@@ -1,5 +1,8 @@
 package bobnard.claim.model;
 
+/**
+ * Represents the current game's state.
+ */
 public enum GameState {
     WAITING_PLAYER_INITIALISATION,
     READY_TO_START,

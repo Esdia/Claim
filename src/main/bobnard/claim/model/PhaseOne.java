@@ -1,10 +1,18 @@
 package bobnard.claim.model;
 
+/**
+ * Represents the first phase of the gme
+ */
 class PhaseOne extends Phase {
     private final Deck deck;
 
     private Card flippedCard;
 
+    /**
+     * Creates the first phase.
+     *
+     * @param players The game's players.
+     */
     PhaseOne(Player[] players) {
         super(players);
 
@@ -13,7 +21,14 @@ class PhaseOne extends Phase {
         this.flipCard();
     }
 
-    /* Copy constructor */
+    /**
+     * This constructor is used to make copies of the phase.
+     * It does not create a deck.
+     *
+     * @param players     A copy of the phase's players
+     * @param deck        The phase's deck.
+     * @param flippedCard The phase's currently flipped card.
+     */
     PhaseOne(Player[] players, Deck deck, Card flippedCard) {
         super(players);
         this.deck = (Deck) deck.clone();
@@ -33,6 +48,12 @@ class PhaseOne extends Phase {
     //endregion
 
     //region MANAGE CENTRAL CARDS
+
+    /**
+     * Sets the currently flipped card.
+     *
+     * @param card The currently flipped card.
+     */
     void setFlippedCard(Card card) {
         this.flippedCard = card;
     }
@@ -58,6 +79,16 @@ class PhaseOne extends Phase {
     //endregion
 
     //region OVERRIDES
+
+    /**
+     * Ends the trick.
+     * <p>
+     * beside finishing the trick, this method gives the flipped card
+     * and the next drawn card to the players according to the trick's
+     * result.
+     *
+     * @see Phase#endTrick()
+     */
     @Override
     void endTrick() {
         super.endTrick();
@@ -67,6 +98,13 @@ class PhaseOne extends Phase {
         }
     }
 
+    /**
+     * Deals with the played cards.
+     * In phase one, the played cards are discarded, except if they
+     * are undeads, in which case they go to the winner's score stack.
+     *
+     * @see Phase#dealWithPlayedCards()
+     */
     @Override
     void dealWithPlayedCards() {
         for (Card card : this.getPlayedCards()) {
@@ -76,11 +114,26 @@ class PhaseOne extends Phase {
         }
     }
 
+    /**
+     * Returns a new instance of PhaseOne.
+     * <p>
+     * This method is used to create copies of the Phase.
+     *
+     * @param players A list of copies of the phase's players
+     * @return A new instance of PhaseOne
+     * @see Phase#getInstance(Player[])
+     */
     @Override
     Phase getInstance(Player[] players) {
         return new PhaseOne(players, this.deck, this.flippedCard);
     }
 
+    /**
+     * Returns the number of the phase (here, 1).
+     *
+     * @return the number of the phase (1).
+     * @see Phase#getPhaseNum()
+     */
     @Override
     int getPhaseNum() {
         return 1;
@@ -88,11 +141,23 @@ class PhaseOne extends Phase {
     //endregion
 
     //region GETTERS
+
+    /**
+     * Returns the currently flipped card.
+     *
+     * @return the currently flipped card
+     */
     Card getFlippedCard() {
         return flippedCard;
     }
     //endregion
 
+    /**
+     * Returns a copy of the Phase.
+     *
+     * @param players A list of copies of the phase's players
+     * @return a copy of the Phase.
+     */
     PhaseOne copy(Player[] players) {
         return (PhaseOne) super.copy(players);
     }

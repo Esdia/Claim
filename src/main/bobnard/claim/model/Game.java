@@ -2,8 +2,11 @@ package bobnard.claim.model;
 
 import bobnard.claim.UI.Audio;
 
+/**
+ * Represents the game
+ */
 public class Game {
-    GameState state;
+    private GameState state;
 
     private Phase phase;
     private final Player[] players;
@@ -13,6 +16,14 @@ public class Game {
 
     private boolean isSimulator;
 
+    /**
+     * Creates a new game.
+     * <p>
+     * Before the game is ready to start, it is necessary
+     * to give it a list of players.
+     *
+     * @see #setPlayers(Player[])
+     */
     public Game() {
         players = new Player[2];
 
@@ -22,6 +33,13 @@ public class Game {
         this.setState(GameState.WAITING_PLAYER_INITIALISATION);
     }
 
+    /**
+     * This constructor is used to make copies of the game.
+     *
+     * @param players A copy of the game's players
+     * @param phase   A copy of the game's phase.
+     * @param state   The game's current state.
+     */
     private Game(Player[] players, Phase phase, boolean isDone, int winnerID, GameState state) {
         this.players = players;
         this.phase = phase;
@@ -30,22 +48,50 @@ public class Game {
         this.setState(state);
     }
 
+    /**
+     * Sets the game's players.
+     * <p>
+     * The player list must contains two non-null players.
+     *
+     * @param players The game's players.
+     */
     public void setPlayers(Player[] players) {
         this.players[0] = players[0];
         this.players[1] = players[1];
         this.setState(GameState.READY_TO_START);
     }
 
+    /**
+     * Configure the game as a simulator.
+     * <p>
+     * A simulator game is meant to be used by the AIs to calculate
+     * their next moves, and will behave a bit differently.
+     * For example, it wont check whether or not the player is allowed
+     * to play a card it is trying to play.
+     */
     public void setSimulator() {
         this.isSimulator = true;
         this.phase.setSimulator();
     }
 
     //region GAME MANAGEMENT
+
+    /**
+     * Switches the current player.
+     * <p>
+     * 1 -> 0 and 0 -> 1.
+     */
     public void changePlayer() {
         this.phase.changePlayer();
     }
 
+    /**
+     * Returns true if the game is finished.
+     * <p>
+     * The game is finished once the second phase is finished.
+     *
+     * @return true if the game is finished.
+     */
     public boolean isDone() {
         return this.isDone;
     }
@@ -79,6 +125,14 @@ public class Game {
         System.out.println("Player " + winnerID + " won the game!");
     }
 
+    /**
+     * Resets the game.
+     * <p>
+     * This method resets the players, but the game still needs
+     * to be manually started before it can be played again.
+     *
+     * @see #start()
+     */
     public void reset() {
         this.isDone = false;
         for (Player player : players) {
@@ -87,6 +141,9 @@ public class Game {
         Audio.getBGM().stop();
     }
 
+    /**
+     * Starts the game's first phase.
+     */
     public void start() {
         if (this.state != GameState.READY_TO_START) {
             throw new IllegalStateException();
@@ -95,10 +152,24 @@ public class Game {
         this.setState(GameState.WAITING_LEADER_ACTION);
     }
 
+    /**
+     * Returns true if the game is currently waiting for a player
+     * to play a card. The player can be a human or an AI.
+     *
+     * @return true if the game is waiting for a player to play a card.
+     * @see #isWaitingHumanAction()
+     */
     public boolean isWaitingAction() {
         return (this.state == GameState.WAITING_LEADER_ACTION || this.state == GameState.WAITING_FOLLOW_ACTION);
     }
 
+    /**
+     * Returns true if the game is currently waiting for a human player
+     * to play a card.
+     *
+     * @return true if the game is waiting for a human player to play a card.
+     * @see #isWaitingAction()
+     */
     public boolean isWaitingHumanAction() {
         return this.isWaitingAction() && !this.isCurrentPlayerAI();
     }
@@ -108,6 +179,17 @@ public class Game {
         this.state = state;
     }
 
+    /**
+     * Advances to the game's next step.
+     * <p><br>
+     * For example :
+     * <br>
+     * If the trick just ended, the next step is to clean it up
+     * and wait for a new action.
+     * <br>
+     * If the first phase just ended, the next step is to start
+     * the second one.
+     */
     public void nextStep() {
         switch (this.state) {
             case READY_TO_START -> {
@@ -151,12 +233,23 @@ public class Game {
         }
     }
 
+    /**
+     * Returns the game's current state
+     *
+     * @return the game's current state
+     */
     public GameState getState() {
         return this.state;
     }
     //endregion
 
     //region PHASE MANAGEMENT
+
+    /**
+     * Returns the game's current phase's number (1 or 2)
+     *
+     * @return the game's current phase's number (1 or 2)
+     */
     int getPhaseNum() {
         return this.phase.getPhaseNum();
     }
@@ -183,10 +276,28 @@ public class Game {
     //endregion
 
     //region TRICK MANAGEMENT
+
+    /**
+     * Checks if the current player is allowed to play the given
+     * card.
+     *
+     * @param card The card the current player is trying to play.
+     * @return true if the current player is allowed to play the card.
+     * @see Phase#isLegalMove(Card)
+     */
     public boolean isLegalMove(Card card) {
         return this.phase.isLegalMove(card);
     }
 
+    /**
+     * Plays a card.
+     * <p>
+     * This method plays a card and changes the game state accordingly.
+     * It will fail silently if the move is illegal.
+     *
+     * @param card the played card.
+     * @see Phase#playCard(Card)
+     */
     public void playCard(Card card) {
         if (!this.isSimulator && !this.isLegalMove(card)) {
             return;
@@ -205,24 +316,65 @@ public class Game {
         }
     }
 
+    /**
+     * Returns true if the current trick is ready (i.e. both
+     * players played a card).
+     *
+     * @return true if the trick is ready.
+     * @see Phase#trickReady()
+     * @see Trick#isReady()
+     */
     public boolean trickReady() {
         return this.phase.trickReady();
     }
 
+    /**
+     * Returns the faction of the card played by the leader.
+     *
+     * @return The faction played by the leader. Null if
+     * the leader has not played yet.
+     * @see Phase#getPlayedFaction()
+     * @see Trick#getFaction()
+     */
     public Faction getPlayedFaction() {
         return this.phase.getPlayedFaction();
     }
 
+    /**
+     * Ends the trick.
+     * <p>
+     * This method manages the followings:
+     * - Sets the next trick's leader to the current trick's winner.
+     * - Do something with the played cards (depending on the phase)
+     * - Starts a new trick
+     *
+     * @see Phase#endTrick()
+     */
     public void endTrick() {
         this.phase.endTrick();
     }
     //endregion
 
     //region AI
+
+    /**
+     * Returns true if the current player is an AI.
+     *
+     * @return true if the current player is an AI.
+     */
     public boolean isCurrentPlayerAI() {
         return this.getCurrentPlayer().isAI();
     }
 
+    /**
+     * Simulates a move.
+     * <p>
+     * This method is meant to be used by the AIs when
+     * they are calculating their next moves.
+     *
+     * @param card The played card.
+     * @throws IllegalStateException is the game is not a simulator
+     */
     public void simulatePlay(Card card) {
         if (!this.isSimulator) {
             throw new IllegalStateException();
@@ -245,26 +397,66 @@ public class Game {
     //endregion
 
     //region GETTERS
+
+    /**
+     * Returns the current player's ID.
+     *
+     * @return the current player's ID.
+     * @see Phase#getCurrentPlayer()
+     */
     public int getCurrentPlayerID() {
         return this.phase.getCurrentPlayer();
     }
 
+    /**
+     * Returns the current player.
+     *
+     * @return the current player.
+     */
     public Player getCurrentPlayer() {
         return this.getPlayer(this.getCurrentPlayerID());
     }
 
+    /**
+     * Returns the player with the given ID.
+     *
+     * @param id the player's ID.
+     * @return the player with the given ID.
+     */
     public Player getPlayer(int id) {
         return this.players[id];
     }
 
+    /**
+     * Returns the cards of the player with the given ID.
+     *
+     * @param playerID the player's ID.
+     * @return the cards of the player with the given ID.
+     */
     public Hand getCards(int playerID) {
         return this.players[playerID].getCards();
     }
 
+    /**
+     * Returns a list of the cards played in the current trick.
+     * <p>
+     * The list will always have a size of two, and its first
+     * element will always be the card played by the leader.
+     * Some elements may be null if no card has been played.
+     *
+     * @return a list of the cards played in the current trick.
+     * @see Phase#getPlayedCards()
+     */
     public Card[] getPlayedCards() {
         return this.phase.getPlayedCards();
     }
 
+    /**
+     * Returns the currently flipped card.
+     *
+     * @return the currently flipped card. Null if on phase two.
+     * @see PhaseOne#getFlippedCard()
+     */
     public Card getFlippedCard() {
         if (this.getPhaseNum() == 1) {
             return ((PhaseOne) this.phase).getFlippedCard();
@@ -273,18 +465,45 @@ public class Game {
         }
     }
 
+    /**
+     * Returns the cards the given player can play, according to the
+     * given faction.
+     *
+     * @param player  The player's whose playable cards we want to get.
+     * @param faction The faction determining the legal cards.
+     * @return The player's playable cards
+     */
     public Hand getPlayableCards(int player, Faction faction) {
         return this.players[player].playableCards(faction);
     }
 
+    /**
+     * Returns the cards the given player can play, according to the
+     * faction played by the leader.
+     *
+     * @param player The player's whose playable cards we want to get.
+     * @return The player's playable cards
+     */
     public Hand getPlayableCards(int player) {
         return this.getPlayableCards(player, this.getPlayedFaction());
     }
 
+    /**
+     * Returns the cards the current player can play, according to the
+     * faction played by the leader.
+     *
+     * @return The current player's playable cards
+     */
     public Hand getPlayableCards() {
         return this.getPlayableCards(this.getCurrentPlayerID());
     }
 
+    /**
+     * Returns the ID of the game's winner.
+     *
+     * @return the ID of the game's winner.
+     * @throws IllegalStateException if the game is not done.
+     */
     public int getWinnerID() {
         if (!this.isDone()) {
             throw new IllegalStateException();
@@ -292,16 +511,34 @@ public class Game {
         return this.winnerID;
     }
 
+    /**
+     * Returns the winner of the current trick.
+     *
+     * @return The winner of the current trick.
+     * @throws IllegalStateException if the trick is not ready.
+     * @see Phase#getTrickWinnerID()
+     * @see Trick#getWinner()
+     */
     public int getTrickWinnerID() {
         return this.phase.getTrickWinnerID();
     }
 
+    /**
+     * Returns true if the given card is currently playable.
+     *
+     * @param card The card we want to check.
+     * @return true if the card is currently playable.
+     */
     public boolean getLegalCard(Card card) {
         return getPlayableCards(getCurrentPlayerID(), getPlayedFaction()).contains(card);
     }
     //endregion
 
     //region DEBUG PRINT
+
+    /**
+     * Prints some debug infos.
+     */
     public void printDebugInfo() {
         Card[] playedCards = this.getPlayedCards();
 
@@ -319,6 +556,11 @@ public class Game {
     }
     //endregion
 
+    /**
+     * Creates a copy of the game.
+     *
+     * @return a copy of the game.
+     */
     public Game copy() {
         Player[] players = new Player[]{
                 this.players[0].copy(),

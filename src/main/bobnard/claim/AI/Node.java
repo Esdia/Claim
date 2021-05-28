@@ -5,6 +5,10 @@ import bobnard.claim.model.Game;
 import bobnard.claim.model.GameState;
 import bobnard.claim.model.Hand;
 
+/**
+ * Represents a Node in the tree generated
+ * by the Minimax Algorithm.
+ */
 public abstract class Node {
     private static final int DEPTH = 5;
 
@@ -21,6 +25,16 @@ public abstract class Node {
 
     private int nextMove = 0;
 
+    /**
+     * Creates a new Node.
+     *
+     * @param game                  The game on which the AI will play.
+     * @param aiCards               The AI's cards.
+     * @param opponentPossibleCards The cards that could be in the opponent's hand.
+     * @param aiID                  The AI's player ID
+     * @param random                Whether or not this node should manage a random event (draw
+     *                              a card from the deck).
+     */
     Node(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, boolean random) {
         this.game = game;
         this.aiID = aiID;
@@ -127,18 +141,30 @@ public abstract class Node {
         return res;
     }
 
+    /**
+     * Returns an instance of Node
+     * <p>
+     * The children classes have to override this method
+     * and make it return an instance of themselves.
+     *
+     * @return An instance of Node.
+     */
     abstract Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, boolean random);
 
-    /*
-     * Heuristic depending on the difficulty
-     * Must return how much the config is in favor of the node's CURRENT player
+    /**
+     * Heuristic depending on the difficulty.
+     * <p>
+     * Must return how much the config is in favor of the AI.
      *
-     * We suppress the "SameReturnValue" warning only until we correctly implement
-     * this method
+     * @return The evaluation of the node's configuration.
      */
-    @SuppressWarnings("SameReturnValue")
     abstract int evaluateState();
 
+    /**
+     * Returns the AI's next move.
+     *
+     * @return the AI's next move.
+     */
     int getNextMove() {
         this.expectiminimax();
 
