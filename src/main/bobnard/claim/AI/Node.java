@@ -12,8 +12,8 @@ import bobnard.claim.model.Hand;
 public abstract class Node {
     private static final int DEPTH = 5;
 
-    private final Game game;
-    private final int aiID;
+    protected final Game game;
+    protected final int aiID;
 
     private final Hand aiCards;
     private final Hand opponentPossibleCards;
@@ -32,25 +32,20 @@ public abstract class Node {
      * @param aiCards               The AI's cards.
      * @param opponentPossibleCards The cards that could be in the opponent's hand.
      * @param aiID                  The AI's player ID
-     * @param random                Whether or not this node should manage a random event (draw
-     *                              a card from the deck).
+     * @param type                  The type of the Node.
      */
-    Node(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, boolean random) {
+    Node(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type) {
         this.game = game;
         this.aiID = aiID;
 
-        if (random) {
-            this.type = NodeType.RANDOM;
-        } else {
-            this.type = (aiID == game.getCurrentPlayerID()) ? NodeType.MAX : NodeType.MIN;
-        }
+        this.type = type;
 
         this.aiCards = (Hand) aiCards.clone();
         this.opponentPossibleCards = (Hand) opponentPossibleCards.clone();
 
         this.playableCards = switch (this.type) {
             case MAX -> this.aiCards;
-            case MIN, RANDOM -> this.opponentPossibleCards;
+            case MIN, FLIP_CARD, DRAW_CARD -> this.opponentPossibleCards;
         };
         this.playableCardsCopy = (Hand) this.playableCards.clone();
     }
@@ -91,7 +86,7 @@ public abstract class Node {
                     if (beta <= alpha) break; // Alpha cut
                 }
             }
-            case RANDOM -> {
+            case FLIP_CARD, DRAW_CARD -> {
                 int counter = 0;
                 for (Card card : this.playableCardsCopy) {
                     counter++;
@@ -124,9 +119,18 @@ public abstract class Node {
 
         Game gameCopy = this.game.copy();
         gameCopy.setSimulator();
-
         gameCopy.simulatePlay(card);
-        boolean random = gameCopy.getState() == GameState.TRICK_FINISHED;
+
+        NodeType nodeType;
+        if (gameCopy.getState() == GameState.TRICK_FINISHED) {
+            nodeType = NodeType.DRAW_CARD;
+        } else if (gameCopy.getState() == GameState.SIMULATED_DRAWN_CARD) {
+            nodeType = NodeType.FLIP_CARD;
+        } else if (gameCopy.getCurrentPlayerID() == aiID) {
+            nodeType = NodeType.MAX;
+        } else {
+            nodeType = NodeType.MIN;
+        }
 
         this.playableCards.remove(card);
         Node res = this.newInstance(
@@ -134,7 +138,7 @@ public abstract class Node {
                 aiCards,
                 opponentPossibleCards,
                 aiID,
-                random
+                nodeType
         );
         this.playableCards.add(card);
 
@@ -149,7 +153,7 @@ public abstract class Node {
      *
      * @return An instance of Node.
      */
-    abstract Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, boolean random);
+    abstract Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type);
 
     /**
      * Heuristic depending on the difficulty.

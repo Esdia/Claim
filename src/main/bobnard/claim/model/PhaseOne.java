@@ -7,6 +7,7 @@ class PhaseOne extends Phase {
     private final Deck deck;
 
     private Card flippedCard;
+    private Card simulatedDrawnCard;
 
     /**
      * Creates the first phase.
@@ -58,6 +59,10 @@ class PhaseOne extends Phase {
         this.flippedCard = card;
     }
 
+    void setDrawnCard(Card card) {
+        this.simulatedDrawnCard = card;
+    }
+
     private void flipCard() {
         this.setFlippedCard(deck.draw());
         System.out.println("Flipped card : " + this.flippedCard);
@@ -71,10 +76,13 @@ class PhaseOne extends Phase {
         this.players[this.getLastTrickWinner()].addFollower(this.getFlippedCard());
 
         Player loser = this.players[this.getLastTrickLoser()];
-        Card givenCard = deck.draw();
 
-        loser.showCard(givenCard);
-        loser.addFollower(givenCard);
+        if (this.isSimulator) {
+            this.setDrawnCard(deck.draw());
+        }
+
+        loser.showCard(this.simulatedDrawnCard);
+        loser.addFollower(this.simulatedDrawnCard);
     }
     //endregion
 

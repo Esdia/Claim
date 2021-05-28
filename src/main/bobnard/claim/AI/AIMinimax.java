@@ -59,7 +59,7 @@ public class AIMinimax extends AI {
     int nextCard() {
         Node node;
         if (this.difficulty == Difficulty.EASY) {
-            node = new NodeEasy(game, this.getCards(), possibleOpponentCards, this.getId(), false);
+            node = new NodeEasy(game, this.getCards(), possibleOpponentCards, this.getId(), NodeType.MAX);
         } else {
             throw new IllegalStateException("Unexpected value: " + this.difficulty);
         }

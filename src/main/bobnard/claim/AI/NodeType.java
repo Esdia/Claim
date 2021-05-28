@@ -6,5 +6,6 @@ package bobnard.claim.AI;
 public enum NodeType {
     MAX,
     MIN,
-    RANDOM
+    FLIP_CARD,
+    DRAW_CARD
 }

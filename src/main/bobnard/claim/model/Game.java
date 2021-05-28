@@ -175,7 +175,7 @@ public class Game {
     }
 
     private void setState(GameState state) {
-        System.out.println("state = " + state);
+        // System.out.println("state = " + state);
         this.state = state;
     }
 
@@ -206,7 +206,7 @@ public class Game {
                     this.getCurrentPlayer().action();
                 }
             }
-            case TRICK_FINISHED -> {
+            case TRICK_FINISHED, SIMULATED_DRAWN_CARD -> {
                 this.endTrick();
                 if (this.phase.isDone()) {
                     if (this.getPhaseNum() == 1) {
@@ -381,15 +381,20 @@ public class Game {
         }
 
         if (this.state == GameState.TRICK_FINISHED && this.getPhaseNum() == 1) {
-            ((PhaseOne) phase).setFlippedCard(card);
+            ((PhaseOne) phase).setDrawnCard(card);
+            this.setState(GameState.SIMULATED_DRAWN_CARD);
+        } else if (this.state == GameState.SIMULATED_DRAWN_CARD && this.getPhaseNum() == 1) {
             this.nextStep();
+            ((PhaseOne) phase).setFlippedCard(card);
         } else {
             this.playCard(card);
         }
 
-        if (this.state == GameState.TRICK_FINISHED && getPhaseNum() == 1 && !phase.isDone()) {
-            return;
-        }
+        if (
+                (this.state == GameState.TRICK_FINISHED || this.state == GameState.SIMULATED_DRAWN_CARD)
+                        && getPhaseNum() == 1 && !phase.isDone()
+        ) return;
+
         while (!this.isWaitingAction()) {
             this.nextStep();
         }
