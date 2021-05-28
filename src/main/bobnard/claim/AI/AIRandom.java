@@ -5,6 +5,13 @@ import bobnard.claim.model.Game;
 
 import java.util.Random;
 
+/*
+ * This class was only used for testing the AI
+ * infrastructure. Since it is not used anymore
+ * but we still wish to keep it, we have to
+ * suppress the warning to not upset the IDE
+ */
+@SuppressWarnings("unused")
 public class AIRandom extends AI {
     private final Random random;
 
@@ -21,5 +28,6 @@ public class AIRandom extends AI {
     }
 
     @Override
-    public void showCard(Card card) {}
+    public void showCard(Card card) {
+    }
 }

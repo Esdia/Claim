@@ -17,9 +17,9 @@ class PhaseTwo extends Phase {
     //region OVERRIDES
     @Override
     void dealWithPlayedCards() {
-        for (Card card: this.getPlayedCards()) {
+        for (Card card : this.getPlayedCards()) {
             if (card.faction == Faction.DWARVES) {
-                this.players[this.getLastTrickLoser() ].addToScore(card);
+                this.players[this.getLastTrickLoser()].addToScore(card);
             } else {
                 this.players[this.getLastTrickWinner()].addToScore(card);
             }

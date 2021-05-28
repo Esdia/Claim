@@ -9,16 +9,18 @@ import java.io.IOException;
 
 public class SkinSelect extends JComponent {
 
-    JFrame frame;
-    Menu menu;
+    final JFrame frame;
+    final Menu menu;
     BufferedImage image;
 
-    JButton b1, b2, b3;
+    final JButton b1;
+    final JButton b2;
+    final JButton b3;
     ImageIcon ul, vl, ba;
 
-    SSMouseListener m = new SSMouseListener(this);
+    final SSMouseListener m = new SSMouseListener(this);
 
-    public SkinSelect(JFrame frame, Menu menu){
+    public SkinSelect(JFrame frame, Menu menu) {
         this.frame = frame;
         this.menu = menu;
 
@@ -37,41 +39,37 @@ public class SkinSelect extends JComponent {
         b3.addMouseListener(m);
     }
 
-    public void setImages(){
+    public void setImages() {
         try {
-            ul = new ImageIcon("src/main/bobnard/claim/UI/resources/"+ Menu.skin +"/menu/skin/logou.png");
-            vl = new ImageIcon("src/main/bobnard/claim/UI/resources/"+ Menu.skin +"/menu/skin/logov.png");
-            ba = new ImageIcon("src/main/bobnard/claim/UI/resources/"+ Menu.skin +"/menu/skin/back.png");
-            image = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/"+ Menu.skin +"/menu/skin/bg2.png"));
+            ul = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/logou.png");
+            vl = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/logov.png");
+            ba = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/back.png");
+            image = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/bg2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void setButtons(){
+    void setButton(JButton button, int x, int y, int w, int h, ImageIcon icon) {
+        button.setBounds(x, y, w, h);
+        button.setIcon(resizeIcon(icon, w, h));
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+    }
+
+    public void setButtons() {
         int w = this.frame.getWidth();
         int h = this.frame.getHeight();
         int x = 10;
         int y = 10;
 
-        b1.setBounds(x,y,w/16*4,h/9*2);
-        b1.setIcon(resizeIcon(vl, w/16*4, h/9*2));
-        b1.setOpaque(false);
-        b1.setContentAreaFilled(false);
+        this.setButton(b1, x, y, w / 16 * 4, h / 9 * 2, vl);
 
+        x += (w / 16 * 4) + ((w / 16 * 4) / 10);
 
-        x += (w/16 * 4) + ((w/16 * 4)/10);
+        this.setButton(b2, x, y, w / 16 * 4, h / 9 * 2, ul);
 
-        b2.setBounds(x,y,w/16*4,h/9*2);
-        b2.setIcon(resizeIcon(ul, w/16*4, h/9*2));
-        b2.setOpaque(false);
-        b2.setContentAreaFilled(false);
-
-
-        b3.setBounds(10,this.frame.getHeight()-100,w/6,h/19);
-        b3.setIcon(resizeIcon(ba, w/6, h/19));
-        b3.setOpaque(false);
-        b3.setContentAreaFilled(false);
+        this.setButton(b3, 10, h - 100, w / 6, h / 19, ba);
         b3.setBorderPainted(false);
     }
 
@@ -85,9 +83,9 @@ public class SkinSelect extends JComponent {
     }
 
     public Icon resizeIcon(ImageIcon i, int w, int h) {
-        if(i == null) return null;
+        if (i == null) return null;
         Image im = i.getImage();
-        Image resIm = im.getScaledInstance (w, h, Image.SCALE_SMOOTH);
+        Image resIm = im.getScaledInstance(w, h, Image.SCALE_SMOOTH);
         return new ImageIcon(resIm);
 
     }

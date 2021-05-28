@@ -3,16 +3,12 @@ package bobnard.claim.UI;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Random;
 
-public class Audio  {
+public class Audio {
 
-    private static File p1bf;
     private static File[] p1blf;
-    private static File p2bf;
     private static File[] p2blf;
     private static File[] menuBGM;
 
@@ -26,23 +22,24 @@ public class Audio  {
     private static Integer NB_SONG_P2;
 
 
-    public static void setFiles(){
-            System.out.println(Menu.skin);
-            p1bf = new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/phase1/bgm");
-            p2bf = new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/phase2/bgm");
-            p1blf = p1bf.listFiles();
-            p2blf = p2bf.listFiles();
-            NB_SONG_P1 = p1blf.length;
-            NB_SONG_P2 = p2blf.length;
-            menuBGM = new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/menu/bgm/").listFiles();
-            NB_SONG_MENU = menuBGM.length;
-            menuSE1 =  new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/menu/se/sysb.wav");
-            if(Menu.skin.equals("Umineko")) menuSE2 = new File("src/main/bobnard/claim/UI/resources/"+Menu.skin+"/audio/menu/se/ZS1.WAV");
+    public static void setFiles() {
+        System.out.println(Menu.skin);
+        File p1bf = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/phase1/bgm");
+        File p2bf = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/phase2/bgm");
+        p1blf = p1bf.listFiles();
+        p2blf = p2bf.listFiles();
+        NB_SONG_P1 = p1blf.length;
+        NB_SONG_P2 = p2blf != null ? p2blf.length : 0;
+        menuBGM = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/menu/bgm/").listFiles();
+        NB_SONG_MENU = menuBGM != null ? menuBGM.length : 0;
+        menuSE1 = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/menu/se/sysb.wav");
+        if (Menu.skin.equals("Umineko"))
+            menuSE2 = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/menu/se/ZS1.WAV");
 
 
     }
 
-    public static void playBGM(int phase){
+    public static void playBGM(int phase) {
         File song;
         Random rand = new Random();
         song = switch (phase) {
@@ -56,7 +53,7 @@ public class Audio  {
 
     }
 
-    public static void playSE(int number){
+    public static void playSE(int number) {
         File song = switch (number) {
             case 0 -> menuSE1;
             case 1 -> menuSE2;
@@ -67,9 +64,9 @@ public class Audio  {
 
     }
 
-    private static void play(File song, boolean loop){
+    private static void play(File song, boolean loop) {
         Clip clip;
-        try{
+        try {
             clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(song));
 
@@ -78,27 +75,26 @@ public class Audio  {
             double gain = 0.15;
             float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
             gainControl.setValue(dB);
-            if(loop){
+            if (loop) {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
                 bgm = clip;
-            }
-            else{
+            } else {
                 clip.start();
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public static void reload(){
+    public static void reload() {
         bgm.stop();
         setFiles();
         Audio.playBGM(0);
     }
 
-    public static Clip getBGM(){
+    public static Clip getBGM() {
         return bgm;
     }
 }

@@ -57,7 +57,7 @@ class CardTest {
 
         Card card = new Card(faction, value);
 
-        assertEquals(faction.toString()+value, card.name);
+        assertEquals(faction.toString() + value, card.name);
         assertEquals(card.name, card.toString());
     }
 }

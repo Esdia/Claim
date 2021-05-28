@@ -41,7 +41,7 @@ class PhaseOne extends Phase {
         this.setFlippedCard(deck.draw());
         System.out.println("Flipped card : " + this.flippedCard);
 
-        for (Player player: this.players) {
+        for (Player player : this.players) {
             player.showCard(this.flippedCard);
         }
     }
@@ -69,7 +69,7 @@ class PhaseOne extends Phase {
 
     @Override
     void dealWithPlayedCards() {
-        for (Card card: this.getPlayedCards()) {
+        for (Card card : this.getPlayedCards()) {
             if (card.faction == Faction.UNDEADS) {
                 this.players[this.getLastTrickWinner()].addToScore(card);
             }

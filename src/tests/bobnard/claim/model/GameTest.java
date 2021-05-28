@@ -7,7 +7,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-    Random random = new Random();
+    final Random random = new Random();
 
     void testGame() {
         Game game = new Game();
@@ -26,8 +26,6 @@ class GameTest {
 
                 currentPlayer = game.getCurrentPlayerID();
                 cards = game.getCards(currentPlayer);
-                //System.out.println("Player " + game.getCurrentPlayerID() + "'s turn");
-                //System.out.println(cards);
                 card = cards.get(random.nextInt(cards.size()));
                 game.playCard(card);
                 game.changePlayer();
@@ -35,9 +33,6 @@ class GameTest {
 
 
                 currentPlayer = game.getCurrentPlayerID();
-                //cards = game.getCards(currentPlayer);
-                //System.out.println("Player " + game.getCurrentPlayerID() + "'s turn");
-                //System.out.println(cards);
                 cards = game.getPlayableCards(currentPlayer, card.faction);
                 card = cards.get(random.nextInt(cards.size()));
                 assertTrue(game.isLegalMove(card));
@@ -51,7 +46,7 @@ class GameTest {
 
         assertTrue(game.isDone());
 
-        ScoreStack[] scoreStacks = new ScoreStack[] {
+        ScoreStack[] scoreStacks = new ScoreStack[]{
                 game.getPlayer(0).getScoreStack(),
                 game.getPlayer(1).getScoreStack()
         };
@@ -59,7 +54,7 @@ class GameTest {
         int factionsPlayerZero = 0;
 
         int nb0, nb1;
-        for (Faction faction: Faction.values()) {
+        for (Faction faction : Faction.values()) {
             nb0 = scoreStacks[0].getNbCardsFaction(faction);
             nb1 = scoreStacks[1].getNbCardsFaction(faction);
             if (nb0 > nb1) {

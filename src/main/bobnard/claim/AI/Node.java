@@ -55,7 +55,7 @@ public abstract class Node {
                 value = Double.NEGATIVE_INFINITY;
                 int i = 0;
                 int tmp;
-                for (Card card: this.playableCardsCopy) {
+                for (Card card : this.playableCardsCopy) {
                     tmp = this.nextChild(card).expectiminimax(depth - 1, alpha, beta);
                     if (tmp > value) {
                         value = tmp;
@@ -68,7 +68,7 @@ public abstract class Node {
             }
             case MIN -> {
                 value = Double.POSITIVE_INFINITY;
-                for (Card card: this.playableCardsCopy) {
+                for (Card card : this.playableCardsCopy) {
                     value = Math.min(
                             value,
                             this.nextChild(card).expectiminimax(depth - 1, alpha, beta)
@@ -79,7 +79,7 @@ public abstract class Node {
             }
             case RANDOM -> {
                 int counter = 0;
-                for (Card card: this.playableCardsCopy) {
+                for (Card card : this.playableCardsCopy) {
                     counter++;
                     value += this.nextChild(card).expectiminimax(depth - 1, alpha, beta);
                 }
@@ -132,7 +132,11 @@ public abstract class Node {
     /*
      * Heuristic depending on the difficulty
      * Must return how much the config is in favor of the node's CURRENT player
+     *
+     * We suppress the "SameReturnValue" warning only until we correctly implement
+     * this method
      */
+    @SuppressWarnings("SameReturnValue")
     abstract int evaluateState();
 
     int getNextMove() {

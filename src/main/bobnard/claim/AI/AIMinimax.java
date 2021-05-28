@@ -32,9 +32,12 @@ public class AIMinimax extends AI {
 
     int nextCard() {
         /* Useless switch for now, will become useful when adding more difficulties */
-        Node node = switch (this.difficulty) {
-            case EASY -> new NodeEasy(game, this.getCards(), possibleOpponentCards, this.getId(), false);
-        };
+        Node node;
+        if (this.difficulty == Difficulty.EASY) {
+            node = new NodeEasy(game, this.getCards(), possibleOpponentCards, this.getId(), false);
+        } else {
+            throw new IllegalStateException("Unexpected value: " + this.difficulty);
+        }
 
         return node.getNextMove();
     }

@@ -1,14 +1,9 @@
 package bobnard.claim.UI;
 
 
-import bobnard.claim.model.Game;
-
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 
 public class SSMouseListener extends MouseAdapter {
     final SkinSelect ss;
@@ -22,10 +17,8 @@ public class SSMouseListener extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
 
-        ImageIcon ba = null;
-
-        ba = new ImageIcon("src/main/bobnard/claim/UI/resources/"+ Menu.skin +"/menu/skin/back2.png");
-        setHover(e,ba);
+        ImageIcon ba = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/back2.png");
+        setHover(e, ba);
     }
 
     private void setHover(MouseEvent e, ImageIcon ba) {
@@ -39,9 +32,7 @@ public class SSMouseListener extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
         super.mouseEntered(e);
 
-        ImageIcon ba = null;
-
-        ba = new ImageIcon("src/main/bobnard/claim/UI/resources/"+ Menu.skin +"/menu/skin/back.png");
+        ImageIcon ba = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/back.png");
 
         setHover(e, ba);
     }
@@ -49,12 +40,14 @@ public class SSMouseListener extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         Audio.playSE(0);
-        if(e.getSource().equals(ss.b3)){
+        if (e.getSource().equals(ss.b3)) {
             ss.menu.isSs = false;
-        }if(e.getSource().equals(ss.b2)){
+        }
+        if (e.getSource().equals(ss.b2)) {
             ss.menu.changeSkin("Umineko");
             ss.menu.isSs = false;
-        }if(e.getSource().equals(ss.b1)){
+        }
+        if (e.getSource().equals(ss.b1)) {
             ss.menu.changeSkin("Vanilla");
             ss.menu.isSs = false;
         }

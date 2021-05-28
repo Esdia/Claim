@@ -104,12 +104,15 @@ public class Player {
     //endregion
 
     /*
-    * Meant to be overridden.
-    * These methods only exists in this class so that
-    * the model can be independent from the AI package
-    */
-    public void showCard(Card card) {}
-    public void action() {}
+     * Meant to be overridden.
+     * These methods only exists in this class so that
+     * the model can be independent from the AI package
+     */
+    public void showCard(Card card) {
+    }
+
+    public void action() {
+    }
 
     Player copy() {
         Player player = new Player(this.id);

@@ -23,7 +23,7 @@ class HandTest {
         for (int i = 0; i < 50; i++) {
             c = new Card(
                     Faction.values()[random.nextInt(5)],
-                    random.nextInt(8)+2
+                    random.nextInt(8) + 2
             );
             cards.add(c);
         }
@@ -46,14 +46,14 @@ class HandTest {
         Hand fullHand = new Hand();
 
         for (int i = 0; i < 25; i++) {
-            for (Faction faction: Faction.values()) {
+            for (Faction faction : Faction.values()) {
                 fullHand.add(new Card(faction, random.nextInt(8) + 2));
             }
         }
 
         ArrayList<Card> playableCards;
         ArrayList<Card> expected;
-        for (Faction faction: Faction.values()) {
+        for (Faction faction : Faction.values()) {
             playableCards = fullHand.playableCards(faction);
 
             expected = toArrayList(fullHand.getCards(faction));

@@ -43,7 +43,7 @@ class ScoreStackTest {
             stack.pop();
         }
 
-        for (Faction faction: Faction.values()) {
+        for (Faction faction : Faction.values()) {
             assertEquals(0, stack.getNbCardsFaction(faction));
             assertEquals(-1, stack.maxValueFaction(faction));
         }

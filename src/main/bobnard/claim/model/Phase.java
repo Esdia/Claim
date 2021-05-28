@@ -81,7 +81,7 @@ abstract class Phase {
         if (!this.trick.isReady()) {
             throw new IllegalStateException();
         }
-        
+
         this.currentLeader = this.trick.getWinner();
         this.currentPlayer = this.getLastTrickWinner();
 
@@ -107,9 +107,9 @@ abstract class Phase {
     protected int getLastTrickWinner() {
         return this.currentLeader;
     }
-    
+
     protected int getTrickWinnerID() {
-    	return this.trick.getWinner();
+        return this.trick.getWinner();
     }
 
     protected int getLastTrickLoser() {
@@ -124,7 +124,7 @@ abstract class Phase {
         Card[] cards = new Card[2];
 
         cards[currentLeader] = this.trick.getC1();
-        cards[1-currentLeader] = this.trick.getC2();
+        cards[1 - currentLeader] = this.trick.getC2();
 
         return cards;
     }

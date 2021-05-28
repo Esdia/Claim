@@ -13,7 +13,7 @@ public class ScoreStack extends Stack<Card> {
 
         this.occ = new HashMap<>();
 
-        for (Faction faction: Faction.values()) {
+        for (Faction faction : Faction.values()) {
             this.occ.put(faction, 0);
         }
     }

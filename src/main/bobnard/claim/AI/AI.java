@@ -24,7 +24,7 @@ public abstract class AI extends Player {
 
         Card card = this.game.getPlayableCards().get(index);
 
-        for (CardUI cardUI: this.cardUIs) {
+        for (CardUI cardUI : this.cardUIs) {
             if (cardUI.getCard().equals(card)) {
                 cardUI.action();
                 break;

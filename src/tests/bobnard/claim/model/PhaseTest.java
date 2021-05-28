@@ -15,7 +15,7 @@ class PhaseTest {
 
     @BeforeEach
     void init() {
-        players = new Player[] {
+        players = new Player[]{
                 new Player(0),
                 new Player(1)
         };
@@ -47,7 +47,7 @@ class PhaseTest {
         phase.changePlayer();
 
         phase.players[phase.getCurrentPlayer()].addCard(c1); // To make sure there is at least one legal move
-        for (Card c2: phase.players[phase.getCurrentPlayer()].getCards()) {
+        for (Card c2 : phase.players[phase.getCurrentPlayer()].getCards()) {
             if (c2.faction == c1.faction || c2.faction == Faction.DOPPELGANGERS) {
                 assertTrue(phase.isLegalMove(c2));
             } else {
@@ -89,7 +89,7 @@ class PhaseTest {
         assertFalse(phase.trickReady());
 
         assertEquals(expectedWinner, phase.getLastTrickWinner());
-        assertEquals(1-expectedWinner, phase.getLastTrickLoser());
+        assertEquals(1 - expectedWinner, phase.getLastTrickLoser());
 
         assertEquals(expectedWinner, phase.getCurrentPlayer());
     }

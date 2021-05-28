@@ -11,11 +11,11 @@ class PhaseTwoTest {
     PhaseTwo phase;
     Player[] players;
 
-    Random random = new Random();
+    final Random random = new Random();
 
     @BeforeEach
     void init() {
-        players = new Player[] {
+        players = new Player[]{
                 new Player(0),
                 new Player(1)
         };
@@ -24,7 +24,7 @@ class PhaseTwoTest {
 
     @Test
     void testDwarves() {
-        for (Player player: phase.players) {
+        for (Player player : phase.players) {
             assertEquals(0, player.nbCardsFaction(Faction.DWARVES));
         }
 
@@ -37,14 +37,14 @@ class PhaseTwoTest {
         phase.playCard(c2);
         phase.endTrick();
 
-        assertEquals(2, phase.players[phase.getLastTrickLoser() ].nbCardsFaction(Faction.DWARVES));
+        assertEquals(2, phase.players[phase.getLastTrickLoser()].nbCardsFaction(Faction.DWARVES));
         assertEquals(0, phase.players[phase.getLastTrickWinner()].nbCardsFaction(Faction.DWARVES));
     }
 
     @Test
     void testEndTrick() {
-        for (Faction faction: Faction.values()) {
-            for (Player player: players) {
+        for (Faction faction : Faction.values()) {
+            for (Player player : players) {
                 assertEquals(0, player.nbCardsFaction(faction));
             }
         }
@@ -70,7 +70,7 @@ class PhaseTwoTest {
 
         int winner = phase.getLastTrickWinner();
         int loser = phase.getLastTrickLoser();
-        for (Faction faction: Faction.values()) {
+        for (Faction faction : Faction.values()) {
             if (faction == c1.faction || faction == c2.faction) {
                 if (faction == Faction.DWARVES) {
                     assertEquals(1, players[loser].nbCardsFaction(faction));

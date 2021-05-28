@@ -58,7 +58,7 @@ public class Game {
         int n0, n1;
         int nMax0, nMax1;
 
-        for (Faction faction: Faction.values()) {
+        for (Faction faction : Faction.values()) {
             n0 = players[0].nbCardsFaction(faction);
             n1 = players[1].nbCardsFaction(faction);
 
@@ -81,7 +81,7 @@ public class Game {
 
     public void reset() {
         this.isDone = false;
-        for (Player player: players) {
+        for (Player player : players) {
             player.reset();
         }
         Audio.getBGM().stop();
@@ -116,10 +116,10 @@ public class Game {
             }
             case WAITING_LEADER_ACTION, WAITING_FOLLOW_ACTION -> {
                 /*
-                * Here, the method playCard (called by AI.action,
-                * or when a player clicks on a card) changes the state
-                * for us.
-                */
+                 * Here, the method playCard (called by AI.action,
+                 * or when a player clicks on a card) changes the state
+                 * for us.
+                 */
                 if (this.isCurrentPlayerAI()) {
                     this.getCurrentPlayer().action();
                 }
@@ -291,13 +291,13 @@ public class Game {
         }
         return this.winnerID;
     }
-    
+
     public int getTrickWinnerID() {
-         return this.phase.getTrickWinnerID();
+        return this.phase.getTrickWinnerID();
     }
-    
+
     public boolean getLegalCard(Card card) {
-    	return getPlayableCards(getCurrentPlayerID(), getPlayedFaction()).contains(card);
+        return getPlayableCards(getCurrentPlayerID(), getPlayedFaction()).contains(card);
     }
     //endregion
 
@@ -320,7 +320,7 @@ public class Game {
     //endregion
 
     public Game copy() {
-        Player[] players = new Player[] {
+        Player[] players = new Player[]{
                 this.players[0].copy(),
                 this.players[1].copy()
         };

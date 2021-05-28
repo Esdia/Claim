@@ -40,7 +40,8 @@ class DeckTest {
         ArrayList<Card> seen = new ArrayList<>();
 
         Card c;
-        while(!deck.isEmpty()) {
+        //noinspection ConstantConditions
+        while (!deck.isEmpty()) {
             c = deck.draw();
 
             if (c.equals(gob0)) {
