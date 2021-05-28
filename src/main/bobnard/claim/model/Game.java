@@ -250,7 +250,7 @@ public class Game {
      *
      * @return the game's current phase's number (1 or 2)
      */
-    int getPhaseNum() {
+    public int getPhaseNum() {
         return this.phase.getPhaseNum();
     }
 

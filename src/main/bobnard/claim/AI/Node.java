@@ -112,6 +112,32 @@ public abstract class Node {
         return this.playableCards.size() == 0;
     }
 
+    private NodeType getNextType(Game gameCopy) {
+        NodeType nodeType = null;
+
+        if (gameCopy.getPhaseNum() == 1) {
+            if (gameCopy.getState() == GameState.TRICK_FINISHED) {
+                nodeType = NodeType.DRAW_CARD;
+            } else if (gameCopy.getState() == GameState.SIMULATED_DRAWN_CARD) {
+                nodeType = NodeType.FLIP_CARD;
+            }
+        }
+
+        if (nodeType == null) {
+            /*
+             * We are in phase two, or we are in phase 1
+             * and the game is waiting an action
+             */
+            if (gameCopy.getCurrentPlayerID() == aiID) {
+                nodeType = NodeType.MAX;
+            } else {
+                nodeType = NodeType.MIN;
+            }
+        }
+
+        return nodeType;
+    }
+
     private Node nextChild(Card card) {
         if (this.isLeaf()) {
             throw new IllegalStateException();
@@ -121,24 +147,13 @@ public abstract class Node {
         gameCopy.setSimulator();
         gameCopy.simulatePlay(card);
 
-        NodeType nodeType;
-        if (gameCopy.getState() == GameState.TRICK_FINISHED) {
-            nodeType = NodeType.DRAW_CARD;
-        } else if (gameCopy.getState() == GameState.SIMULATED_DRAWN_CARD) {
-            nodeType = NodeType.FLIP_CARD;
-        } else if (gameCopy.getCurrentPlayerID() == aiID) {
-            nodeType = NodeType.MAX;
-        } else {
-            nodeType = NodeType.MIN;
-        }
-
         this.playableCards.remove(card);
         Node res = this.newInstance(
                 gameCopy,
                 aiCards,
                 opponentPossibleCards,
                 aiID,
-                nodeType
+                this.getNextType(gameCopy)
         );
         this.playableCards.add(card);
 
