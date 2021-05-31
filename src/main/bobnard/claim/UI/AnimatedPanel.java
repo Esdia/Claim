@@ -1,56 +1,46 @@
 package bobnard.claim.UI;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class AnimatedPanel {
-    final CardUI myc;
-    final Point mypinit;
-    final Point mypdest;
+    final CardUI card;
+    final Point start;
+    final Point dest;
     final int sx;
     final int sy;
     int step;
-    Timer animationTimer;
 
-    public AnimatedPanel(CardUI c, Point p1, Point p2) {
-        myc = c;
-        mypinit = p1;
-        mypdest = p2;
+    public AnimatedPanel(CardUI c, Point start, Point dest) {
+        card = c;
+        this.start = start;
+        this.dest = dest;
         step = 20;
-        sx = (mypdest.x - mypinit.x) / step;
-        sy = (mypdest.y - mypinit.y) / step;
-        myc.setVisible(true);
-        myc.setLocation(mypinit);
+        sx = (this.dest.x - this.start.x) / step;
+        sy = (this.dest.y - this.start.y) / step;
+        card.setVisible(true);
+        card.setLocation(this.start);
     }
 
-    public AnimatedPanel(CardUI c, Point p2) {
-        myc = c;
-        mypinit = new Point(c.getX(), c.getY());
-        mypdest = p2;
-        step = 20;
-        sx = (mypdest.x - mypinit.x) / step;
-        sy = (mypdest.y - mypinit.y) / step;
-        myc.setVisible(true);
-        myc.setLocation(mypinit);
+    public AnimatedPanel(CardUI c, Point dest) {
+        this(c, new Point(c.getX(), c.getY()), dest);
     }
 
+    boolean isDone() {
+        return this.step == 0;
+    }
 
-    public void startanimation() {
+    void nextStep() {
+        step--;
+        if (step == 0) {
+            card.setLocation(dest);
+        } else {
+            start.x += sx;
+            start.y += sy;
+            card.setLocation(start);
+        }
+        card.repaint();
+    }
 
-        animationTimer = new Timer(0, f -> {
-            mypinit.x += sx;
-            mypinit.y += sy;
-            step--;
-            if (step == 0) {
-                myc.setLocation(mypdest);
-                animationTimer.stop();
-            } else {
-                myc.setLocation(mypinit);
-                myc.repaint();
-            }
-
-        });
-        animationTimer.start();
-
+    void whenFinished() {
     }
 }
