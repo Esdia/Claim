@@ -77,7 +77,7 @@ class PhaseOne extends Phase {
 
         Player loser = this.players[this.getLastTrickLoser()];
 
-        if (this.isSimulator) {
+        if (!this.isSimulator) {
             this.setDrawnCard(deck.draw());
         }
 
