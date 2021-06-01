@@ -61,6 +61,7 @@ public class AIMinimax extends AI {
      * it's playable cards.
      * @see Node#getNextMove()
      */
+    @Override
     int nextCard() {
         Node node;
         if (this.difficulty == Difficulty.EASY) {
@@ -70,16 +71,5 @@ public class AIMinimax extends AI {
         }
 
         return node.getNextMove();
-    }
-
-    /**
-     * Describes the action taken by the AI at the
-     * beginning of it's turn.
-     * <p>
-     * This AI calculates its move using the Minimax algorithm
-     */
-    @Override
-    public void action() {
-        this.play(this.nextCard());
     }
 }

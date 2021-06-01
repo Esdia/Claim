@@ -82,13 +82,23 @@ public abstract class AI extends Player {
     }
 
     /**
+     * Calculates the AI's next move.
+     *
+     * @return The index of the AI's next move in the list of
+     * it's playable cards.
+     */
+    abstract int nextCard();
+
+    /**
      * Describes the action taken by the AI at the
      * beginning of it's turn.
      * <p>
      * This method calculates the AI's next move and plays it.
      */
     @Override
-    public abstract void action();
+    public void action() {
+        this.play(this.nextCard());
+    }
 
     /**
      * Shows a card to the AI.

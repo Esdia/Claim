@@ -28,17 +28,13 @@ public class AIRandom extends AI {
         this.random = new Random();
     }
 
-    /**
-     * Describes the action taken by the AI at the
-     * beginning of it's turn.
-     * <p>
-     * This method plays a random card.
-     */
     @Override
-    public void action() {
-        this.play(
-                random.nextInt(this.game.getPlayableCards().size())
-        );
+    public void init() {
+    }
+
+    @Override
+    int nextCard() {
+        return random.nextInt(this.game.getPlayableCards().size());
     }
 
     /**
