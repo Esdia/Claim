@@ -30,10 +30,11 @@ class PhaseOne extends Phase {
      * @param deck        The phase's deck.
      * @param flippedCard The phase's currently flipped card.
      */
-    PhaseOne(Player[] players, Deck deck, Card flippedCard) {
+    PhaseOne(Player[] players, Deck deck, Card flippedCard, Card simulatedDrawnCard) {
         super(players);
         this.deck = (Deck) deck.clone();
         this.flippedCard = flippedCard;
+        this.simulatedDrawnCard = simulatedDrawnCard;
     }
 
     //region INIT
@@ -133,7 +134,7 @@ class PhaseOne extends Phase {
      */
     @Override
     Phase getInstance(Player[] players) {
-        return new PhaseOne(players, this.deck, this.flippedCard);
+        return new PhaseOne(players, this.deck, this.flippedCard, this.simulatedDrawnCard);
     }
 
     /**
