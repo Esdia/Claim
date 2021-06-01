@@ -23,7 +23,7 @@ public class Audio {
     private static Integer NB_SONG_P1;
     private static Integer NB_SONG_P2;
 
-    private static int volume;
+    private static int volume = 15;
 
 
     public static void setFiles() {
@@ -49,6 +49,7 @@ public class Audio {
         FloatControl gainControl = (FloatControl) bgm.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(dB);
     }
+
     public static int getVolume(){
         return volume;
     }
@@ -85,8 +86,7 @@ public class Audio {
             clip.open(AudioSystem.getAudioInputStream(song));
 
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-
-            float dB = (float) (Math.log((double) 15/100) / Math.log(10.0) * 20.0);
+            float dB = (float) (Math.log((double) volume/100) / Math.log(10.0) * 20.0);
             gainControl.setValue(dB);
             if (loop) {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
