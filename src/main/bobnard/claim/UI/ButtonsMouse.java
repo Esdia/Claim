@@ -112,7 +112,6 @@ public class ButtonsMouse extends MouseAdapter {
             };
 
             if (menu.b1b.equals(e.getSource())) {
-                System.out.println("ddd");
                 players[0] = new AIMinimax(game, 0, Difficulty.EASY);
             } else {
                 players[0] = new Player(0);
@@ -143,6 +142,12 @@ public class ButtonsMouse extends MouseAdapter {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
+        }
+
+        if (menu.b3.equals(e.getSource())) {
+            menu.isConfig = !menu.isConfig;
+            menu.config.refresh();
+            menu.refresh();
         }
 
         if (menu.b4.equals(e.getSource())) {

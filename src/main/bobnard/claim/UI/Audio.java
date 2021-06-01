@@ -2,9 +2,11 @@ package bobnard.claim.UI;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.Control;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 public class Audio {
 
@@ -20,6 +22,8 @@ public class Audio {
     private static Integer NB_SONG_MENU;
     private static Integer NB_SONG_P1;
     private static Integer NB_SONG_P2;
+
+    private static int volume;
 
 
     public static void setFiles() {
@@ -37,6 +41,16 @@ public class Audio {
             menuSE2 = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/menu/se/ZS1.WAV");
 
 
+    }
+
+    public static void setVolume(int volume) {
+        Audio.volume = volume;
+        float dB = (float) (Math.log((double) volume/100) / Math.log(10.0) * 20.0);
+        FloatControl gainControl = (FloatControl) bgm.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(dB);
+    }
+    public static int getVolume(){
+        return volume;
     }
 
     public static void playBGM(int phase) {
@@ -72,8 +86,7 @@ public class Audio {
 
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
-            double gain = 0.15;
-            float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+            float dB = (float) (Math.log((double) 15/100) / Math.log(10.0) * 20.0);
             gainControl.setValue(dB);
             if (loop) {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
