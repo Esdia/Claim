@@ -10,6 +10,8 @@ public abstract class AI extends Player {
     private CardUI[] cardUIs = null;
     protected final Game game;
 
+    private boolean evaluating;
+
     /**
      * Creates a blank AI.
      *
@@ -19,6 +21,11 @@ public abstract class AI extends Player {
     AI(Game game, int id) {
         super(id);
         this.game = game;
+        this.evaluating = false;
+    }
+
+    void setEvaluating() {
+        this.evaluating = true;
     }
 
     /**
@@ -41,11 +48,16 @@ public abstract class AI extends Player {
      *              in the AI's playable cards, not in every cards.
      */
     protected void play(int index) {
+        Card card = this.game.getPlayableCards().get(index);
+
+        if (this.evaluating) {
+            this.game.playCard(card);
+            return;
+        }
+
         if (this.cardUIs == null) {
             throw new IllegalStateException();
         }
-
-        Card card = this.game.getPlayableCards().get(index);
 
         for (CardUI cardUI : this.cardUIs) {
             if (cardUI.getCard().equals(card)) {
