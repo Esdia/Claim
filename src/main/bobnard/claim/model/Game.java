@@ -1,7 +1,5 @@
 package bobnard.claim.model;
 
-import bobnard.claim.UI.Audio;
-
 /**
  * Represents the game
  */
@@ -138,7 +136,6 @@ public class Game {
         for (Player player : players) {
             player.reset();
         }
-        Audio.getBGM().stop();
     }
 
     /**
@@ -149,7 +146,7 @@ public class Game {
             throw new IllegalStateException();
         }
         this.startPhaseOne();
-        this.setState(GameState.WAITING_LEADER_ACTION);
+        this.setState(GameState.STARTED_PHASE_ONE);
     }
 
     /**
@@ -192,10 +189,9 @@ public class Game {
      */
     public void nextStep() {
         switch (this.state) {
-            case READY_TO_START -> {
-                this.start();
-                this.setState(GameState.WAITING_LEADER_ACTION);
-            }
+            case READY_TO_START -> this.start();
+            /* This state exists to let the UI start the audio */
+            case STARTED_PHASE_ONE -> this.setState(GameState.WAITING_LEADER_ACTION);
             case WAITING_LEADER_ACTION, WAITING_FOLLOW_ACTION -> {
                 /*
                  * Here, the method playCard (called by AI.action,
@@ -255,7 +251,6 @@ public class Game {
     }
 
     private void startPhaseOne() {
-        Audio.playBGM(1);
         System.out.println("Beginning phase 1");
         this.phase = new PhaseOne(this.players);
     }
@@ -268,9 +263,6 @@ public class Game {
         this.phase = new PhaseTwo(players);
         if (this.isSimulator) {
             this.phase.setSimulator();
-        } else {
-            Audio.getBGM().stop();
-            Audio.playBGM(2);
         }
     }
     //endregion

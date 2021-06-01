@@ -98,7 +98,17 @@ public class CFrame extends JComponent {
             }
 
             if (this.movingPanels.size() == 0 && !game.isWaitingHumanAction()) {
+                switch (game.getState()) {
+                    case GAME_FINISHED -> Audio.getBGM().stop();
+                    case STARTED_PHASE_ONE -> Audio.playBGM(1);
+                    case FIRST_PHASE_FINISHED -> {
+                        Audio.getBGM().stop();
+                        Audio.playBGM(2);
+                    }
+                }
+
                 game.nextStep();
+
                 repaint();
             }
         });
