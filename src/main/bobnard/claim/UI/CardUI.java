@@ -77,23 +77,20 @@ public class CardUI extends JPanel implements MouseInputListener {
     }
 
     public void action() {
-        if (!this.isFlipped) {
+        System.out.println("frame.isAnimating() = " + frame.isAnimating());
+        if (!(this.isFlipped || frame.isAnimating())) {
             /////
             CardUI cui = frame.playedPanels[frame.getGame().getCurrentPlayerID()];
             cui.setLocation(this.getLocation());
             cui.setSize(this.getSize());
             cui.setCard(this.card);
             this.setVisible(false);
-            AnimatedPanel ap = new AnimatedPanel(cui, frame.getPlayedLocation());
-            ap.startanimation();
+            AnimatedPanel ap = new AnimatedPlayedCard(cui, frame.getPlayedLocation(game.getCurrentPlayerID()), frame);
+            this.frame.addAnimation(ap);
             /////
             game.playCard(card);
             System.out.println(card.name);
             frame.repaint();
-
-            if (!game.isWaitingHumanAction()) {
-                frame.resumeLoop();
-            }
         }
     }
 

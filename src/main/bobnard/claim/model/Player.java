@@ -246,6 +246,20 @@ public class Player {
     }
 
     /**
+     * Initialize the AI at the start of the game
+     * <p>
+     * This method is meant to be overridden by the
+     * AI class.
+     * <p>
+     * This method, like every other empty method
+     * here, exists in this class so that the model
+     * can stay independent from the AI (by not having
+     * to import it and to cast the player down to it).
+     */
+    public void init() {
+    }
+
+    /**
      * Returns a copy of the player.
      *
      * @return a copy of the player.

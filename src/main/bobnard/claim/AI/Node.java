@@ -44,7 +44,7 @@ public abstract class Node {
         this.opponentPossibleCards = (Hand) opponentPossibleCards.clone();
 
         this.playableCards = switch (this.type) {
-            case MAX -> this.aiCards;
+            case MAX -> this.game.getPlayableCards(aiID);
             case MIN, FLIP_CARD, DRAW_CARD -> this.opponentPossibleCards;
         };
         this.playableCardsCopy = (Hand) this.playableCards.clone();
@@ -171,13 +171,51 @@ public abstract class Node {
     abstract Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type);
 
     /**
+     * Evaluates an intermediate configuration in phase one.
+     *
+     * @return The evaluation of the configuration
+     */
+    abstract int evaluatePhaseOne();
+
+    /**
+     * Evaluates an intermediate configuration in phase two.
+     *
+     * @return The evaluation of the configuration
+     */
+    abstract int evaluatePhaseTwo();
+
+    /**
      * Heuristic depending on the difficulty.
      * <p>
      * Must return how much the config is in favor of the AI.
      *
      * @return The evaluation of the node's configuration.
      */
-    abstract int evaluateState();
+    private int evaluateState() {
+        if (this.game.isDone()) {
+            /*
+             * If the game is done, it is very easy to evaluate the configuration :
+             * If the AI won, it's very good.
+             * If the AI lost, it's very bad.
+             */
+            if (this.game.getWinnerID() == this.aiID) {
+                return Integer.MAX_VALUE;
+            } else {
+                return Integer.MIN_VALUE;
+            }
+        }
+
+        /*
+         * Here, we are evaluating a intermediate configuration,
+         * so we have to estimate if it is rather favorable to
+         * the AI or to the opponent.
+         */
+        if (this.game.getPhaseNum() == 1) {
+            return this.evaluatePhaseOne();
+        } else { /* this.game.getPhaseNum() == 2 */
+            return this.evaluatePhaseTwo();
+        }
+    }
 
     /**
      * Returns the AI's next move.

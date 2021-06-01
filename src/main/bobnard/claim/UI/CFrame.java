@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class CFrame extends JComponent {
@@ -20,8 +21,6 @@ public class CFrame extends JComponent {
 
 
     static final String path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
-
-    boolean ToAnimate = false;
 
     BufferedImage image;
     BufferedImage image2;
@@ -43,7 +42,8 @@ public class CFrame extends JComponent {
     int imgWidth;
     int imgHeight;
 
-    private final Timer nextStepTimer = new Timer(1500, null);
+    private final Timer gameLoop = new Timer(16, null);
+    final ArrayList<AnimatedPanel> movingPanels = new ArrayList<>();
 
     public CFrame(Game game) {
         FlippedCard = null;
@@ -85,25 +85,35 @@ public class CFrame extends JComponent {
     }
 
     void startLoop() {
-        this.nextStepTimer.addActionListener(e -> {
-            game.nextStep();
-            repaint();
-            if (game.isWaitingHumanAction()) {
-                stopLoop();
+        this.gameLoop.addActionListener(e -> {
+
+            ArrayList<AnimatedPanel> tmp = new ArrayList<>(this.movingPanels);
+            for (AnimatedPanel animatedPanel : tmp) {
+                animatedPanel.nextStep();
+                if (animatedPanel.isDone()) {
+                    animatedPanel.whenFinished();
+
+                    this.movingPanels.remove(animatedPanel);
+                }
+            }
+
+            if (this.movingPanels.size() == 0 && !game.isWaitingHumanAction()) {
+                switch (game.getState()) {
+                    case GAME_FINISHED -> Audio.getBGM().stop();
+                    case STARTED_PHASE_ONE -> Audio.playBGM(1);
+                    case FIRST_PHASE_FINISHED -> {
+                        Audio.getBGM().stop();
+                        Audio.playBGM(2);
+                    }
+                }
+
+                game.nextStep();
+
+                repaint();
             }
         });
-        this.nextStepTimer.setRepeats(true);
-        this.nextStepTimer.start();
-    }
-
-    void stopLoop() {
-        this.nextStepTimer.stop();
-    }
-
-    void resumeLoop() {
-        if (!this.nextStepTimer.isRunning()) {
-            this.nextStepTimer.start();
-        }
+        this.gameLoop.setRepeats(true);
+        this.gameLoop.start();
     }
 
     public void setPlayers() {
@@ -161,9 +171,8 @@ public class CFrame extends JComponent {
         g.clearRect(0, 0, w, h);
 
         this.drawHands(resize);
+        this.displayPlayed(resize);
         this.displayFlipped(resize);
-
-        if (this.game.trickReady() && ToAnimate) animateEndTrick();
 
         int wb = w / 18;
         int hb = (int) (wb * 1.5);
@@ -217,56 +226,67 @@ public class CFrame extends JComponent {
         }
     }
 
-
-    void displayFlipped(boolean resize) {
-        Card c = this.game.getFlippedCard();
-        if (c == null) return;
-        if (this.FlippedCard == c) return;
-        this.FlippedCard = c;
-
-        if (resize)
-            this.flippedPanel.setSize(imgWidth, imgHeight);
-        this.flippedPanel.setCard(this.FlippedCard);
-
+    void animateFlipped() {
         int wb = w / 18;
         int hb = (int) (wb * 1.5);
         Point p1 = new Point(w / 32, (h / 2) - (hb / 2));
         Point p2 = new Point((w / 32) + 3 * imgWidth, (h - imgHeight) / 2);
         AnimatedPanel flipped = new AnimatedPanel(this.flippedPanel, p1, p2);
-        flipped.startanimation();
+        this.movingPanels.add(flipped);
+    }
 
-        ToAnimate = true;
+    void displayPlayed(boolean resize) {
+        if (resize) {
+            CardUI cardUI;
+            for (int i = 0; i < 2; i++) {
+                cardUI = playedPanels[i];
+                cardUI.setSize(imgWidth, imgHeight);
+                cardUI.setLocation(this.getPlayedLocation(i));
+            }
+        }
+    }
 
+
+    void displayFlipped(boolean resize) {
+        Card c = this.game.getFlippedCard();
+        if (c == null) return;
+
+        if (resize) {
+            this.flippedPanel.setSize(imgWidth, imgHeight);
+            this.flippedPanel.setLocation(this.getFlippedLocation());
+        }
+
+        if (this.isAnimating()) {
+            return;
+        }
+
+        if (this.FlippedCard != c) {
+            this.FlippedCard = c;
+            this.flippedPanel.setCard(this.FlippedCard);
+
+            this.animateFlipped();
+        }
+    }
+
+    void addAnimation(AnimatedPanel animatedPanel) {
+        this.movingPanels.add(animatedPanel);
     }
 
     void animateEndTrick() {
-
-        //Point p0 = new Point(w/32, (h/2)-(hb/2));
-        Point p1 = new Point((w / 32) + 3 * imgWidth, (h - imgHeight) / 2);
-        Point p2 = new Point(w / 32, 10);
-        Point p3 = new Point(w / 32, h - 10 - ((int) ((w / 18) * 1.5)));
-        if (this.game.getTrickWinnerID() == 0) {
-            //AnimatedPanel back = new AnimatedPanel(this.flippedPanel, p0, p3);
-            AnimatedPanel flipped = new AnimatedPanel(this.flippedPanel, p1, p2);
-            flipped.startanimation();
-            //back.startanimation();
-        } else {
-            //AnimatedPanel back = new AnimatedPanel(this.flippedPanel, p0, p2);
-            AnimatedPanel flipped = new AnimatedPanel(this.flippedPanel, p1, p3);
-            flipped.startanimation();
-            //back.startanimation();
+        if (this.game.getPhaseNum() == 2) {
+            this.removePlayedCards();
+            return;
         }
 
-        ToAnimate = false;
+        Point start = new Point((w / 32) + 3 * imgWidth, (h - imgHeight) / 2);
+        Point dest;
+        if (this.game.getTrickWinnerID() == 0) {
+            dest = new Point(w / 32, 10);
+        } else {
+            dest = new Point(w / 32, h - 10 - ((int) ((w / 18) * 1.5)));
+        }
 
-        Timer t = new Timer(1200, e -> {
-            for (int i = 0; i < 2; i++) {
-                if (game.getState() == GameState.TRICK_FINISHED)
-                    playedPanels[i].setVisible(false);
-            }
-        });
-        t.setRepeats(false);
-        t.start();
+        this.movingPanels.add(new AnimatedEndTrick(flippedPanel, start, dest, this));
     }
 
 
@@ -305,10 +325,10 @@ public class CFrame extends JComponent {
         }
     }
 
-    public Point getPlayedLocation() {
+    public Point getPlayedLocation(int playerID) {
         int x = w / 2 - imgWidth;
         int y;
-        if (game.getCurrentPlayerID() == 0) {
+        if (playerID == 0) {
             y = (h / 2) - imgHeight - (h / 16);
         } else {
             y = (h / 2) + (h / 16);
@@ -317,6 +337,19 @@ public class CFrame extends JComponent {
         return new Point(x, y);
     }
 
+    Point getFlippedLocation() {
+        return new Point((w / 32) + 3 * imgWidth, (h - imgHeight) / 2);
+    }
+
+    public boolean isAnimating() {
+        return this.movingPanels.size() != 0;
+    }
+
+    public void removePlayedCards() {
+        for (int i = 0; i < 2; i++) {
+            playedPanels[i].setVisible(false);
+        }
+    }
 }
 
 
