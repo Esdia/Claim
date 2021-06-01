@@ -146,6 +146,11 @@ public class Game {
             throw new IllegalStateException();
         }
         this.startPhaseOne();
+
+        for (Player player : players) {
+            player.init(); /* Used for initializing the AI */
+        }
+
         this.setState(GameState.STARTED_PHASE_ONE);
     }
 

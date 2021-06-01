@@ -24,6 +24,9 @@ public abstract class AI extends Player {
         this.evaluating = false;
     }
 
+    @Override
+    public abstract void init();
+
     void setEvaluating() {
         this.evaluating = true;
     }

@@ -25,13 +25,18 @@ public class AIMinimax extends AI {
         this.difficulty = difficulty;
 
         this.possibleOpponentCards = new Hand();
-        this.initOpponentCards();
     }
 
     private void initOpponentCards() {
+        possibleOpponentCards.clear();
         possibleOpponentCards.addAll(new Deck());
         possibleOpponentCards.sort();
         possibleOpponentCards.removeAll(this.getCards());
+    }
+
+    @Override
+    public void init() {
+        this.initOpponentCards();
     }
 
     /**
