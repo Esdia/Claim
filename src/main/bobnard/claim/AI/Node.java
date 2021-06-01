@@ -44,7 +44,7 @@ public abstract class Node {
         this.opponentPossibleCards = (Hand) opponentPossibleCards.clone();
 
         this.playableCards = switch (this.type) {
-            case MAX -> this.aiCards;
+            case MAX -> this.game.getPlayableCards(aiID);
             case MIN, FLIP_CARD, DRAW_CARD -> this.opponentPossibleCards;
         };
         this.playableCardsCopy = (Hand) this.playableCards.clone();
