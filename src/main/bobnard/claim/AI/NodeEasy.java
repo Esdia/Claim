@@ -37,6 +37,19 @@ public class NodeEasy extends Node {
      */
     @Override
     int evaluatePhaseTwo() {
-        return 0;
+        int handVal = this.aiCards.stream().mapToInt(c -> c.value).sum();
+
+        Player ai = this.game.getPlayer(aiID);
+        ScoreStack ss = ai.getScoreStack();
+        int scoreVal = ss.size();
+
+        for (Faction faction : Faction.values()) {
+            if (ss.getNbCardsFaction(faction) > getMaxNbCardsFaction(faction) / 2) {
+                // The AI won this faction, and cannot lose it later.
+                scoreVal += 5;
+            }
+        }
+
+        return handVal + 3 * scoreVal;
     }
 }
