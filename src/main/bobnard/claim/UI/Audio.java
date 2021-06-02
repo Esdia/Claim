@@ -2,11 +2,9 @@ package bobnard.claim.UI;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.Control;
 import javax.sound.sampled.FloatControl;
 import java.io.File;
 import java.util.Random;
-import java.util.ResourceBundle;
 
 public class Audio {
 
@@ -48,10 +46,6 @@ public class Audio {
         float dB = (float) (Math.log((double) volume/100) / Math.log(10.0) * 20.0);
         FloatControl gainControl = (FloatControl) bgm.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(dB);
-    }
-
-    public static int getVolume(){
-        return volume;
     }
 
     public static void playBGM(int phase) {

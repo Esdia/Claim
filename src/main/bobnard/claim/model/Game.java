@@ -1,7 +1,5 @@
 package bobnard.claim.model;
 
-import java.util.Stack;
-
 /**
  * Represents the game
  */
@@ -13,8 +11,6 @@ public class Game {
 
     private boolean isDone;
     private int winnerID;
-
-    private boolean isSimulator;
 
     /**
      * Creates a new game.
@@ -28,7 +24,6 @@ public class Game {
         players = new Player[2];
 
         this.isDone = false;
-        this.isSimulator = false;
 
         this.setState(GameState.WAITING_PLAYER_INITIALISATION);
     }
@@ -59,19 +54,6 @@ public class Game {
         this.players[0] = players[0];
         this.players[1] = players[1];
         this.setState(GameState.READY_TO_START);
-    }
-
-    /**
-     * Configure the game as a simulator.
-     * <p>
-     * A simulator game is meant to be used by the AIs to calculate
-     * their next moves, and will behave a bit differently.
-     * For example, it wont check whether or not the player is allowed
-     * to play a card it is trying to play.
-     */
-    public void setSimulator() {
-        this.isSimulator = true;
-        this.phase.setSimulator();
     }
 
     //region GAME MANAGEMENT
@@ -209,7 +191,7 @@ public class Game {
                     this.getCurrentPlayer().action();
                 }
             }
-            case TRICK_FINISHED, SIMULATED_DRAWN_CARD -> {
+            case TRICK_FINISHED -> {
                 this.endTrick();
                 if (this.phase.isDone()) {
                     if (this.getPhaseNum() == 1) {
@@ -268,9 +250,6 @@ public class Game {
         }
         System.out.println("Beginning phase 2");
         this.phase = new PhaseTwo(players);
-        if (this.isSimulator) {
-            this.phase.setSimulator();
-        }
     }
     //endregion
 
@@ -298,7 +277,7 @@ public class Game {
      * @see Phase#playCard(Card)
      */
     public void playCard(Card card) {
-        if (!this.isSimulator && !this.isLegalMove(card)) {
+        if (!this.isLegalMove(card)) {
             return;
         }
 
@@ -375,26 +354,8 @@ public class Game {
      * @throws IllegalStateException is the game is not a simulator
      */
     public void simulatePlay(Card card) {
-        if (!this.isSimulator) {
-            throw new IllegalStateException();
-        }
-
-        if (this.state == GameState.TRICK_FINISHED && this.getPhaseNum() == 1) {
-            ((PhaseOne) phase).setDrawnCard(card);
-            this.setState(GameState.SIMULATED_DRAWN_CARD);
-        } else if (this.state == GameState.SIMULATED_DRAWN_CARD && this.getPhaseNum() == 1) {
-            this.nextStep();
-            ((PhaseOne) phase).setFlippedCard(card);
-        } else {
-            this.playCard(card);
-        }
-
-        if (
-                (this.state == GameState.TRICK_FINISHED || this.state == GameState.SIMULATED_DRAWN_CARD)
-                        && getPhaseNum() == 1 && !phase.isDone()
-        ) return;
-
-        while (!this.isWaitingAction()) {
+        this.playCard(card);
+        while (!this.isWaitingAction() && this.state != GameState.GAME_FINISHED) {
             this.nextStep();
         }
     }
@@ -439,11 +400,6 @@ public class Game {
      */
     public Hand getCards(int playerID) {
         return this.players[playerID].getCards();
-    }
-    
-    
-    public Stack<Card> getFollowers(int playerID){
-    	return this.players[playerID].getFollowers();
     }
 
     /**
@@ -576,18 +532,12 @@ public class Game {
                 this.players[1].copy()
         };
 
-        Game copy = new Game(
+        return new Game(
                 players,
                 this.phase.copy(players),
                 this.isDone,
                 this.winnerID,
                 this.getState()
         );
-
-        if (this.isSimulator) {
-            copy.setSimulator();
-        }
-
-        return copy;
     }
 }

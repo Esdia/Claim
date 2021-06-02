@@ -1,7 +1,6 @@
 package bobnard.claim.AI;
 
-import bobnard.claim.model.Game;
-import bobnard.claim.model.Hand;
+import bobnard.claim.model.*;
 
 /**
  * Represents a Node for an AI in easy mode.
@@ -31,13 +30,26 @@ public class NodeEasy extends Node {
         return new NodeEasy(game, aiCards, opponentPossibleCards, aiID, type);
     }
 
-    @Override
-    int evaluatePhaseOne() {
-        return 0;
-    }
-
+    /**
+     * Evaluates an intermediate configuration in phase two.
+     *
+     * @return The evaluation of the configuration
+     */
     @Override
     int evaluatePhaseTwo() {
-        return 0;
+        int handVal = this.aiCards.stream().mapToInt(c -> c.value).sum();
+
+        Player ai = this.game.getPlayer(aiID);
+        ScoreStack ss = ai.getScoreStack();
+        int scoreVal = ss.size();
+
+        for (Faction faction : Faction.values()) {
+            if (ss.getNbCardsFaction(faction) > getMaxNbCardsFaction(faction) / 2) {
+                // The AI won this faction, and cannot lose it later.
+                scoreVal += 5;
+            }
+        }
+
+        return handVal + 3 * scoreVal;
     }
 }

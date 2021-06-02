@@ -13,8 +13,6 @@ abstract class Phase {
 
     private Trick trick;
 
-    protected boolean isSimulator = false;
-
     /**
      * Creates a new "blank" phase.
      * <p>
@@ -40,18 +38,6 @@ abstract class Phase {
         this.currentLeader = 0;
         this.currentPlayer = 0;
         this.resetTrick();
-    }
-
-    /**
-     * Configure the phase as a simulator.
-     * <p>
-     * A simulator phase is meant to be used by the AIs to calculate
-     * their next moves, and will behave a bit differently.
-     * For example, it wont check whether or not the player is allowed
-     * to play a card it is trying to play.
-     */
-    void setSimulator() {
-        this.isSimulator = true;
     }
 
     //region PHASE MANAGEMENT
@@ -107,18 +93,16 @@ abstract class Phase {
      * @param card the played card.
      */
     void playCard(Card card) {
-        if (!this.isSimulator && !this.isLegalMove(card)) {
+        if (!this.isLegalMove(card)) {
             return;
         }
 
         this.trick.addCard(card, currentPlayer == currentLeader);
 
-        if (!this.isSimulator) {
-            this.players[currentPlayer].removeCard(card);
+        this.players[currentPlayer].removeCard(card);
 
-            Player otherPlayer = this.players[1 - currentPlayer];
-            otherPlayer.showCard(card);
-        }
+        Player otherPlayer = this.players[1 - currentPlayer];
+        otherPlayer.showCard(card);
     }
 
     /**
@@ -277,7 +261,6 @@ abstract class Phase {
         phase.currentPlayer = this.currentPlayer;
         phase.currentLeader = this.currentLeader;
         phase.trick = this.trick.copy();
-        phase.isSimulator = this.isSimulator;
 
         return phase;
     }
