@@ -40,6 +40,8 @@ public class CFrame extends JComponent {
     int h;
     int imgWidth;
     int imgHeight;
+    
+    int Phase ;
 
     private final Timer gameLoop = new Timer(16, null);
     final ArrayList<AnimatedPanel> movingPanels = new ArrayList<>();
@@ -79,6 +81,8 @@ public class CFrame extends JComponent {
         this.initPlayedButton();
 
         this.setPlayers();
+        
+        Phase = this.game.getPhaseNum();
 
         this.startLoop();
     }
@@ -182,8 +186,16 @@ public class CFrame extends JComponent {
         g.clearRect(0, 0, w, h);
 
         this.drawHands(resize);
-        if (this.game.getPhaseNum() == 1 ) this.drawFollowers(resize);
-        else SetFollowersInvisible();
+        if (Phase != this.game.getPhaseNum()) { 
+        	SetFollowersInvisible();
+        	Phase = this.game.getPhaseNum();
+        }
+        
+        if (this.game.getPhaseNum() == 1 ) 
+        	this.drawFollowers(resize);
+        else 
+        	this.drawScorePile(resize);
+        
         this.displayPlayed(resize);
         this.displayFlipped(resize);
         
@@ -255,7 +267,6 @@ public class CFrame extends JComponent {
     	for (int j = 0; j < 2; j++) {
               for (int i = 0; i < 13; i++) {
                   this.followPanels[j][i].setVisible(false);
-                  this.remove(this.followPanels[j][i]);
               }
           }
     }
@@ -292,6 +303,38 @@ public class CFrame extends JComponent {
 
     }
 
+    
+    void drawScorePile(boolean resize) {
+    	int x;
+    	int[] y = {(int)(imgHeight*1.2), h - (int)(imgHeight*2.2)};
+
+    	int currentPlayer = this.game.getCurrentPlayerID();
+
+    	Iterator<Card> it;
+    	Card c;
+
+    	for (int j = 0; j < 2; j++) {
+    		x =(w/2)+ 3*imgWidth;
+    		it = players[j].getScoreStack().iterator();
+    		for (int i = 0; i < 13; i++) {
+    			this.followPanels[j][i].setVisible(it.hasNext());
+    			if (it.hasNext() ) {
+    				if (resize) {
+    					this.followPanels[j][i].setSize(imgWidth, imgHeight);
+    				}
+    				c = it.next();
+    				this.followPanels[j][i].setSize(imgWidth, imgHeight);
+    				if (c.name != null) {
+    					this.followPanels[j][i].setCard(c, j == currentPlayer);
+    					this.followPanels[j][i].setLocation(x, y[j]);
+
+    				}
+    				x += imgWidth/3;
+    			}
+    		}
+    	}
+
+    }
     
     void animateFlipped() {
         int wb = w / 18;
