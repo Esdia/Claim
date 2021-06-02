@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 public class CFrame extends JComponent {
 
-    final Game game;
+    Game game;
     final CardUI b1;
     final CardUI b2;
 
@@ -45,9 +45,8 @@ public class CFrame extends JComponent {
     private final Timer gameLoop = new Timer(16, null);
     final ArrayList<AnimatedPanel> movingPanels = new ArrayList<>();
 
-    public CFrame(Game game) {
+    public CFrame() {
         FlippedCard = null;
-        this.game = game;
 
         for (int i = 0; i < 5; i++) {
             try {
@@ -74,6 +73,12 @@ public class CFrame extends JComponent {
             image2 = ImageIO.read(new File(path + "CARDBACK.png"));
         } catch (IOException ignored) {
         }
+
+
+    }
+
+    void setGame(Game game) {
+        this.game = game;
 
         this.initHandButtons();
         this.initFlippedButton();

@@ -16,6 +16,7 @@ public class Menu extends JComponent {
 
     Boolean isStart;
     Boolean isSs;
+    Boolean isConfig;
 
     String path;
 
@@ -42,15 +43,23 @@ public class Menu extends JComponent {
     public static String skin;
 
     final SkinSelect panel;
+    final Config config;
 
     public Menu(JFrame frame) {
         skin = "Vanilla";
+
         this.isStart = false;
-        Menu.frame = frame;
         this.isSs = false;
+        this.isConfig = false;
+
+        Menu.frame = frame;
+
 
         panel = new SkinSelect(frame, this);
+        config = new Config(frame, this);
+
         this.add(panel);
+        this.add(config);
 
         Audio.setFiles();
         Audio.playBGM(0);
@@ -216,6 +225,26 @@ public class Menu extends JComponent {
 
         } else {
             panel.setVisible(false);
+        }
+
+        if (isConfig) {
+
+            config.setBounds(0, 0, w, h);
+            config.setOpaque(false);
+
+            if (!config.isVisible()) {
+                config.setVisible(true);
+            }
+
+            b1.setVisible(false);
+            b2.setVisible(false);
+            b3.setVisible(false);
+            b4.setVisible(false);
+            b5.setVisible(false);
+
+
+        } else {
+            config.setVisible(false);
         }
 
         if (isStart) g.drawImage(image2, 0, 0, w, h, null);
