@@ -1,5 +1,7 @@
 package bobnard.claim.model;
 
+import java.util.Stack;
+
 /**
  * Represents the game
  */
@@ -437,6 +439,11 @@ public class Game {
      */
     public Hand getCards(int playerID) {
         return this.players[playerID].getCards();
+    }
+    
+    
+    public Stack<Card> getFollowers(int playerID){
+    	return this.players[playerID].getFollowers();
     }
 
     /**
