@@ -21,11 +21,10 @@ public class EvaluateAI {
     }
 
     private static void loop(Game game) {
-        int victoriesP1 = 0;
-        int victoriesP2 = 0;
+        int[] victories = {0, 0};
 
         for (int i = 0; i < 10; i++) {
-            System.out.println("-----------------\n\nSTARTING NEW GAME\n\n-----------------");
+            System.out.println("-----------------\n\nSTARTING GAME n°" + (i+1) + "\n\n-----------------");
 
             game.printDebugInfo();
 
@@ -33,11 +32,7 @@ public class EvaluateAI {
                 game.nextStep();
             }
 
-            if (game.getWinnerID() == 1) {
-                victoriesP1++;
-            } else {
-                victoriesP2++;
-            }
+            victories[game.getWinnerID() - 1]++;
 
             game.nextStep(); // To restart the game
             game.start();
@@ -45,7 +40,9 @@ public class EvaluateAI {
 
         System.out.println("------\n\nRESULT\n\n------");
 
-        System.out.println("AI 1 won " + victoriesP1 + " games");
-        System.out.println("AI 2 won " + victoriesP2 + " games");
+        for (int i = 0; i < 2; i++) {
+            String name = game.getPlayer(i).getClass().getSimpleName();
+            System.out.println("Player " + (i + 1) + " (" + name + ") won " + victories[i] + " games.");
+        }
     }
 }
