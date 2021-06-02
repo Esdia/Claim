@@ -169,6 +169,10 @@ public class Player {
     public ScoreStack getScoreStack() {
         return this.scoreStack;
     }
+    
+    public Stack<Card> getFollowers(){
+    	return this.followers;
+    }
 
     /**
      * Returns the players ID (0 or 1).
