@@ -8,21 +8,18 @@ import bobnard.claim.model.Hand;
 /**
  * An AI implementing the Minimax Algorithm
  */
-public class AIMinimax extends AI {
-    private final Difficulty difficulty;
-
-    private final Hand possibleOpponentCards;
+abstract class AIMinimax extends AI {
+    protected final Hand possibleOpponentCards;
+    protected Card lastShownCard;
 
     /**
      * Creates a new AIMinimax
      *
-     * @param game       The game on which the AI will play.
-     * @param id         The AI's player ID.
-     * @param difficulty The AI's level
+     * @param game The game on which the AI will play.
+     * @param id   The AI's player ID.
      */
-    public AIMinimax(Game game, int id, Difficulty difficulty) {
+    public AIMinimax(Game game, int id) {
         super(game, id);
-        this.difficulty = difficulty;
 
         this.possibleOpponentCards = new Hand();
     }
@@ -52,6 +49,36 @@ public class AIMinimax extends AI {
     @Override
     public void showCard(Card card) {
         this.possibleOpponentCards.remove(card);
+        this.lastShownCard = card;
+    }
+
+    /**
+     * Returns an instance of Node according to the AI's difficulty level
+     *
+     * @return an instance of Node
+     * @see AIMinimaxEasy#getNodeInstance()
+     */
+    abstract protected Node getNodeInstance();
+
+    /**
+     * Calculates the AI's next move in the first phase.
+     *
+     * @return The index of the AI's next move in the list of
+     * it's playable cards.
+     * @see #nextCard()
+     */
+    abstract int getMovePhaseOne();
+
+    /**
+     * Calculates the AI's next move in the second phase.
+     *
+     * @return The index of the AI's next move in the list of
+     * it's playable cards.
+     * @see Node#getNextMove()
+     */
+    private int getMovePhaseTwo() {
+        Node node = this.getNodeInstance();
+        return node.getNextMove();
     }
 
     /**
@@ -59,17 +86,15 @@ public class AIMinimax extends AI {
      *
      * @return The index of the AI's next move in the list of
      * it's playable cards.
-     * @see Node#getNextMove()
+     * @see #getMovePhaseOne()
+     * @see #getMovePhaseTwo()
      */
     @Override
     int nextCard() {
-        Node node;
-        if (this.difficulty == Difficulty.EASY) {
-            node = new NodeEasy(game, this.getCards(), possibleOpponentCards, this.getId(), NodeType.MAX);
-        } else {
-            throw new IllegalStateException("Unexpected value: " + this.difficulty);
+        if (game.getPhaseNum() == 1) {
+            return this.getMovePhaseOne();
+        } else { /* game.getPhaseNum() == 2 */
+            return this.getMovePhaseTwo();
         }
-
-        return node.getNextMove();
     }
 }

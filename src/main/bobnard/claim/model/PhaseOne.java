@@ -7,7 +7,6 @@ class PhaseOne extends Phase {
     private final Deck deck;
 
     private Card flippedCard;
-    private Card simulatedDrawnCard;
 
     /**
      * Creates the first phase.
@@ -30,11 +29,10 @@ class PhaseOne extends Phase {
      * @param deck        The phase's deck.
      * @param flippedCard The phase's currently flipped card.
      */
-    PhaseOne(Player[] players, Deck deck, Card flippedCard, Card simulatedDrawnCard) {
+    PhaseOne(Player[] players, Deck deck, Card flippedCard) {
         super(players);
         this.deck = (Deck) deck.clone();
         this.flippedCard = flippedCard;
-        this.simulatedDrawnCard = simulatedDrawnCard;
     }
 
     //region INIT
@@ -60,10 +58,6 @@ class PhaseOne extends Phase {
         this.flippedCard = card;
     }
 
-    void setDrawnCard(Card card) {
-        this.simulatedDrawnCard = card;
-    }
-
     private void flipCard() {
         this.setFlippedCard(deck.draw());
         System.out.println("Flipped card : " + this.flippedCard);
@@ -78,12 +72,10 @@ class PhaseOne extends Phase {
 
         Player loser = this.players[this.getLastTrickLoser()];
 
-        if (!this.isSimulator) {
-            this.setDrawnCard(deck.draw());
-        }
+        Card drawnCard = deck.draw();
 
-        loser.showCard(this.simulatedDrawnCard);
-        loser.addFollower(this.simulatedDrawnCard);
+        loser.showCard(drawnCard);
+        loser.addFollower(drawnCard);
     }
     //endregion
 
@@ -102,7 +94,7 @@ class PhaseOne extends Phase {
     void endTrick() {
         super.endTrick();
         this.giveCentralCards();
-        if (!this.isSimulator && !this.isDone()) {
+        if (!this.isDone()) {
             this.flipCard();
         }
     }
@@ -134,7 +126,7 @@ class PhaseOne extends Phase {
      */
     @Override
     Phase getInstance(Player[] players) {
-        return new PhaseOne(players, this.deck, this.flippedCard, this.simulatedDrawnCard);
+        return new PhaseOne(players, this.deck, this.flippedCard);
     }
 
     /**
