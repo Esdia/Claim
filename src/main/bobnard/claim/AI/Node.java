@@ -102,7 +102,7 @@ public abstract class Node {
     }
 
     private boolean isLeaf() {
-        return this.playableCards.size() == 0;
+        return this.game.isDone();
     }
 
     private NodeType getNextType(Game gameCopy) {
