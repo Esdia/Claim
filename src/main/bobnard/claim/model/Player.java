@@ -169,9 +169,14 @@ public class Player {
     public ScoreStack getScoreStack() {
         return this.scoreStack;
     }
-    
-    public Stack<Card> getFollowers(){
-    	return this.followers;
+
+    /**
+     * Returns the player's followers.
+     *
+     * @return The player's followers.
+     */
+    public Stack<Card> getFollowers() {
+        return this.followers;
     }
 
     /**
