@@ -99,6 +99,12 @@ public class CardUI extends JPanel implements MouseInputListener {
         g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
 
     }
+    
+    
+    int Position() {
+    	return this.frame.players[this.frame.game.getCurrentPlayerID()].getCards().indexOf(this.card);
+    }
+    
 
     public void mouseClicked(MouseEvent e) {
     }
@@ -124,10 +130,20 @@ public class CardUI extends JPanel implements MouseInputListener {
     }
 
     public void mouseReleased(MouseEvent e) {
-        dragged = false;
-        if (!frame.getGame().isCurrentPlayerAI() && frame.game.getLegalCard(this.card)) {
+    	int y = this.frame.getHeight() - getHeight();
+    	boolean play = true;
+        if (dragged && e.getYOnScreen() < (int) 1.5*getHeight() && this.frame.game.getCurrentPlayerID() == 0) {
+        	System.out.println("Refuse to play"+getHeight());
+        	this.frame.getHandBack(this);
+        	play = false;
+        }else if (dragged && e.getYOnScreen() > (int) 1.5*y && this.frame.game.getCurrentPlayerID() == 1) {
+        	System.out.println("Refuse to play");
+        	this.frame.getHandBack(this);
+        	play = false;
+        }else if (!frame.getGame().isCurrentPlayerAI() && frame.game.getLegalCard(this.card)) {
             action();
         }
+        dragged = false;
     }
 
     @Override

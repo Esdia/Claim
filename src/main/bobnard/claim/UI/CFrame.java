@@ -74,7 +74,7 @@ public class CFrame extends JComponent {
         this.game = game;
 
         this.initHandButtons();
-        this.initFollowButtons(); //TODO init folllow
+        this.initFollowButtons();
         this.initFlippedButton();
         this.initPlayedButton();
 
@@ -236,12 +236,26 @@ public class CFrame extends JComponent {
         }
     }
 
+    public void getHandBack(CardUI card) {
+    	int ind = card.Position();
+    	int currentPlayer = this.game.getCurrentPlayerID();
+    	int size = players[currentPlayer].getCards().size();
+    	int x = (w/2) - ( size/2* imgWidth);
+    	int[] y = {5, h - imgHeight - 5};
+    	
+    	Point Po = new Point(x*ind , y[currentPlayer]);
+    	AnimatedPanel backhand = new AnimatedPanel(card, Po);
+    	this.movingPanels.add(backhand);
+    	
+    }
+    
+    
     void SetFollowersInvisible() {
     	flippedPanel.setVisible(false);
     	for (int j = 0; j < 2; j++) {
               for (int i = 0; i < 13; i++) {
                   this.followPanels[j][i].setVisible(false);
-                // TODO get followPanels elements out of the frame
+                  this.remove(this.followPanels[j][i]);
               }
           }
     }
@@ -266,7 +280,6 @@ public class CFrame extends JComponent {
     				}
     				c = it.next();
     				this.followPanels[j][i].setSize(imgWidth, imgHeight);
-    				System.out.println("DrawFollow: "+this.followPanels[j][i].getName()+" card "+ c.name +"\n");
     				if (c.name != null) {
     					this.followPanels[j][i].setCard(c, j == currentPlayer);
     					this.followPanels[j][i].setLocation(x, y[j]);
