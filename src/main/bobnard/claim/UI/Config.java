@@ -18,7 +18,7 @@ public class Config extends JComponent {
 
     final JLabel l1;
     final JLabel l2;
-    final JComboBox cb;
+    final JComboBox<String> cb;
 
     Boolean isFS;
 
@@ -26,7 +26,7 @@ public class Config extends JComponent {
 
     final ConfigMouseListener m = new ConfigMouseListener(this);
 
-    static GraphicsDevice device = GraphicsEnvironment
+    static final GraphicsDevice device = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
 
@@ -49,8 +49,8 @@ public class Config extends JComponent {
 
         b1.addMouseListener(m);
 
-        String str[] = {"Windowed" , "Fullscreen"};
-        cb = new JComboBox(str);
+        String[] str = {"Windowed" , "Fullscreen"};
+        cb = new JComboBox<>(str);
 
 
         this.add(cb);
@@ -73,8 +73,8 @@ public class Config extends JComponent {
         }
     }
 
-    void setButton(JButton button, int x, int y, int w, int h, ImageIcon icon) {
-        button.setBounds(x, y, w, h);
+    void setButton(JButton button, int y, int w, int h, ImageIcon icon) {
+        button.setBounds(10, y, w, h);
         button.setIcon(resizeIcon(icon, w, h));
         button.setOpaque(false);
         button.setContentAreaFilled(false);
@@ -84,7 +84,7 @@ public class Config extends JComponent {
         int w = this.frame.getWidth();
         int h = this.frame.getHeight();
 
-        this.setButton(b1, 10, h - 100, w / 6, h / 19, ba);
+        this.setButton(b1, h - 100, w / 6, h / 19, ba);
         b1.setBorderPainted(false);
 
     }
@@ -112,11 +112,11 @@ public class Config extends JComponent {
 
         cb.setBounds(w/2 - w/10, (int) (h/2.3),w/6,h/18);
 
-        if(cb.getItemAt(cb.getSelectedIndex()) == "Fullscreen" && !isFS){
+        if(cb.getItemAt(cb.getSelectedIndex()).equals("Fullscreen") && !isFS){
             device.setFullScreenWindow(frame);
             isFS = true;
         }
-        if(cb.getItemAt(cb.getSelectedIndex()) == "Windowed" && isFS){
+        if(cb.getItemAt(cb.getSelectedIndex()).equals("Windowed") && isFS){
             System.out.println("aaa");
             device.setFullScreenWindow(null);
             isFS = false;

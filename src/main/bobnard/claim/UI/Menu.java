@@ -199,6 +199,25 @@ public class Menu extends JComponent {
 
     }
 
+    private void draw(JComponent component, boolean cond) {
+        if (cond) {
+            component.setBounds(0, 0, getWidth(), getHeight());
+            component.setOpaque(false);
+
+            if (!component.isVisible()) {
+                component.setVisible(true);
+            }
+
+            b1.setVisible(false);
+            b2.setVisible(false);
+            b3.setVisible(false);
+            b4.setVisible(false);
+            b5.setVisible(false);
+        } else {
+            component.setVisible(false);
+        }
+    }
+
     public void paintComponent(Graphics g) {
         int h = (int) getSize().getHeight();
         int w = (int) getSize().getWidth();
@@ -207,45 +226,8 @@ public class Menu extends JComponent {
 
         setButtons(h, w);
 
-        if (isSs) {
-
-            panel.setBounds(0, 0, w, h);
-            panel.setOpaque(false);
-
-            if (!panel.isVisible()) {
-                panel.setVisible(true);
-            }
-
-            b1.setVisible(false);
-            b2.setVisible(false);
-            b3.setVisible(false);
-            b4.setVisible(false);
-            b5.setVisible(false);
-
-
-        } else {
-            panel.setVisible(false);
-        }
-
-        if (isConfig) {
-
-            config.setBounds(0, 0, w, h);
-            config.setOpaque(false);
-
-            if (!config.isVisible()) {
-                config.setVisible(true);
-            }
-
-            b1.setVisible(false);
-            b2.setVisible(false);
-            b3.setVisible(false);
-            b4.setVisible(false);
-            b5.setVisible(false);
-
-
-        } else {
-            config.setVisible(false);
-        }
+        this.draw(panel, isSs);
+        this.draw(config, isConfig);
 
         if (isStart) g.drawImage(image2, 0, 0, w, h, null);
 
