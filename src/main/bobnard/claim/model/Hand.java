@@ -1,6 +1,9 @@
 package bobnard.claim.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -22,7 +25,7 @@ public class Hand extends ArrayList<Card> {
      * @param faction The faction whose cards we want to fetch
      * @return Every cards of the hand of the given faction
      */
-    Stream<Card> getCards(Faction faction) {
+    public Stream<Card> getCards(Faction faction) {
         return this.stream().filter(c -> c.faction == faction);
     }
 
@@ -55,5 +58,35 @@ public class Hand extends ArrayList<Card> {
         }
 
         return cards;
+    }
+
+    public Card getWeakestCard() {
+        Optional<Card> min = this.stream().min(Comparator.comparingInt(c -> c.value));
+        return min.orElse(null);
+    }
+
+    private Card getWeakestPlayableCard(Faction faction) {
+        return playableCards(faction).getWeakestCard();
+    }
+
+    private ArrayList<Card> canBeat(Card card) {
+        Stream<Card> canBeat = this.stream().filter(
+                c -> (c.faction == card.faction || c.faction == Faction.DOPPELGANGERS)
+                        && c.value > card.value
+        );
+
+        return canBeat.collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public Card getWeakestToBeat(Card toBeat) {
+        ArrayList<Card> canBeat = this.canBeat(toBeat);
+
+        if (canBeat.size() == 0) {
+            Card card = this.getWeakestPlayableCard(toBeat.faction);
+            return card != null ? card : this.getWeakestCard();
+        }
+
+        Optional<Card> weakestToBeat = canBeat.stream().min(Card::compareTo);
+        return weakestToBeat.orElse(null);
     }
 }

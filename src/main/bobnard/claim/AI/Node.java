@@ -1,22 +1,19 @@
 package bobnard.claim.AI;
 
-import bobnard.claim.model.Card;
-import bobnard.claim.model.Game;
-import bobnard.claim.model.GameState;
-import bobnard.claim.model.Hand;
+import bobnard.claim.model.*;
 
 /**
  * Represents a Node in the tree generated
  * by the Minimax Algorithm.
  */
 public abstract class Node {
-    private static final int DEPTH = 5;
+    private static final int DEPTH = 8;
 
     protected final Game game;
     protected final int aiID;
 
-    private final Hand aiCards;
-    private final Hand opponentPossibleCards;
+    protected final Hand aiCards;
+    protected final Hand opponentPossibleCards;
 
     private final Hand playableCards;
     private final Hand playableCardsCopy;
@@ -43,15 +40,20 @@ public abstract class Node {
         this.aiCards = (Hand) aiCards.clone();
         this.opponentPossibleCards = (Hand) opponentPossibleCards.clone();
 
-        this.playableCards = switch (this.type) {
-            case MAX -> this.game.getPlayableCards(aiID);
-            case MIN, FLIP_CARD, DRAW_CARD -> this.opponentPossibleCards;
-        };
-        this.playableCardsCopy = (Hand) this.playableCards.clone();
+        switch (this.type) {
+            case MAX -> {
+                this.playableCards = this.aiCards;
+                this.playableCardsCopy = this.game.getPlayableCards(aiID);
+            }
+            case MIN -> {
+                this.playableCards = this.opponentPossibleCards;
+                this.playableCardsCopy = (Hand) this.opponentPossibleCards.clone();
+            }
+            default -> throw new IllegalStateException();
+        }
     }
 
     private int expectiminimax(int depth, double alpha, double beta) {
-        //System.out.println("depth = " + depth);
         if (depth == 0 || this.isLeaf()) {
             return this.evaluateState();
         }
@@ -86,15 +88,6 @@ public abstract class Node {
                     if (beta <= alpha) break; // Alpha cut
                 }
             }
-            case FLIP_CARD, DRAW_CARD -> {
-                int counter = 0;
-                for (Card card : this.playableCardsCopy) {
-                    counter++;
-                    value += this.nextChild(card).expectiminimax(depth - 1, alpha, beta);
-                }
-
-                value /= counter;
-            }
         }
 
         return (int) value;
@@ -113,26 +106,12 @@ public abstract class Node {
     }
 
     private NodeType getNextType(Game gameCopy) {
-        NodeType nodeType = null;
+        NodeType nodeType;
 
-        if (gameCopy.getPhaseNum() == 1) {
-            if (gameCopy.getState() == GameState.TRICK_FINISHED) {
-                nodeType = NodeType.DRAW_CARD;
-            } else if (gameCopy.getState() == GameState.SIMULATED_DRAWN_CARD) {
-                nodeType = NodeType.FLIP_CARD;
-            }
-        }
-
-        if (nodeType == null) {
-            /*
-             * We are in phase two, or we are in phase 1
-             * and the game is waiting an action
-             */
-            if (gameCopy.getCurrentPlayerID() == aiID) {
-                nodeType = NodeType.MAX;
-            } else {
-                nodeType = NodeType.MIN;
-            }
+        if (gameCopy.getCurrentPlayerID() == aiID) {
+            nodeType = NodeType.MAX;
+        } else {
+            nodeType = NodeType.MIN;
         }
 
         return nodeType;
@@ -144,7 +123,6 @@ public abstract class Node {
         }
 
         Game gameCopy = this.game.copy();
-        gameCopy.setSimulator();
         gameCopy.simulatePlay(card);
 
         this.playableCards.remove(card);
@@ -169,13 +147,6 @@ public abstract class Node {
      * @return An instance of Node.
      */
     abstract Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type);
-
-    /**
-     * Evaluates an intermediate configuration in phase one.
-     *
-     * @return The evaluation of the configuration
-     */
-    abstract int evaluatePhaseOne();
 
     /**
      * Evaluates an intermediate configuration in phase two.
@@ -210,11 +181,44 @@ public abstract class Node {
          * so we have to estimate if it is rather favorable to
          * the AI or to the opponent.
          */
-        if (this.game.getPhaseNum() == 1) {
-            return this.evaluatePhaseOne();
-        } else { /* this.game.getPhaseNum() == 2 */
+        if (this.game.getPhaseNum() == 2) {
             return this.evaluatePhaseTwo();
+        } else { /* this.game.getPhaseNum() == 1 */
+            throw new IllegalStateException();
         }
+    }
+
+    /**
+     * Returns the number of cards of the faction that are still
+     * in the game.
+     * <p>
+     * This method has to be used in phase two.
+     * Since this phase has perfect information, it is possible to
+     * know how many cards of a given faction are in the game.
+     * To win this faction, you need to get n/2 cards, n being
+     * the return value of this method.
+     *
+     * @param faction The faction we are counting the cards of
+     * @return The number of cards of the faction in the game
+     * @throws IllegalStateException if used in phase one.
+     */
+    int getMaxNbCardsFaction(Faction faction) {
+        if (game.getPhaseNum() != 2) {
+            throw new IllegalStateException();
+        }
+
+        int possessed = (int) this.aiCards.getCards(faction).count();
+        int remaining = (int) this.opponentPossibleCards.getCards(faction).count();
+
+        int inScoreStack = 0;
+
+        ScoreStack s;
+        for (int i = 0; i < 2; i++) {
+            s = game.getPlayer(i).getScoreStack();
+            inScoreStack += s.getNbCardsFaction(faction);
+        }
+
+        return possessed + remaining + inScoreStack;
     }
 
     /**

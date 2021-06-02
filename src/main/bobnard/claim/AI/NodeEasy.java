@@ -1,7 +1,6 @@
 package bobnard.claim.AI;
 
-import bobnard.claim.model.Game;
-import bobnard.claim.model.Hand;
+import bobnard.claim.model.*;
 
 /**
  * Represents a Node for an AI in easy mode.
@@ -31,11 +30,11 @@ public class NodeEasy extends Node {
         return new NodeEasy(game, aiCards, opponentPossibleCards, aiID, type);
     }
 
-    @Override
-    int evaluatePhaseOne() {
-        return 0;
-    }
-
+    /**
+     * Evaluates an intermediate configuration in phase two.
+     *
+     * @return The evaluation of the configuration
+     */
     @Override
     int evaluatePhaseTwo() {
         return 0;
