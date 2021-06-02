@@ -7,7 +7,7 @@ public class EvaluateAI {
     public static void main(String[] args) {
         Game game = new Game();
         Player[] players = new Player[]{
-                new AIMinimax(game, 0, Difficulty.EASY),
+                new AIMinimaxEasy(game, 0),
                 new AIRandom(game, 1)
         };
         for (Player player : players) {

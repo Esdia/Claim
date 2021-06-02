@@ -1,8 +1,7 @@
 package bobnard.claim.UI;
 
 
-import bobnard.claim.AI.AIMinimax;
-import bobnard.claim.AI.Difficulty;
+import bobnard.claim.AI.AIMinimaxEasy;
 import bobnard.claim.model.Game;
 import bobnard.claim.model.Player;
 
@@ -111,7 +110,7 @@ public class ButtonsMouse extends MouseAdapter {
             };
 
             if (menu.b1b.equals(e.getSource())) {
-                players[0] = new AIMinimax(game, 0, Difficulty.EASY);
+                players[0] = new AIMinimaxEasy(game, 0);
             } else {
                 players[0] = new Player(0);
             }
