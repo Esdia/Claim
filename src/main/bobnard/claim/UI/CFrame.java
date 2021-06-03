@@ -306,7 +306,7 @@ public class CFrame extends JComponent {
     
     void drawScorePile(boolean resize) {
     	int size;
-    	int max =  (w/2)+ 3*imgWidth+ 13*(imgWidth/3);
+    	int max =  (w/2)+ 2*imgWidth+ 16*(imgWidth/3);
     	int x;
     	int[] y = {(int)(imgHeight*1.2), h - (int)(imgHeight*2.2)};
 
@@ -318,7 +318,8 @@ public class CFrame extends JComponent {
 
     	for (int j = 0; j < 2; j++) {
     		x =(w/2)+ 2*imgWidth;
-    		
+    		y[0] = (int)(imgHeight*1.2);
+    		y[1] =  h - (int)(imgHeight*2.2);
     		it = players[j].getScoreStack().iterator();
     		size = players[j].getScoreStack().size();
     		for (int i = 0; i < size; i++) {
@@ -326,6 +327,7 @@ public class CFrame extends JComponent {
 					x =(w/2)+ 3*imgWidth;
 					y[0] += imgHeight;
 					y[1] -= imgHeight;
+					System.out.println("MAX");
 				}
     			this.followPanels[j][i].setVisible(it.hasNext());
     			if (it.hasNext() ) {
@@ -405,7 +407,6 @@ public class CFrame extends JComponent {
     	
     	if (this.game.getPhaseNum() == 2) {
     		this.movePlayedCards( dest);
-    		//this.removePlayedCards();
     		return;
     	}
 
@@ -468,10 +469,19 @@ public class CFrame extends JComponent {
         return this.movingPanels.size() != 0;
     }
 
+    Point DwarfLocation(int id) {
+    	if (id == 0)
+    		return new Point((w/2)+ 3*imgWidth,h - (int)(imgHeight*2.2));
+    	else
+    		return new Point((w/2)+ 3*imgWidth, (int)(imgHeight*1.2));
+    }
+    
     public void movePlayedCards( Point dest) {
     	Point start;
         for (int i = 0; i < 2; i++) {
         	start = new Point(playedPanels[i].getLocation());
+        	if (this.playedPanels[i].getCard().faction == Faction.DWARVES)
+        		dest = this.DwarfLocation(this.game.getTrickWinnerID());
         	this.movingPanels.add(new AnimatedEndTrick(playedPanels[i], start, dest, this));
         }
     }
