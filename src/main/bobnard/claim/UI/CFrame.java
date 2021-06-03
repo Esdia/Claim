@@ -265,7 +265,7 @@ public class CFrame extends JComponent {
     void SetFollowersInvisible() {
     	flippedPanel.setVisible(false);
     	for (int j = 0; j < 2; j++) {
-              for (int i = 0; i < 13; i++) {
+              for (int i = 0; i < 36; i++) {
                   this.followPanels[j][i].setVisible(false);
               }
           }
