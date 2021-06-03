@@ -471,17 +471,18 @@ public class CFrame extends JComponent {
 
     Point DwarfLocation(int id) {
     	if (id == 0)
-    		return new Point((w/2)+ 3*imgWidth,h - (int)(imgHeight*2.2));
+    		return new Point((w/2)+ 2*imgWidth,h - (int)(imgHeight*2.2));
     	else
-    		return new Point((w/2)+ 3*imgWidth, (int)(imgHeight*1.2));
+    		return new Point((w/2)+ 2*imgWidth, (int)(imgHeight*1.2));
     }
     
     public void movePlayedCards( Point dest) {
     	Point start;
+    	dest.x = (w/2)+ 2*imgWidth;
         for (int i = 0; i < 2; i++) {
         	start = new Point(playedPanels[i].getLocation());
         	if (this.playedPanels[i].getCard().faction == Faction.DWARVES)
-        		dest = this.DwarfLocation(this.game.getTrickWinnerID());
+        		this.movingPanels.add(new AnimatedEndTrick(playedPanels[i], start, this.DwarfLocation(this.game.getTrickWinnerID()), this));
         	this.movingPanels.add(new AnimatedEndTrick(playedPanels[i], start, dest, this));
         }
     }
