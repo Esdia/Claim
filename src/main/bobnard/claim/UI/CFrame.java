@@ -327,7 +327,6 @@ public class CFrame extends JComponent {
 					x =(w/2)+ 3*imgWidth;
 					y[0] += imgHeight;
 					y[1] -= imgHeight;
-					System.out.println("MAX");
 				}
     			this.followPanels[j][i].setVisible(it.hasNext());
     			if (it.hasNext() ) {
