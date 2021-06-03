@@ -144,10 +144,10 @@ public class CFrame extends JComponent {
     }
 
     void initFollowButtons() {
-        this.followPanels = new CardUI[2][13];
+        this.followPanels = new CardUI[2][36];
 
         for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 13; j++) {
+            for (int j = 0; j < 36; j++) {
                 this.followPanels[i][j] = new CardUI(this);
                 this.add(followPanels[i][j]);
             }
@@ -305,18 +305,28 @@ public class CFrame extends JComponent {
 
     
     void drawScorePile(boolean resize) {
+    	int size;
+    	int max =  (w/2)+ 3*imgWidth+ 13*(imgWidth/3);
     	int x;
     	int[] y = {(int)(imgHeight*1.2), h - (int)(imgHeight*2.2)};
 
     	int currentPlayer = this.game.getCurrentPlayerID();
+    	
 
     	Iterator<Card> it;
     	Card c;
 
     	for (int j = 0; j < 2; j++) {
-    		x =(w/2)+ 3*imgWidth;
+    		x =(w/2)+ 2*imgWidth;
+    		
     		it = players[j].getScoreStack().iterator();
-    		for (int i = 0; i < 13; i++) {
+    		size = players[j].getScoreStack().size();
+    		for (int i = 0; i < size; i++) {
+    			if (x == max) {
+					x =(w/2)+ 3*imgWidth;
+					y[0] += imgHeight;
+					y[1] -= imgHeight;
+				}
     			this.followPanels[j][i].setVisible(it.hasNext());
     			if (it.hasNext() ) {
     				if (resize) {
@@ -324,6 +334,7 @@ public class CFrame extends JComponent {
     				}
     				c = it.next();
     				this.followPanels[j][i].setSize(imgWidth, imgHeight);
+    				
     				if (c.name != null) {
     					this.followPanels[j][i].setCard(c, j == currentPlayer);
     					this.followPanels[j][i].setLocation(x, y[j]);
@@ -383,16 +394,19 @@ public class CFrame extends JComponent {
     }
 
     void animateEndTrick() {
-    	if (this.game.getPhaseNum() == 2) {
-    		this.removePlayedCards();
-    		return;
-    	}
     	Point start = new Point((w / 32) + 3 * imgWidth, (h - imgHeight) / 2);
     	Point dest;
     	if (this.game.getTrickWinnerID() == 0) {
     		dest = new Point((w/2)+ 3*imgWidth, (int)(imgHeight*1.2));
     	} else {
     		dest = new Point((w/2)+ 3*imgWidth,h - (int)(imgHeight*2.2));
+    	}    	
+    	
+    	
+    	if (this.game.getPhaseNum() == 2) {
+    		this.movePlayedCards( dest);
+    		//this.removePlayedCards();
+    		return;
     	}
 
     	this.movingPanels.add(new AnimatedEndTrick(flippedPanel, start, dest, this));
@@ -454,9 +468,17 @@ public class CFrame extends JComponent {
         return this.movingPanels.size() != 0;
     }
 
+    public void movePlayedCards( Point dest) {
+    	Point start;
+        for (int i = 0; i < 2; i++) {
+        	start = new Point(playedPanels[i].getLocation());
+        	this.movingPanels.add(new AnimatedEndTrick(playedPanels[i], start, dest, this));
+        }
+    }
+    
     public void removePlayedCards() {
         for (int i = 0; i < 2; i++) {
-            playedPanels[i].setVisible(false);
+        	playedPanels[i].setVisible(false);
         }
     }
 }
