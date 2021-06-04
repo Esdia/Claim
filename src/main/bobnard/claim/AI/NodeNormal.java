@@ -6,7 +6,7 @@ import bobnard.claim.model.*;
  * Represents a Node for an AI in normal mode.
  */
 public class NodeNormal extends Node {
-    private static final int DEPTH = 8;
+    private static final int DEPTH = 4;
 
     /**
      * Creates a new Node.
@@ -35,6 +35,17 @@ public class NodeNormal extends Node {
         return DEPTH;
     }
 
+    int getFactionCompletionPercentage(ScoreStack ss, Faction faction) {
+        int nbCards = ss.getNbCardsFaction(faction);
+        int needed = 1 + getMaxNbCardsFaction(faction) / 2;
+
+        return (100 * nbCards) / needed;
+    }
+
+    boolean wonFaction(ScoreStack ss, Faction faction) {
+        return this.getFactionCompletionPercentage(ss, faction) >= 100;
+    }
+
     /**
      * Evaluates an intermediate configuration in phase two.
      *
@@ -42,24 +53,33 @@ public class NodeNormal extends Node {
      */
     @Override
     int evaluatePhaseTwo() {
-        int handVal = this.aiCards.stream().mapToInt(c -> c.value).sum();
-
-        /*
-        int handVal = this.aiCards.stream().mapToInt(c -> c.value).filter(n -> n >= 5).sum() * 2;
-        handVal += this.aiCards.stream().mapToInt(c -> c.value).filter(n -> n < 5).sum() / 2;
-         */
-
         Player ai = this.game.getPlayer(aiID);
-        ScoreStack ss = ai.getScoreStack();
-        int scoreVal = ss.size();
+        ScoreStack scoreAI = ai.getScoreStack();
+        ScoreStack scoreOpponent = game.getPlayer(1 - aiID).getScoreStack();
 
+        int n1 = 0, n2 = 0;
+        int n = 0;
         for (Faction faction : Faction.values()) {
-            if (ss.getNbCardsFaction(faction) > getMaxNbCardsFaction(faction) / 2) {
-                // The AI won this faction, and cannot lose it later.
-                scoreVal += 5;
+            if (this.wonFaction(scoreAI, faction)) {
+                n1++;
+                n += 100;
+            } else if (this.wonFaction(scoreOpponent, faction)) {
+                n2++;
+                n -= 50;
+            } else {
+                n += this.getFactionCompletionPercentage(scoreAI, faction);
             }
         }
 
-        return handVal + 2 * scoreVal;
+        if (n1 > 2) {
+            return Integer.MAX_VALUE;
+        } else if (n2 > 2) {
+            return Integer.MIN_VALUE;
+        }
+
+        int handVal = ai.getCards().stream().mapToInt(c -> c.value).sum();
+        //int scoreVal = scoreAI.size() + n + (100 * n1) - (50 * n2);
+
+        return (n + 100 * n1 - 50 * n2) + 10 * handVal;
     }
 }
