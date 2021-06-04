@@ -112,4 +112,7 @@ public abstract class AI extends Player {
      */
     @Override
     public abstract void showCard(Card card);
+
+    @Override
+    public abstract void showFlippedCard(Card card);
 }

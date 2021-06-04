@@ -47,4 +47,8 @@ public class AIRandom extends AI {
     @Override
     public void showCard(Card card) {
     }
+
+    @Override
+    public void showFlippedCard(Card card) {
+    }
 }

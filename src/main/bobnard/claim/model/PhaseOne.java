@@ -37,9 +37,13 @@ class PhaseOne extends Phase {
 
     //region INIT
     private void dealCards() {
+        Card card;
         for (int i = 0; i < 13; i++) {
-            this.players[0].addCard(this.deck.draw());
-            this.players[1].addCard(this.deck.draw());
+            for (int j = 0; j < 2; j++) {
+                card = this.deck.draw();
+                this.players[j].addCard(card);
+                this.players[j].showCard(card);
+            }
         }
 
         this.players[0].sortHand();
@@ -63,7 +67,7 @@ class PhaseOne extends Phase {
         System.out.println("Flipped card : " + this.flippedCard);
 
         for (Player player : this.players) {
-            player.showCard(this.flippedCard);
+            player.showFlippedCard(this.flippedCard);
         }
     }
 

@@ -129,11 +129,11 @@ public class Game {
         if (this.state != GameState.READY_TO_START) {
             throw new IllegalStateException();
         }
-        this.startPhaseOne();
-
         for (Player player : players) {
             player.init(); /* Used for initializing the AI */
         }
+
+        this.startPhaseOne();
 
         this.setState(GameState.STARTED_PHASE_ONE);
     }
@@ -161,7 +161,6 @@ public class Game {
     }
 
     private void setState(GameState state) {
-        // System.out.println("state = " + state);
         this.state = state;
     }
 

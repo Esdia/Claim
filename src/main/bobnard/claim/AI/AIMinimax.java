@@ -10,6 +10,7 @@ import bobnard.claim.model.Hand;
  */
 abstract class AIMinimax extends AI {
     protected final Hand possibleOpponentCards;
+    private final Hand possibleOpponentFollowers;
     protected Card lastShownCard;
 
     /**
@@ -22,18 +23,26 @@ abstract class AIMinimax extends AI {
         super(game, id);
 
         this.possibleOpponentCards = new Hand();
+        this.possibleOpponentFollowers = new Hand();
     }
 
     private void initOpponentCards() {
         possibleOpponentCards.clear();
         possibleOpponentCards.addAll(new Deck());
         possibleOpponentCards.sort();
-        possibleOpponentCards.removeAll(this.getCards());
     }
 
     @Override
     public void init() {
         this.initOpponentCards();
+    }
+
+    @Override
+    protected void followersToHand() {
+        super.followersToHand();
+
+        this.possibleOpponentFollowers.removeAll(this.getCards());
+        this.possibleOpponentCards.addAll(this.possibleOpponentFollowers);
     }
 
     /**
@@ -50,6 +59,12 @@ abstract class AIMinimax extends AI {
     public void showCard(Card card) {
         this.possibleOpponentCards.remove(card);
         this.lastShownCard = card;
+    }
+
+    @Override
+    public void showFlippedCard(Card card) {
+        this.showCard(card);
+        this.possibleOpponentFollowers.add(card);
     }
 
     /**

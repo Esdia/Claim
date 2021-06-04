@@ -96,7 +96,7 @@ public class Player {
      * This method is meant to only be called at
      * the beginning of phase 2
      */
-    void followersToHand() {
+    protected void followersToHand() {
         this.hand.clear();
 
         this.hand.addAll(this.followers);
@@ -236,6 +236,9 @@ public class Player {
      * @param card The card we want to show to the player
      */
     public void showCard(Card card) {
+    }
+
+    public void showFlippedCard(Card card) {
     }
 
     /**
