@@ -11,25 +11,23 @@ public class NodeNormal extends Node {
     /**
      * Creates a new Node.
      *
-     * @param game                  The game on which the AI will play.
-     * @param aiCards               The AI's cards.
-     * @param opponentPossibleCards The cards that could be in the opponent's hand.
-     * @param aiID                  The AI's player ID
-     * @param type                  The type of the Node.
+     * @param game The game on which the AI will play.
+     * @param aiID The AI's player ID
+     * @param type The type of the Node.
      */
-    NodeNormal(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type) {
-        super(game, aiCards, opponentPossibleCards, aiID, type);
+    NodeNormal(Game game, int aiID, NodeType type) {
+        super(game, aiID, type);
     }
 
     /**
      * Returns an instance of Node
      *
      * @return An instance of Node.
-     * @see Node#newInstance(Game, Hand, Hand, int, NodeType)
+     * @see Node#newInstance(Game, int, NodeType)
      */
     @Override
-    Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type) {
-        return new NodeNormal(game, aiCards, opponentPossibleCards, aiID, type);
+    Node newInstance(Game game, int aiID, NodeType type) {
+        return new NodeNormal(game, aiID, type);
     }
 
     @Override

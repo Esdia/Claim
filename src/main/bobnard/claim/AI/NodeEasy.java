@@ -11,25 +11,23 @@ public class NodeEasy extends Node {
     /**
      * Creates a new NodeEasy.
      *
-     * @param game                  The game on which the AI will play.
-     * @param aiCards               The AI's cards.
-     * @param opponentPossibleCards The cards that could be in the opponent's hand.
-     * @param aiID                  The AI's player ID
-     * @param type                  The type of the Node.
+     * @param game The game on which the AI will play.
+     * @param aiID The AI's player ID
+     * @param type The type of the Node.
      */
-    NodeEasy(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type) {
-        super(game, aiCards, opponentPossibleCards, aiID, type);
+    NodeEasy(Game game, int aiID, NodeType type) {
+        super(game, aiID, type);
     }
 
     /**
      * Returns an instance of Node
      *
      * @return An instance of Node.
-     * @see Node#newInstance(Game, Hand, Hand, int, NodeType)
+     * @see Node#newInstance(Game, int, NodeType)
      */
     @Override
-    Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type) {
-        return new NodeEasy(game, aiCards, opponentPossibleCards, aiID, type);
+    Node newInstance(Game game, int aiID, NodeType type) {
+        return new NodeEasy(game, aiID, type);
     }
 
     @Override
@@ -44,9 +42,8 @@ public class NodeEasy extends Node {
      */
     @Override
     int evaluatePhaseTwo() {
-        int handVal = this.aiCards.stream().mapToInt(c -> c.value).sum();
-
         Player ai = this.game.getPlayer(aiID);
+        int handVal = ai.getCards().stream().mapToInt(c -> c.value).sum();
         ScoreStack ss = ai.getScoreStack();
         int scoreVal = ss.size();
 

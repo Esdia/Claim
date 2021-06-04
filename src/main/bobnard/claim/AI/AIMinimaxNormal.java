@@ -25,8 +25,6 @@ public class AIMinimaxNormal extends AIMinimax {
     protected Node getNodeInstance() {
         return new NodeNormal(
                 game,
-                this.getCards(),
-                possibleOpponentCards,
                 this.getId(),
                 NodeType.MAX
         );

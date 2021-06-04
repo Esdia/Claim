@@ -23,8 +23,6 @@ public class AIMinimaxEasy extends AIMinimax {
     protected Node getNodeInstance() {
         return new NodeEasy(
                 game,
-                this.getCards(),
-                possibleOpponentCards,
                 this.getId(),
                 NodeType.MAX
         );

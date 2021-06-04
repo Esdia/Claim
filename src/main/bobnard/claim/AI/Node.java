@@ -10,10 +10,6 @@ public abstract class Node {
     protected final Game game;
     protected final int aiID;
 
-    protected final Hand aiCards;
-    protected final Hand opponentCards;
-
-    private final Hand cardsCurrentPlayer;
     private final Hand playableCards;
 
     private final NodeType type;
@@ -23,26 +19,15 @@ public abstract class Node {
     /**
      * Creates a new Node.
      *
-     * @param game          The game on which the AI will play.
-     * @param aiCards       The AI's cards.
-     * @param opponentCards The cards that could be in the opponent's hand.
-     * @param aiID          The AI's player ID
-     * @param type          The type of the Node.
+     * @param game The game on which the AI will play.
+     * @param aiID The AI's player ID
+     * @param type The type of the Node.
      */
-    Node(Game game, Hand aiCards, Hand opponentCards, int aiID, NodeType type) {
+    Node(Game game, int aiID, NodeType type) {
         this.game = game;
         this.aiID = aiID;
 
         this.type = type;
-
-        this.aiCards = (Hand) aiCards.clone();
-        this.opponentCards = (Hand) opponentCards.clone();
-
-        switch (this.type) {
-            case MAX -> this.cardsCurrentPlayer = this.aiCards;
-            case MIN -> this.cardsCurrentPlayer = this.opponentCards;
-            default -> throw new IllegalStateException();
-        }
 
         /* Not cheating because the second phase has perfect information. */
         this.playableCards = this.game.getPlayableCards();
@@ -129,17 +114,11 @@ public abstract class Node {
         Game gameCopy = this.game.copy();
         gameCopy.simulatePlay(card);
 
-        this.cardsCurrentPlayer.remove(card);
-        Node res = this.newInstance(
+        return this.newInstance(
                 gameCopy,
-                aiCards,
-                opponentCards,
                 aiID,
                 this.getNextType(gameCopy)
         );
-        this.cardsCurrentPlayer.add(card);
-
-        return res;
     }
 
     /**
@@ -150,7 +129,7 @@ public abstract class Node {
      *
      * @return An instance of Node.
      */
-    abstract Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type);
+    abstract Node newInstance(Game game, int aiID, NodeType type);
 
     /**
      * Evaluates an intermediate configuration in phase two.
@@ -211,8 +190,11 @@ public abstract class Node {
             throw new IllegalStateException();
         }
 
-        int possessed = (int) this.aiCards.getCards(faction).count();
-        int remaining = (int) this.opponentCards.getCards(faction).count();
+        Player ai = this.game.getPlayer(aiID);
+        Player opponent = this.game.getPlayer(1 - aiID);
+
+        int possessed = (int) ai.getCards().getCards(faction).count();
+        int remaining = (int) opponent.getCards().getCards(faction).count();
 
         int inScoreStack = 0;
 
@@ -231,6 +213,10 @@ public abstract class Node {
      * @return the AI's next move.
      */
     int getNextMove() {
+        if (game.getPlayableCards().size() == 1) {
+            return 0;
+        }
+
         this.expectiminimax();
 
         return this.nextMove;

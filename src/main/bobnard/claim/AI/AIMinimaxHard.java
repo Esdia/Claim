@@ -25,8 +25,6 @@ public class AIMinimaxHard extends AIMinimax {
     protected Node getNodeInstance() {
         return new NodeHard(
                 game,
-                this.getCards(),
-                possibleOpponentCards,
                 this.getId(),
                 NodeType.MAX
         );
