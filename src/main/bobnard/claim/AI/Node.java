@@ -7,16 +7,14 @@ import bobnard.claim.model.*;
  * by the Minimax Algorithm.
  */
 public abstract class Node {
-    private static final int DEPTH = 8;
-
     protected final Game game;
     protected final int aiID;
 
     protected final Hand aiCards;
-    protected final Hand opponentPossibleCards;
+    protected final Hand opponentCards;
 
+    private final Hand cardsCurrentPlayer;
     private final Hand playableCards;
-    private final Hand playableCardsCopy;
 
     private final NodeType type;
 
@@ -25,32 +23,29 @@ public abstract class Node {
     /**
      * Creates a new Node.
      *
-     * @param game                  The game on which the AI will play.
-     * @param aiCards               The AI's cards.
-     * @param opponentPossibleCards The cards that could be in the opponent's hand.
-     * @param aiID                  The AI's player ID
-     * @param type                  The type of the Node.
+     * @param game          The game on which the AI will play.
+     * @param aiCards       The AI's cards.
+     * @param opponentCards The cards that could be in the opponent's hand.
+     * @param aiID          The AI's player ID
+     * @param type          The type of the Node.
      */
-    Node(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type) {
+    Node(Game game, Hand aiCards, Hand opponentCards, int aiID, NodeType type) {
         this.game = game;
         this.aiID = aiID;
 
         this.type = type;
 
         this.aiCards = (Hand) aiCards.clone();
-        this.opponentPossibleCards = (Hand) opponentPossibleCards.clone();
+        this.opponentCards = (Hand) opponentCards.clone();
 
         switch (this.type) {
-            case MAX -> {
-                this.playableCards = this.aiCards;
-                this.playableCardsCopy = this.game.getPlayableCards(aiID);
-            }
-            case MIN -> {
-                this.playableCards = this.opponentPossibleCards;
-                this.playableCardsCopy = (Hand) this.opponentPossibleCards.clone();
-            }
+            case MAX -> this.cardsCurrentPlayer = this.aiCards;
+            case MIN -> this.cardsCurrentPlayer = this.opponentCards;
             default -> throw new IllegalStateException();
         }
+
+        /* Not cheating because the second phase has perfect information. */
+        this.playableCards = this.game.getPlayableCards();
     }
 
     private int expectiminimax(int depth, double alpha, double beta) {
@@ -66,7 +61,7 @@ public abstract class Node {
                 value = Double.NEGATIVE_INFINITY;
                 int i = 0;
                 int tmp;
-                for (Card card : this.playableCardsCopy) {
+                for (Card card : this.playableCards) {
                     tmp = this.nextChild(card).expectiminimax(depth - 1, alpha, beta);
                     if (tmp > value) {
                         value = tmp;
@@ -79,7 +74,7 @@ public abstract class Node {
             }
             case MIN -> {
                 value = Double.POSITIVE_INFINITY;
-                for (Card card : this.playableCardsCopy) {
+                for (Card card : this.playableCards) {
                     value = Math.min(
                             value,
                             this.nextChild(card).expectiminimax(depth - 1, alpha, beta)
@@ -93,12 +88,14 @@ public abstract class Node {
         return (int) value;
     }
 
+    abstract int getStartingDepth();
+
     private void expectiminimax() {
         System.out.println("Started calculating move...");
         long start = System.currentTimeMillis();
 
         this.expectiminimax(
-                DEPTH,
+                this.getStartingDepth(),
                 Double.NEGATIVE_INFINITY,
                 Double.POSITIVE_INFINITY
         );
@@ -132,15 +129,15 @@ public abstract class Node {
         Game gameCopy = this.game.copy();
         gameCopy.simulatePlay(card);
 
-        this.playableCards.remove(card);
+        this.cardsCurrentPlayer.remove(card);
         Node res = this.newInstance(
                 gameCopy,
                 aiCards,
-                opponentPossibleCards,
+                opponentCards,
                 aiID,
                 this.getNextType(gameCopy)
         );
-        this.playableCards.add(card);
+        this.cardsCurrentPlayer.add(card);
 
         return res;
     }
@@ -215,7 +212,7 @@ public abstract class Node {
         }
 
         int possessed = (int) this.aiCards.getCards(faction).count();
-        int remaining = (int) this.opponentPossibleCards.getCards(faction).count();
+        int remaining = (int) this.opponentCards.getCards(faction).count();
 
         int inScoreStack = 0;
 

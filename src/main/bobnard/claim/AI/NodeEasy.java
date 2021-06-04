@@ -6,6 +6,8 @@ import bobnard.claim.model.*;
  * Represents a Node for an AI in easy mode.
  */
 public class NodeEasy extends Node {
+    private static final int DEPTH = 4;
+
     /**
      * Creates a new NodeEasy.
      *
@@ -30,6 +32,11 @@ public class NodeEasy extends Node {
         return new NodeEasy(game, aiCards, opponentPossibleCards, aiID, type);
     }
 
+    @Override
+    int getStartingDepth() {
+        return DEPTH;
+    }
+
     /**
      * Evaluates an intermediate configuration in phase two.
      *
@@ -50,6 +57,6 @@ public class NodeEasy extends Node {
             }
         }
 
-        return handVal + 3 * scoreVal;
+        return handVal + 2 * scoreVal;
     }
 }
