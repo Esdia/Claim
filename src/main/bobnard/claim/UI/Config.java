@@ -117,7 +117,6 @@ public class Config extends JComponent {
             isFS = true;
         }
         if(cb.getItemAt(cb.getSelectedIndex()).equals("Windowed") && isFS){
-            System.out.println("aaa");
             device.setFullScreenWindow(null);
             isFS = false;
         }
