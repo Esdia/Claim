@@ -277,7 +277,7 @@ public class Player {
         Player player = new Player(this.id);
 
         player.hand.addAll(this.hand);
-        player.scoreStack.addAll(this.scoreStack);
+        this.scoreStack.forEach(player.scoreStack::push);
         player.followers.addAll(this.followers);
 
         return player;
