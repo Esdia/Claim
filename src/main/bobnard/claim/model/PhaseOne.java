@@ -64,7 +64,7 @@ class PhaseOne extends Phase {
 
     private void flipCard() {
         this.setFlippedCard(deck.draw());
-        System.out.println("Flipped card : " + this.flippedCard);
+        // System.out.println("Flipped card : " + this.flippedCard);
 
         for (Player player : this.players) {
             player.showFlippedCard(this.flippedCard);

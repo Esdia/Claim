@@ -27,7 +27,7 @@ public class EvaluateAI {
         int start = (int) System.currentTimeMillis();
 
         for (int i = 0; i < nbGames; i++) {
-            System.out.println("-----------------\n\nSTARTING GAME n°" + (i + 1) + "\n\n-----------------");
+            System.out.println("-----------------\nSTARTING GAME n°" + (i + 1) + "\n-----------------");
 
             // game.printDebugInfo();
 
@@ -36,6 +36,7 @@ public class EvaluateAI {
             }
 
             victories[game.getWinnerID() - 1]++;
+            System.out.println(game.getPlayer(game.getWinnerID() - 1).getClass().getSimpleName() + " won the game\n");
 
             game.nextStep(); // To restart the game
 

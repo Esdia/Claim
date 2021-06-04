@@ -104,7 +104,7 @@ public class Game {
 
         this.winnerID = factionsPlayerZero >= 3 ? 1 : 2;
 
-        System.out.println("Player " + winnerID + " won the game!");
+        // System.out.println("Player " + winnerID + " won the game!");
     }
 
     /**
@@ -239,7 +239,7 @@ public class Game {
     }
 
     private void startPhaseOne() {
-        System.out.println("Beginning phase 1");
+        // System.out.println("Beginning phase 1");
         this.phase = new PhaseOne(this.players);
     }
 
@@ -247,7 +247,7 @@ public class Game {
         if (this.getPhaseNum() != 1) {
             throw new IllegalStateException();
         }
-        System.out.println("Beginning phase 2");
+        // System.out.println("Beginning phase 2");
         this.phase = new PhaseTwo(players);
     }
     //endregion
