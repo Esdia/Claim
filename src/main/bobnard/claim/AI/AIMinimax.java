@@ -45,6 +45,10 @@ abstract class AIMinimax extends AI {
         this.possibleOpponentCards.addAll(this.possibleOpponentFollowers);
     }
 
+    protected int getIndex(Card card) {
+        return this.playableCards(game.getPlayedFaction()).indexOf(card);
+    }
+
     /**
      * Shows a card to the AI.
      * <p>

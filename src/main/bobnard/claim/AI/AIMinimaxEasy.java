@@ -54,6 +54,6 @@ public class AIMinimaxEasy extends AIMinimax {
             throw new IllegalStateException();
         }
 
-        return this.playableCards(game.getPlayedFaction()).indexOf(nextMove);
+        return this.getIndex(nextMove);
     }
 }
