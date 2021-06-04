@@ -65,7 +65,12 @@ public class Hand extends ArrayList<Card> {
         return min.orElse(null);
     }
 
-    private Card getWeakestPlayableCard(Faction faction) {
+    public Card getStrongestCard() {
+        Optional<Card> max = this.stream().max(Comparator.comparingInt(c -> c.value));
+        return max.orElse(null);
+    }
+
+    public Card getWeakestPlayableCard(Faction faction) {
         return playableCards(faction).getWeakestCard();
     }
 
@@ -88,5 +93,17 @@ public class Hand extends ArrayList<Card> {
 
         Optional<Card> weakestToBeat = canBeat.stream().min(Card::compareTo);
         return weakestToBeat.orElse(null);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        String valStr;
+        for (Faction faction : Faction.values()) {
+            valStr = this.getCards(faction).collect(Collectors.toCollection(ArrayList::new)).toString();
+            str.append(valStr);
+            str.append("\n");
+        }
+        return str.toString();
     }
 }
