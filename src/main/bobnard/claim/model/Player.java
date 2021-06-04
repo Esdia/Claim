@@ -6,7 +6,7 @@ import java.util.Stack;
  * This class represents a player.
  */
 public class Player {
-    private final int id;
+    private int id;
 
     private final Hand hand;
     private final ScoreStack scoreStack;
@@ -26,6 +26,10 @@ public class Player {
         this.hand = new Hand();
         this.scoreStack = new ScoreStack();
         this.followers = new Stack<>();
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
     //region HAND MANAGEMENT

@@ -10,22 +10,17 @@ public class EvaluateAI {
                 new AIMinimaxEasy(game, 0),
                 new AIMinimaxNormal(game, 1)
         };
-        Player[] players2 = new Player[]{
-                new AIMinimaxNormal(game, 0),
-                new AIMinimaxEasy(game, 1)
-        };
         for (int i = 0; i < 2; i++) {
             ((AI) players[i]).setEvaluating();
-            ((AI) players2[i]).setEvaluating();
         }
 
         game.setPlayers(players);
         game.start();
 
-        loop(game, players2);
+        loop(game);
     }
 
-    private static void loop(Game game, Player[] players2) {
+    private static void loop(Game game) {
         int[] victories = {0, 0};
         int nbGames = 20;
 
@@ -48,6 +43,11 @@ public class EvaluateAI {
                 System.out.println("--------");
                 System.out.println("SWAPPING");
                 System.out.println("--------");
+                Player[] players2 = new Player[2];
+                for (int j = 0; j < 2; j++) {
+                    players2[j] = game.getPlayer(1 - j);
+                    players2[j].setID(j);
+                }
                 game.setPlayers(players2);
                 int tmp = victories[0];
                 victories[0] = victories[1];
