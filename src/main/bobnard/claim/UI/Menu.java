@@ -69,6 +69,7 @@ public class Menu extends JComponent {
 
     }
 
+
     public void changeSkin(String name) {
         skin = name;
         setImages();

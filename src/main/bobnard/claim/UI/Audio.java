@@ -104,4 +104,9 @@ public class Audio {
     public static Clip getBGM() {
         return bgm;
     }
+
+    public static int getVolume() {
+        System.out.println(volume);
+        return volume;
+    }
 }

@@ -35,7 +35,7 @@ public class Config extends JComponent {
         this.frame = frame;
         this.menu = menu;
 
-        s = new JSlider(0, 15, 15);
+        s = new JSlider(0, 15, Audio.getVolume());
 
         s.setOpaque(false);
         s.setVisible(true);
@@ -61,6 +61,37 @@ public class Config extends JComponent {
         this.add(cb);
 
 
+    }
+
+    public Config(JFrame frame) {
+        this.isFS = false;
+        this.frame = frame;
+        this.menu = null;
+
+        s = new JSlider(0, 15, Audio.getVolume());
+
+        s.setOpaque(false);
+        s.setVisible(true);
+
+        l1 = new JLabel("Volume :");
+        l2 = new JLabel("Screen :");
+
+        setImages();
+
+        b1 = new JButton();
+
+        b1.addMouseListener(m);
+
+        String[] str = {"Windowed" , "Fullscreen"};
+        cb = new JComboBox<>(str);
+
+
+        this.add(cb);
+        this.add(b1);
+        this.add(l1);
+        this.add(l2);
+        this.add(s);
+        this.add(cb);
 
     }
 

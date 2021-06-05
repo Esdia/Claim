@@ -3,11 +3,12 @@ package bobnard.claim.model;
 import java.io.*;
 
 public class Save {
-    PhaseOne p1 ;
-    PhaseTwo p2 ;
-    Game game ;
-    ScoreStack score ;
-    public void save ( String fileName){
+    static PhaseOne p1 ;
+    static PhaseTwo p2 ;
+    static Game game ;
+    static ScoreStack score ;
+
+    public static void save(String fileName){
         try{
             FileOutputStream fsave = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(fsave);
@@ -26,7 +27,7 @@ public class Save {
     }
     @SuppressWarnings("unchecked")
 
-    public void load (String fileName){
+    public static void load(String fileName){
         try {
             FileInputStream fload = new FileInputStream(fileName);
             ObjectInputStream in = new ObjectInputStream(fload);
