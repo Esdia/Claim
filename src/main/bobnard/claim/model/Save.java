@@ -3,6 +3,7 @@ package bobnard.claim.model;
 import bobnard.claim.UI.Audio;
 import bobnard.claim.UI.Config;
 import bobnard.claim.UI.Menu;
+import bobnard.claim.UI.Window;
 
 import javax.swing.*;
 import java.io.*;
@@ -70,6 +71,7 @@ public class Save {
             Menu.skin = (String) in.readObject();
             Audio.setVolume((Integer) in.readObject());
             boolean isFS = (Boolean) in.readObject();
+            Window.isFS = isFS;
             if(isFS) Config.device.setFullScreenWindow(frame);
 
             in.close();

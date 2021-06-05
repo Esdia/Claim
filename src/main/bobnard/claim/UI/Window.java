@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class Window implements Runnable {
     private static JFrame frame;
+    public static Boolean isFS;
     private static Container contentPane;
     private static CFrame cFrame;
 

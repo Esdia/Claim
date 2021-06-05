@@ -34,7 +34,7 @@ public class Config extends JComponent {
 
 
     public Config(JFrame frame, Menu menu) {
-        this.isFS = false;
+        this.isFS = Window.isFS;
         this.frame = frame;
         this.menu = menu;
         this.pm = null;
@@ -68,7 +68,7 @@ public class Config extends JComponent {
     }
 
     public Config(JFrame frame, PauseMenu pm) {
-        this.isFS = false;
+        this.isFS = Window.isFS;
         this.frame = frame;
         this.pm = pm;
         this.menu = null;
@@ -89,14 +89,14 @@ public class Config extends JComponent {
 
         String[] str = {"Windowed" , "Fullscreen"};
         cb = new JComboBox<>(str);
-
-
+        if(isFS) cb.setSelectedItem(cb.getItemAt(1));
         this.add(cb);
+
         this.add(b1);
         this.add(l1);
         this.add(l2);
         this.add(s);
-        this.add(cb);
+
 
     }
 
@@ -152,10 +152,12 @@ public class Config extends JComponent {
         if(cb.getItemAt(cb.getSelectedIndex()).equals("Fullscreen") && !isFS){
             device.setFullScreenWindow(frame);
             isFS = true;
+            Window.isFS = true;
         }
         if(cb.getItemAt(cb.getSelectedIndex()).equals("Windowed") && isFS){
             device.setFullScreenWindow(null);
             isFS = false;
+            Window.isFS = false;
         }
 
     }
