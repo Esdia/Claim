@@ -106,7 +106,6 @@ public class Audio {
     }
 
     public static int getVolume() {
-        System.out.println(volume);
         return volume;
     }
 }

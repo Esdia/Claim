@@ -77,7 +77,6 @@ public class CFrame extends JComponent  {
         this.setVisible(true);
 
         try {
-            System.out.println(path);
             image = ImageIO.read(new File(path + "board.png"));
         } catch (IOException ignored) {
         }
