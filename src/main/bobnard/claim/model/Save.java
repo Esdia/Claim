@@ -83,7 +83,7 @@ public class Save {
             FileInputStream fload = new FileInputStream("sys");
             ObjectInputStream in = new ObjectInputStream(fload);
             Menu.skin = (String) in.readObject();
-          
+
             in.close();
         }catch (IOException | ClassNotFoundException e ){
             e.printStackTrace();

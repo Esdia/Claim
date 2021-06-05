@@ -13,6 +13,7 @@ public class Config extends JComponent {
 
     final JFrame frame;
     final Menu menu;
+    final PauseMenu pm;
     BufferedImage image;
 
     final JButton b1;
@@ -36,6 +37,7 @@ public class Config extends JComponent {
         this.isFS = false;
         this.frame = frame;
         this.menu = menu;
+        this.pm = null;
 
         s = new JSlider(0, 15, Audio.getVolume());
 
@@ -65,9 +67,10 @@ public class Config extends JComponent {
 
     }
 
-    public Config(JFrame frame) {
+    public Config(JFrame frame, PauseMenu pm) {
         this.isFS = false;
         this.frame = frame;
+        this.pm = pm;
         this.menu = null;
 
         s = new JSlider(0, 15, Audio.getVolume());

@@ -21,7 +21,7 @@ public class PauseMenu extends JComponent {
 
     public PauseMenu(CFrame frame) {
 
-        c = new Config(frame.frame);
+        c = new Config(frame.frame, this);
 
         this.add(c);
 
@@ -135,6 +135,6 @@ public class PauseMenu extends JComponent {
 
 
     public void refresh() {
-        setImages();
+        paintComponent(this.getGraphics());
     }
 }

@@ -41,8 +41,13 @@ public class ConfigMouseListener extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         Audio.playSE(0);
         if (e.getSource().equals(c.b1)) {
-            if(c.menu != null) c.menu.isConfig = false;
-            else PauseMenu.isConfig = false;
+            if(c.menu != null){
+                c.menu.isConfig = false;
+            }
+            else{
+                PauseMenu.isConfig = false;
+                c.pm.refresh();
+            }
         }
 
     }

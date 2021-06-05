@@ -20,7 +20,7 @@ import java.util.Iterator;
 
 public class CFrame extends JComponent  {
 
-    Game game;
+    static Game game;
 
     JFrame frame;
     static String path;
@@ -64,7 +64,12 @@ public class CFrame extends JComponent  {
         FlippedCard = null;
         this.frame = frame;
 
-        cf = new Config(frame);
+        isPaused = false;
+
+        pm = new PauseMenu(this);
+        this.add(pm);
+
+
 
         for (int i = 0; i < 5; i++) {
             try {
@@ -119,11 +124,7 @@ public class CFrame extends JComponent  {
 
         p = new ImageIcon(path+ "pause.png");
 
-        isPaused = false;
 
-        pm = new PauseMenu(this);
-
-        this.add(pm);
 
     }
 
@@ -529,8 +530,8 @@ public class CFrame extends JComponent  {
 
     }
 
-    public Game getGame() {
-        return this.game;
+    public static Game getGame() {
+        return CFrame.game;
     }
 
     public void updateScore() {

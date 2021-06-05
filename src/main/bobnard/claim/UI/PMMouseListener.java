@@ -36,6 +36,7 @@ public class PMMouseListener extends MouseAdapter {
         }
         if (e.getSource().equals(pm.cf)) {
             PauseMenu.isConfig = true;
+            pm.refresh();
         }
         if (e.getSource().equals(pm.sv)) {
             Save.save("File1");
