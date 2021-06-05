@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class CardUI extends JPanel implements MouseInputListener {
     private static final HashMap<String, BufferedImage> images = new HashMap<>();
-    private static final String path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
+    private static String path;
 
     private final CFrame frame;
     private final Game game;
@@ -29,6 +29,8 @@ public class CardUI extends JPanel implements MouseInputListener {
 
     public CardUI(CFrame frame) {
         super();
+
+        path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
 
         this.frame = frame;
         this.game = frame.getGame();
