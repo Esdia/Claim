@@ -135,7 +135,7 @@ public class PauseMenu extends JComponent {
         draw(c, isConfig);
 
         g.drawImage(bg, 0, 0, this.frame.getWidth(), this.frame.getHeight(), null);
-        g.drawImage(lg, (int) (w/2.5), 0, w/5, h/3, null);
+        g.drawImage(lg, (int) (w/2.5), h/30, w/5, h/3, null);
 
         setButtons();
 
