@@ -1,6 +1,8 @@
 package bobnard.claim.UI;
 
 
+import bobnard.claim.model.Save;
+
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -45,6 +47,7 @@ public class SSMouseListener extends MouseAdapter {
         }
         if (e.getSource().equals(ss.b2)) {
             ss.menu.changeSkin("Umineko");
+            Save.syssave(ss.menu.config);
             ss.menu.isSs = false;
         }
         if (e.getSource().equals(ss.b1)) {

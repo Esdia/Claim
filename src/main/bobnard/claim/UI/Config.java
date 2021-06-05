@@ -1,5 +1,7 @@
 package bobnard.claim.UI;
 
+import bobnard.claim.model.Save;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -20,13 +22,13 @@ public class Config extends JComponent {
     final JLabel l2;
     final JComboBox<String> cb;
 
-    Boolean isFS;
+    public Boolean isFS;
 
     ImageIcon ba;
 
     final ConfigMouseListener m = new ConfigMouseListener(this);
 
-    static final GraphicsDevice device = GraphicsEnvironment
+    public static final GraphicsDevice device = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
 
@@ -140,6 +142,7 @@ public class Config extends JComponent {
 
         g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
 
+        Save.syssave(this);
 
         cb.setBounds(w/2 - w/10, (int) (h/2.3),w/6,h/18);
 

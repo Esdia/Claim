@@ -1,5 +1,10 @@
 package bobnard.claim.model;
 
+import bobnard.claim.UI.Audio;
+import bobnard.claim.UI.Config;
+import bobnard.claim.UI.Menu;
+
+import javax.swing.*;
 import java.io.*;
 
 public class Save {
@@ -43,5 +48,49 @@ public class Save {
             e.printStackTrace();
         }
     }
+
+    public static void syssave(Config config){
+        try{
+            FileOutputStream fsave = new FileOutputStream("sys");
+            ObjectOutputStream out = new ObjectOutputStream(fsave);
+            out.writeObject(Menu.skin);
+            out.writeObject(Audio.getVolume());
+            out.writeObject(config.isFS);
+            out.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void sysload(JFrame frame){
+        try {
+            FileInputStream fload = new FileInputStream("sys");
+            ObjectInputStream in = new ObjectInputStream(fload);
+            Menu.skin = (String) in.readObject();
+            Audio.setVolume((Integer) in.readObject());
+            boolean isFS = (Boolean) in.readObject();
+            if(isFS) Config.device.setFullScreenWindow(frame);
+
+            in.close();
+        }catch (IOException | ClassNotFoundException e ){
+            e.printStackTrace();
+        }
+    }
+
+    public static void sysloadSkin(){
+        try {
+            FileInputStream fload = new FileInputStream("sys");
+            ObjectInputStream in = new ObjectInputStream(fload);
+            Menu.skin = (String) in.readObject();
+          
+            in.close();
+        }catch (IOException | ClassNotFoundException e ){
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
 

@@ -1,12 +1,14 @@
 package bobnard.claim.UI;
 
 
+
+import bobnard.claim.model.Save;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 
 public class Menu extends JComponent {
@@ -43,7 +45,7 @@ public class Menu extends JComponent {
     public static String skin;
 
     final SkinSelect panel;
-    final Config config;
+    Config config;
 
     public Menu(JFrame frame) {
         skin = "Vanilla";
@@ -56,13 +58,19 @@ public class Menu extends JComponent {
 
 
         panel = new SkinSelect(frame, this);
-        config = new Config(frame, this);
-
         this.add(panel);
-        this.add(config);
+
+
+        Save.sysloadSkin();
 
         Audio.setFiles();
+
         Audio.playBGM(0);
+
+        Save.sysload(this.frame);
+
+        config = new Config(frame, this);
+        this.add(config);
 
         creatButtons();
         setImages();
@@ -236,7 +244,10 @@ public class Menu extends JComponent {
 
     }
 
-
 }
+
+
+
+
 	
 
