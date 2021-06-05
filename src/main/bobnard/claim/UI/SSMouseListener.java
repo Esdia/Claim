@@ -52,6 +52,7 @@ public class SSMouseListener extends MouseAdapter {
         }
         if (e.getSource().equals(ss.b1)) {
             ss.menu.changeSkin("Vanilla");
+            Save.syssave(ss.menu.config);
             ss.menu.isSs = false;
         }
     }

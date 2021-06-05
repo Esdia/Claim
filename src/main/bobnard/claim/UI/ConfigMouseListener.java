@@ -17,7 +17,7 @@ public class ConfigMouseListener extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
 
-        ImageIcon ba = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/back2.png");
+        ImageIcon ba = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/Config/back2.png");
         setHover(e, ba);
     }
 
@@ -32,7 +32,7 @@ public class ConfigMouseListener extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
         super.mouseEntered(e);
 
-        ImageIcon ba = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/back.png");
+        ImageIcon ba = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/Config/back.png");
 
         setHover(e, ba);
     }
@@ -46,7 +46,7 @@ public class ConfigMouseListener extends MouseAdapter {
             }
             else{
                 PauseMenu.isConfig = false;
-                c.pm.refresh();
+                c.pm.repaint();
             }
         }
 

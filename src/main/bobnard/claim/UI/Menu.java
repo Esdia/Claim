@@ -48,8 +48,8 @@ public class Menu extends JComponent {
     Config config;
 
     public Menu(JFrame frame) {
-        skin = "Vanilla";
 
+        Save.sysloadSkin();
         this.isStart = false;
         this.isSs = false;
         this.isConfig = false;
@@ -61,7 +61,7 @@ public class Menu extends JComponent {
         this.add(panel);
 
 
-        Save.sysloadSkin();
+
 
         Audio.setFiles();
 

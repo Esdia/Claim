@@ -99,7 +99,7 @@ public class CFrame extends JComponent  {
             public void mousePressed(MouseEvent e) {
                 if(e.getSource().equals(pause)){
                     isPaused = true;
-                    pm.refresh();
+                    pm.repaint();
                     repaint();
 
                 }
