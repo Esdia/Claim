@@ -265,7 +265,7 @@ public class CFrame extends JComponent {
     void SetFollowersInvisible() {
     	flippedPanel.setVisible(false);
     	for (int j = 0; j < 2; j++) {
-              for (int i = 0; i < 13; i++) {
+              for (int i = 0; i < 36; i++) {
                   this.followPanels[j][i].setVisible(false);
               }
           }
@@ -327,7 +327,6 @@ public class CFrame extends JComponent {
 					x =(w/2)+ 3*imgWidth;
 					y[0] += imgHeight;
 					y[1] -= imgHeight;
-					System.out.println("MAX");
 				}
     			this.followPanels[j][i].setVisible(it.hasNext());
     			if (it.hasNext() ) {

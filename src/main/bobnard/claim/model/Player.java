@@ -6,7 +6,7 @@ import java.util.Stack;
  * This class represents a player.
  */
 public class Player {
-    private final int id;
+    private int id;
 
     private final Hand hand;
     private final ScoreStack scoreStack;
@@ -26,6 +26,10 @@ public class Player {
         this.hand = new Hand();
         this.scoreStack = new ScoreStack();
         this.followers = new Stack<>();
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
 
     //region HAND MANAGEMENT
@@ -96,7 +100,7 @@ public class Player {
      * This method is meant to only be called at
      * the beginning of phase 2
      */
-    void followersToHand() {
+    protected void followersToHand() {
         this.hand.clear();
 
         this.hand.addAll(this.followers);
@@ -238,6 +242,9 @@ public class Player {
     public void showCard(Card card) {
     }
 
+    public void showFlippedCard(Card card) {
+    }
+
     /**
      * Describes the action taken by a player
      * at the beginning of their turn.
@@ -277,7 +284,7 @@ public class Player {
         Player player = new Player(this.id);
 
         player.hand.addAll(this.hand);
-        player.scoreStack.addAll(this.scoreStack);
+        this.scoreStack.forEach(player.scoreStack::push);
         player.followers.addAll(this.followers);
 
         return player;

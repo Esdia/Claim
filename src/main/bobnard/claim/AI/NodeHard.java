@@ -3,19 +3,19 @@ package bobnard.claim.AI;
 import bobnard.claim.model.*;
 
 /**
- * Represents a Node for an AI in easy mode.
+ * Represents a Node for an AI in hard mode.
  */
-public class NodeEasy extends Node {
-    private static final int DEPTH = 4;
+public class NodeHard extends Node {
+    private static final int DEPTH = 8;
 
     /**
-     * Creates a new NodeEasy.
+     * Creates a new Node.
      *
      * @param game The game on which the AI will play.
      * @param aiID The AI's player ID
      * @param type The type of the Node.
      */
-    NodeEasy(Game game, int aiID, NodeType type) {
+    NodeHard(Game game, int aiID, NodeType type) {
         super(game, aiID, type);
     }
 
@@ -27,7 +27,7 @@ public class NodeEasy extends Node {
      */
     @Override
     Node newInstance(Game game, int aiID, NodeType type) {
-        return new NodeEasy(game, aiID, type);
+        return new NodeHard(game, aiID, type);
     }
 
     @Override

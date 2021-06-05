@@ -7,16 +7,10 @@ import bobnard.claim.model.*;
  * by the Minimax Algorithm.
  */
 public abstract class Node {
-    private static final int DEPTH = 8;
-
     protected final Game game;
     protected final int aiID;
 
-    protected final Hand aiCards;
-    protected final Hand opponentPossibleCards;
-
     private final Hand playableCards;
-    private final Hand playableCardsCopy;
 
     private final NodeType type;
 
@@ -25,32 +19,18 @@ public abstract class Node {
     /**
      * Creates a new Node.
      *
-     * @param game                  The game on which the AI will play.
-     * @param aiCards               The AI's cards.
-     * @param opponentPossibleCards The cards that could be in the opponent's hand.
-     * @param aiID                  The AI's player ID
-     * @param type                  The type of the Node.
+     * @param game The game on which the AI will play.
+     * @param aiID The AI's player ID
+     * @param type The type of the Node.
      */
-    Node(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type) {
+    Node(Game game, int aiID, NodeType type) {
         this.game = game;
         this.aiID = aiID;
 
         this.type = type;
 
-        this.aiCards = (Hand) aiCards.clone();
-        this.opponentPossibleCards = (Hand) opponentPossibleCards.clone();
-
-        switch (this.type) {
-            case MAX -> {
-                this.playableCards = this.aiCards;
-                this.playableCardsCopy = this.game.getPlayableCards(aiID);
-            }
-            case MIN -> {
-                this.playableCards = this.opponentPossibleCards;
-                this.playableCardsCopy = (Hand) this.opponentPossibleCards.clone();
-            }
-            default -> throw new IllegalStateException();
-        }
+        /* Not cheating because the second phase has perfect information. */
+        this.playableCards = this.game.getPlayableCards();
     }
 
     private int expectiminimax(int depth, double alpha, double beta) {
@@ -66,7 +46,7 @@ public abstract class Node {
                 value = Double.NEGATIVE_INFINITY;
                 int i = 0;
                 int tmp;
-                for (Card card : this.playableCardsCopy) {
+                for (Card card : this.playableCards) {
                     tmp = this.nextChild(card).expectiminimax(depth - 1, alpha, beta);
                     if (tmp > value) {
                         value = tmp;
@@ -79,7 +59,7 @@ public abstract class Node {
             }
             case MIN -> {
                 value = Double.POSITIVE_INFINITY;
-                for (Card card : this.playableCardsCopy) {
+                for (Card card : this.playableCards) {
                     value = Math.min(
                             value,
                             this.nextChild(card).expectiminimax(depth - 1, alpha, beta)
@@ -93,19 +73,21 @@ public abstract class Node {
         return (int) value;
     }
 
+    abstract int getStartingDepth();
+
     private void expectiminimax() {
-        System.out.println("Started calculating move...");
-        long start = System.currentTimeMillis();
+        // System.out.println("Started calculating move...");
+        // long start = System.currentTimeMillis();
 
         this.expectiminimax(
-                DEPTH,
+                this.getStartingDepth(),
                 Double.NEGATIVE_INFINITY,
                 Double.POSITIVE_INFINITY
         );
 
-        System.out.println("Finished calculating move");
-        long end = System.currentTimeMillis();
-        System.out.println("Took " + (end - start) + " ms");
+        // System.out.println("Finished calculating move");
+        // long end = System.currentTimeMillis();
+        // System.out.println("Took " + (end - start) + " ms");
     }
 
     private boolean isLeaf() {
@@ -132,17 +114,11 @@ public abstract class Node {
         Game gameCopy = this.game.copy();
         gameCopy.simulatePlay(card);
 
-        this.playableCards.remove(card);
-        Node res = this.newInstance(
+        return this.newInstance(
                 gameCopy,
-                aiCards,
-                opponentPossibleCards,
                 aiID,
                 this.getNextType(gameCopy)
         );
-        this.playableCards.add(card);
-
-        return res;
     }
 
     /**
@@ -153,7 +129,7 @@ public abstract class Node {
      *
      * @return An instance of Node.
      */
-    abstract Node newInstance(Game game, Hand aiCards, Hand opponentPossibleCards, int aiID, NodeType type);
+    abstract Node newInstance(Game game, int aiID, NodeType type);
 
     /**
      * Evaluates an intermediate configuration in phase two.
@@ -214,8 +190,11 @@ public abstract class Node {
             throw new IllegalStateException();
         }
 
-        int possessed = (int) this.aiCards.getCards(faction).count();
-        int remaining = (int) this.opponentPossibleCards.getCards(faction).count();
+        Player ai = this.game.getPlayer(aiID);
+        Player opponent = this.game.getPlayer(1 - aiID);
+
+        int possessed = (int) ai.getCards().getCards(faction).count();
+        int remaining = (int) opponent.getCards().getCards(faction).count();
 
         int inScoreStack = 0;
 
@@ -234,6 +213,10 @@ public abstract class Node {
      * @return the AI's next move.
      */
     int getNextMove() {
+        if (game.getPlayableCards().size() == 1) {
+            return 0;
+        }
+
         this.expectiminimax();
 
         return this.nextMove;

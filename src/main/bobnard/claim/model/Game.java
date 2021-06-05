@@ -104,7 +104,7 @@ public class Game {
 
         this.winnerID = factionsPlayerZero >= 3 ? 1 : 2;
 
-        System.out.println("Player " + winnerID + " won the game!");
+        // System.out.println("Player " + winnerID + " won the game!");
     }
 
     /**
@@ -129,11 +129,11 @@ public class Game {
         if (this.state != GameState.READY_TO_START) {
             throw new IllegalStateException();
         }
-        this.startPhaseOne();
-
         for (Player player : players) {
             player.init(); /* Used for initializing the AI */
         }
+
+        this.startPhaseOne();
 
         this.setState(GameState.STARTED_PHASE_ONE);
     }
@@ -161,7 +161,6 @@ public class Game {
     }
 
     private void setState(GameState state) {
-        // System.out.println("state = " + state);
         this.state = state;
     }
 
@@ -240,7 +239,7 @@ public class Game {
     }
 
     private void startPhaseOne() {
-        System.out.println("Beginning phase 1");
+        // System.out.println("Beginning phase 1");
         this.phase = new PhaseOne(this.players);
     }
 
@@ -248,7 +247,7 @@ public class Game {
         if (this.getPhaseNum() != 1) {
             throw new IllegalStateException();
         }
-        System.out.println("Beginning phase 2");
+        // System.out.println("Beginning phase 2");
         this.phase = new PhaseTwo(players);
     }
     //endregion

@@ -1,15 +1,17 @@
 package bobnard.claim.AI;
 
-import bobnard.claim.model.*;
+import bobnard.claim.model.Card;
+import bobnard.claim.model.Game;
+import bobnard.claim.model.GameState;
 
-public class AIMinimaxEasy extends AIMinimax {
+public class AIMinimaxHard extends AIMinimax {
     /**
-     * Creates a new AIMinimaxEasy
+     * Creates a new AIMinimax
      *
      * @param game The game on which the AI will play.
      * @param id   The AI's player ID.
      */
-    public AIMinimaxEasy(Game game, int id) {
+    public AIMinimaxHard(Game game, int id) {
         super(game, id);
     }
 
@@ -21,7 +23,7 @@ public class AIMinimaxEasy extends AIMinimax {
      */
     @Override
     protected Node getNodeInstance() {
-        return new NodeEasy(
+        return new NodeHard(
                 game,
                 this.getId(),
                 NodeType.MAX
@@ -30,7 +32,7 @@ public class AIMinimaxEasy extends AIMinimax {
 
     /**
      * Calculates the AI's next move in the first phase.
-     *
+     * <p>
      * In easy mode, the AI will simply try to win every trick, even
      * if the flipped card is really bad.
      *
@@ -40,14 +42,26 @@ public class AIMinimaxEasy extends AIMinimax {
      */
     @Override
     int getMovePhaseOne() {
-        Card nextMove;
+        Card nextMove = null;
+
+        boolean want = (this.game.getFlippedCard().value >= 5);
 
         if (game.getState() == GameState.WAITING_LEADER_ACTION) {
             // AI plays first
-            nextMove = this.getCards().getWeakestCard();
+            if (want) {
+                nextMove = this.getCards().getStrongestCard();
+            }
+
+            if (!want || nextMove.value < 7) {
+                nextMove = this.getCards().getWeakestCard();
+            }
         } else if (game.getState() == GameState.WAITING_FOLLOW_ACTION) {
             // AI plays second
-            nextMove = this.getCards().getWeakestToBeat(lastShownCard);
+            if (want) {
+                nextMove = this.getCards().getWeakestToBeat(lastShownCard);
+            } else {
+                nextMove = this.getCards().getWeakestPlayableCard(lastShownCard.faction);
+            }
         } else {
             throw new IllegalStateException();
         }
