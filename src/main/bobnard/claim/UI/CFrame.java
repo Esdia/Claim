@@ -123,7 +123,10 @@ public class CFrame extends JComponent {
 
         p = new ImageIcon(path + "pause.png");
 
-
+        this.createHandButtons();
+        this.createFollowButton();
+        this.createFlippedButton();
+        this.createPlayedButtons();
     }
 
 
@@ -132,8 +135,7 @@ public class CFrame extends JComponent {
 
         this.initHandButtons();
         this.initFollowButtons();
-        this.initFlippedButton();
-        this.initPlayedButton();
+        this.initPlayedButtons();
 
         this.setPlayers();
 
@@ -201,17 +203,54 @@ public class CFrame extends JComponent {
         }
     }
 
-    void initHandButtons() {
-        this.handPanels = new CardUI[2][13];
+    //region CREATE BUTTONS
+    CardUI[][] createButtons(int columns) {
+        CardUI[][] list = new CardUI[2][columns];
 
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < columns; j++) {
+                list[i][j] = new CardUI(this);
+                this.add(list[i][j]);
+            }
+        }
+
+        return list;
+    }
+
+    void createHandButtons() {
+        this.handPanels = this.createButtons(13);
+    }
+
+    void createFollowButton() {
+        this.followPanels = this.createButtons(36);
+    }
+
+    void createFlippedButton() {
+        this.flippedPanel = new CardUI(this);
+        this.add(flippedPanel);
+    }
+
+    void createPlayedButtons() {
+        this.playedPanels = new CardUI[2];
+
+        for (int i = 0; i < 2; i++) {
+            this.playedPanels[i] = new CardUI(this);
+            this.add(playedPanels[i]);
+        }
+    }
+    //endregion
+
+    void initHandButtons() {
         boolean isOwnedByHumanAgainstAI;
         boolean isOwnedByAI;
+
         for (int i = 0; i < 2; i++) {
             isOwnedByAI = game.getPlayer(i).isAI();
             isOwnedByHumanAgainstAI = !isOwnedByAI && game.getPlayer(1 - i).isAI();
+
             for (int j = 0; j < 13; j++) {
-                this.handPanels[i][j] = new CardUI(this);
-                this.add(handPanels[i][j]);
+                this.handPanels[i][j].fetchGame();
+
                 if (isOwnedByHumanAgainstAI) {
                     this.handPanels[i][j].setOwnedByHumanAgainstAI();
                 } else if (isOwnedByAI) {
@@ -222,17 +261,14 @@ public class CFrame extends JComponent {
     }
 
     void initFollowButtons() {
-        this.followPanels = new CardUI[2][36];
-
         boolean isOwnedByHumanAgainstAI;
         boolean isOwnedByAI;
+
         for (int i = 0; i < 2; i++) {
             isOwnedByAI = game.getPlayer(i).isAI();
             isOwnedByHumanAgainstAI = !isOwnedByAI && game.getPlayer(1 - i).isAI();
-            for (int j = 0; j < 36; j++) {
-                this.followPanels[i][j] = new CardUI(this);
-                this.add(followPanels[i][j]);
 
+            for (int j = 0; j < 36; j++) {
                 if (isOwnedByHumanAgainstAI) {
                     this.followPanels[i][j].setOwnedByHumanAgainstAI();
                 } else if (isOwnedByAI) {
@@ -242,18 +278,12 @@ public class CFrame extends JComponent {
         }
     }
 
-
-    void initFlippedButton() {
-        this.flippedPanel = new CardUI(this);
-        this.add(flippedPanel);
-    }
-
-    void initPlayedButton() {
-        this.playedPanels = new CardUI[2];
-
+    void initPlayedButtons() {
+        Card[] played = game.getPlayedCards();
         for (int i = 0; i < 2; i++) {
-            this.playedPanels[i] = new CardUI(this);
-            this.add(playedPanels[i]);
+            if (played[i] != null) {
+                this.playedPanels[i].setCard(played[i]);
+            }
         }
     }
 

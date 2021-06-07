@@ -18,7 +18,7 @@ public class CardUI extends JPanel implements MouseInputListener {
     private static String path;
 
     private final CFrame frame;
-    private final Game game;
+    private Game game;
 
     private Card card;
     private Image image;
@@ -36,12 +36,15 @@ public class CardUI extends JPanel implements MouseInputListener {
         path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
 
         this.frame = frame;
-        this.game = frame.getGame();
 
         this.addMouseMotionListener(this);
         this.addMouseListener(this);
         dragged = false;
 
+    }
+
+    void fetchGame() {
+        this.game = frame.getGame();
     }
 
     public void setOwnedByAI() {
