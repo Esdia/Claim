@@ -133,15 +133,12 @@ public class CardUI extends JPanel implements MouseInputListener {
 
     public void mouseReleased(MouseEvent e) {
     	int y = this.frame.getHeight() - getHeight();
-    	boolean play = true;
-        if (dragged && e.getYOnScreen() < (int) 1.5*getHeight() && this.frame.game.getCurrentPlayerID() == 0) {
+        if (dragged && e.getYOnScreen() < getHeight() && this.frame.game.getCurrentPlayerID() == 0) {
         	System.out.println("Refuse to play"+getHeight());
         	this.frame.getHandBack(this);
-        	play = false;
-        }else if (dragged && e.getYOnScreen() > (int) 1.5*y && this.frame.game.getCurrentPlayerID() == 1) {
+        }else if (dragged && e.getYOnScreen() > y && this.frame.game.getCurrentPlayerID() == 1) {
         	System.out.println("Refuse to play");
         	this.frame.getHandBack(this);
-        	play = false;
         }else if (!frame.getGame().isCurrentPlayerAI() && frame.game.getLegalCard(this.card)) {
             action();
         }

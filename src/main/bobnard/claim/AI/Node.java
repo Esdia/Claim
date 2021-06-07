@@ -76,18 +76,11 @@ public abstract class Node {
     abstract int getStartingDepth();
 
     private void expectiminimax() {
-        // System.out.println("Started calculating move...");
-        // long start = System.currentTimeMillis();
-
         this.expectiminimax(
                 this.getStartingDepth(),
                 Double.NEGATIVE_INFINITY,
                 Double.POSITIVE_INFINITY
         );
-
-        // System.out.println("Finished calculating move");
-        // long end = System.currentTimeMillis();
-        // System.out.println("Took " + (end - start) + " ms");
     }
 
     private boolean isLeaf() {

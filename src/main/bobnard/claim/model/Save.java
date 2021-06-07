@@ -31,7 +31,6 @@ public class Save {
             e.printStackTrace();
         }
     }
-    @SuppressWarnings("unchecked")
 
     public static void load(String fileName){
         try {

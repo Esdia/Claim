@@ -45,7 +45,7 @@ public class Menu extends JComponent {
     public static String skin;
 
     final SkinSelect panel;
-    Config config;
+    final Config config;
 
     public Menu(JFrame frame) {
 
@@ -67,7 +67,7 @@ public class Menu extends JComponent {
 
         Audio.playBGM(0);
 
-        Save.sysload(this.frame);
+        Save.sysload(Menu.frame);
 
         config = new Config(frame, this);
         this.add(config);
