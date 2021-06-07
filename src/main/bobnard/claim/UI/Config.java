@@ -1,7 +1,5 @@
 package bobnard.claim.UI;
 
-import bobnard.claim.model.Save;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

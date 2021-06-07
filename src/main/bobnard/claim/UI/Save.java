@@ -1,9 +1,6 @@
-package bobnard.claim.model;
+package bobnard.claim.UI;
 
-import bobnard.claim.UI.Audio;
-import bobnard.claim.UI.Config;
-import bobnard.claim.UI.Menu;
-import bobnard.claim.UI.Window;
+import bobnard.claim.model.Game;
 
 import javax.swing.*;
 import java.io.*;

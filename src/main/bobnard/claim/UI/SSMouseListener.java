@@ -1,8 +1,6 @@
 package bobnard.claim.UI;
 
 
-import bobnard.claim.model.Save;
-
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

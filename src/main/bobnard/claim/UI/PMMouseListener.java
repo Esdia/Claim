@@ -1,7 +1,7 @@
 package bobnard.claim.UI;
 
 
-import bobnard.claim.model.Save;
+import bobnard.claim.model.Game;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

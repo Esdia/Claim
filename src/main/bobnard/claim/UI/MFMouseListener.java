@@ -1,11 +1,6 @@
 package bobnard.claim.UI;
 
 
-import bobnard.claim.AI.AIMinimaxEasy;
-import bobnard.claim.model.Game;
-import bobnard.claim.model.Player;
-import bobnard.claim.model.Save;
-
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
