@@ -95,15 +95,11 @@ public abstract class Node {
     }
 
     private NodeType getNextType(Game gameCopy) {
-        NodeType nodeType;
-
         if (gameCopy.getCurrentPlayerID() == aiID) {
-            nodeType = NodeType.MAX;
+            return NodeType.MAX;
         } else {
-            nodeType = NodeType.MIN;
+            return NodeType.MIN;
         }
-
-        return nodeType;
     }
 
     private Node nextChild(Card card) {
