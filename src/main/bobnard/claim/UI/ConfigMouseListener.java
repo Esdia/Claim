@@ -46,7 +46,9 @@ public class ConfigMouseListener extends MouseAdapter {
             }
             else{
                 PauseMenu.isConfig = false;
-                c.pm.repaint();
+                if (c.pm != null) {
+                    c.pm.repaint();
+                }
             }
         }
 

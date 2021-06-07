@@ -6,10 +6,7 @@ import bobnard.claim.model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.MouseInputListener;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -20,9 +17,9 @@ import java.util.Iterator;
 
 public class CFrame extends JComponent  {
 
-    static Game game;
+    Game game;
 
-    JFrame frame;
+    final JFrame frame;
     static String path;
 
     BufferedImage image;
@@ -35,30 +32,28 @@ public class CFrame extends JComponent  {
 
     final int[][] Score = new int[2][5];
 
-    
+
     CardUI[][] handPanels;
     CardUI flippedPanel;
     public CardUI[] playedPanels;
-    
+
     CardUI[][] followPanels;
 
     int w;
     int h;
     int imgWidth;
     int imgHeight;
-    
+
     int Phase ;
 
     private final Timer gameLoop = new Timer(16, null);
     final ArrayList<AnimatedPanel> movingPanels = new ArrayList<>();
 
     final PauseMenu pm;
-    JButton pause;
-    ImageIcon p;
+    final JButton pause;
+    final ImageIcon p;
     public static Boolean isPaused;
 
-    Config cf;
-    
     public CFrame(JFrame frame) {
         path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
         FlippedCard = null;
@@ -176,6 +171,10 @@ public class CFrame extends JComponent  {
         this.gameLoop.start();
     }
 
+    void stopLoop() {
+        this.gameLoop.stop();
+    }
+
     public void setPlayers() {
         this.players = new Player[2];
 
@@ -192,10 +191,19 @@ public class CFrame extends JComponent  {
     void initHandButtons() {
         this.handPanels = new CardUI[2][13];
 
+        boolean isOwnedByHumanAgainstAI;
+        boolean isOwnedByAI;
         for (int i = 0; i < 2; i++) {
+            isOwnedByAI = game.getPlayer(i).isAI();
+            isOwnedByHumanAgainstAI = !isOwnedByAI && game.getPlayer(1 - i).isAI();
             for (int j = 0; j < 13; j++) {
                 this.handPanels[i][j] = new CardUI(this);
                 this.add(handPanels[i][j]);
+                if (isOwnedByHumanAgainstAI) {
+                    this.handPanels[i][j].setOwnedByHumanAgainstAI();
+                } else if (isOwnedByAI) {
+                    this.handPanels[i][j].setOwnedByAI();
+                }
             }
         }
     }
@@ -203,10 +211,20 @@ public class CFrame extends JComponent  {
     void initFollowButtons() {
         this.followPanels = new CardUI[2][36];
 
+        boolean isOwnedByHumanAgainstAI;
+        boolean isOwnedByAI;
         for (int i = 0; i < 2; i++) {
+            isOwnedByAI = game.getPlayer(i).isAI();
+            isOwnedByHumanAgainstAI = !isOwnedByAI && game.getPlayer(1 - i).isAI();
             for (int j = 0; j < 36; j++) {
                 this.followPanels[i][j] = new CardUI(this);
                 this.add(followPanels[i][j]);
+
+                if (isOwnedByHumanAgainstAI) {
+                    this.followPanels[i][j].setOwnedByHumanAgainstAI();
+                } else if (isOwnedByAI) {
+                    this.followPanels[i][j].setOwnedByAI();
+                }
             }
         }
     }
@@ -312,14 +330,24 @@ public class CFrame extends JComponent  {
     void drawHands(boolean resize) {
         int x, size;
         int[] y = {5, h - imgHeight - 5};
+        int[] yRaised = {y[0] + imgHeight / 10, y[1] - imgHeight / 10};
 
         int currentPlayer = this.game.getCurrentPlayerID();
 
         Iterator<Card> it;
         Card c;
 
+        Hand playable;
+        boolean raise;
+
         for (int j = 0; j < 2; j++) {
         	size = players[j].getCards().size();
+
+            playable = game.getPlayableCards();
+            raise = (
+        	        game.getState() == GameState.WAITING_FOLLOW_ACTION && game.getCurrentPlayerID() == j
+                            && size != playable.size() && !players[j].isAI()
+            );
         	
         	if (size % 2 !=0) size +=1;
             x =(w/2) - ( size/2* imgWidth);
@@ -337,7 +365,11 @@ public class CFrame extends JComponent  {
                     }
                     c = it.next();
                     this.handPanels[j][i].setCard(c, j == currentPlayer);
-                    this.handPanels[j][i].setLocation(x, y[j]);
+                    if (raise && playable.contains(c)) {
+                        this.handPanels[j][i].setLocation(x, yRaised[j]);
+                    } else {
+                        this.handPanels[j][i].setLocation(x, y[j]);
+                    }
                     x += imgWidth;
                 }
             }
@@ -367,6 +399,26 @@ public class CFrame extends JComponent  {
           }
     }
 
+
+    private int drawFollowPanel(boolean resize, int x, int[] y, int currentPlayer, Iterator<Card> it, int j, int i) {
+        Card c;
+        this.followPanels[j][i].setVisible(it.hasNext());
+        if (it.hasNext() ) {
+            if (resize) {
+                this.followPanels[j][i].setSize(imgWidth, imgHeight);
+            }
+            c = it.next();
+            this.followPanels[j][i].setSize(imgWidth, imgHeight);
+            if (c.name != null) {
+                this.followPanels[j][i].setCard(c, j == currentPlayer);
+                this.followPanels[j][i].setLocation(x, y[j]);
+
+            }
+            x += imgWidth/3;
+        }
+        return x;
+    }
+
     void drawFollowers(boolean resize) {
     	int x;
     	int[] y = {(int)(imgHeight*1.2), h - (int)(imgHeight*2.2)};
@@ -374,48 +426,28 @@ public class CFrame extends JComponent  {
     	int currentPlayer = this.game.getCurrentPlayerID();
 
     	Iterator<Card> it;
-    	Card c;
 
     	for (int j = 0; j < 2; j++) {
     		x =(w/2)+ 3*imgWidth;
     		it = players[j].getFollowers().iterator();
     		for (int i = 0; i < 13; i++) {
-    			this.followPanels[j][i].setVisible(it.hasNext());
-    			if (it.hasNext() ) {
-    				if (resize) {
-    					this.followPanels[j][i].setSize(imgWidth, imgHeight);
-    				}
-    				c = it.next();
-    				this.followPanels[j][i].setSize(imgWidth, imgHeight);
-    				if (c.name != null) {
-    					this.followPanels[j][i].setCard(c, j == currentPlayer);
-    					this.followPanels[j][i].setLocation(x, y[j]);
-
-    				}
-    				x += imgWidth/3;
-    			}
-    		}
+                x = drawFollowPanel(resize, x, y, currentPlayer, it, j, i);
+            }
     	}
 
     }
 
-    
     void drawScorePile(boolean resize) {
     	int size;
     	int max =  (w/2)+ 2*imgWidth+ 16*(imgWidth/3);
-    	int x;
+    	int x = (w/2)+ 2*imgWidth;
     	int[] y = {(int)(imgHeight*1.2), h - (int)(imgHeight*2.2)};
 
     	int currentPlayer = this.game.getCurrentPlayerID();
-    	
 
     	Iterator<Card> it;
-    	Card c;
 
     	for (int j = 0; j < 2; j++) {
-    		x =(w/2)+ 2*imgWidth;
-    		y[0] = (int)(imgHeight*1.2);
-    		y[1] =  h - (int)(imgHeight*2.2);
     		it = players[j].getScoreStack().iterator();
     		size = players[j].getScoreStack().size();
     		for (int i = 0; i < size; i++) {
@@ -424,26 +456,12 @@ public class CFrame extends JComponent  {
 					y[0] += imgHeight;
 					y[1] -= imgHeight;
 				}
-    			this.followPanels[j][i].setVisible(it.hasNext());
-    			if (it.hasNext() ) {
-    				if (resize) {
-    					this.followPanels[j][i].setSize(imgWidth, imgHeight);
-    				}
-    				c = it.next();
-    				this.followPanels[j][i].setSize(imgWidth, imgHeight);
-    				
-    				if (c.name != null) {
-    					this.followPanels[j][i].setCard(c, j == currentPlayer);
-    					this.followPanels[j][i].setLocation(x, y[j]);
-
-    				}
-    				x += imgWidth/3;
-    			}
-    		}
+                x = drawFollowPanel(resize, x, y, currentPlayer, it, j, i);
+            }
     	}
 
     }
-    
+
     void animateFlipped() {
         int wb = w / 18;
         int hb = (int) (wb * 1.5);
@@ -497,9 +515,9 @@ public class CFrame extends JComponent  {
     		dest = new Point((w/2)+ 3*imgWidth, (int)(imgHeight*1.2));
     	} else {
     		dest = new Point((w/2)+ 3*imgWidth,h - (int)(imgHeight*2.2));
-    	}    	
-    	
-    	
+    	}
+
+
     	if (this.game.getPhaseNum() == 2) {
     		this.movePlayedCards( dest);
     		return;
@@ -530,8 +548,8 @@ public class CFrame extends JComponent  {
 
     }
 
-    public static Game getGame() {
-        return CFrame.game;
+    public Game getGame() {
+        return this.game;
     }
 
     public void updateScore() {
@@ -570,7 +588,7 @@ public class CFrame extends JComponent  {
     	else
     		return new Point((w/2)+ 2*imgWidth, (int)(imgHeight*1.2));
     }
-    
+
     public void movePlayedCards( Point dest) {
     	Point start;
     	dest.x = (w/2)+ 2*imgWidth;
@@ -583,7 +601,7 @@ public class CFrame extends JComponent  {
             }
         }
     }
-    
+
     public void removePlayedCards() {
         for (int i = 0; i < 2; i++) {
         	playedPanels[i].setVisible(false);

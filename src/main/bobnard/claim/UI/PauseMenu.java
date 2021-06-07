@@ -12,11 +12,15 @@ public class PauseMenu extends JComponent {
     public static boolean isConfig = false;
     final CFrame frame;
     BufferedImage bg, lg;
-    Config c;
+    final Config c;
 
-    JButton re, cf, sv, ld, bm;
+    final JButton re;
+    final JButton cf;
+    final JButton sv;
+    final JButton ld;
+    final JButton bm;
 
-    PMMouseListener m = new PMMouseListener(this);
+    final PMMouseListener m = new PMMouseListener(this);
 
     ImageIcon isv, ire, ild, icf, ibm;
 
@@ -103,6 +107,14 @@ public class PauseMenu extends JComponent {
 
     }
 
+    private void setButtonsVisible(boolean visible) {
+        re.setVisible(visible);
+        cf.setVisible(visible);
+        sv.setVisible(visible);
+        ld.setVisible(visible);
+        bm.setVisible(visible);
+    }
+
     private void draw(JComponent component, boolean cond) {
         if (cond) {
             component.setBounds(0, 0, getWidth(), getHeight());
@@ -112,19 +124,11 @@ public class PauseMenu extends JComponent {
                 component.setVisible(true);
             }
 
-            re.setVisible(false);
-            cf.setVisible(false);
-            sv.setVisible(false);
-            ld.setVisible(false);
-            bm.setVisible(false);
+            this.setButtonsVisible(false);
 
         } else {
             component.setVisible(false);
-            re.setVisible(true);
-            cf.setVisible(true);
-            sv.setVisible(true);
-            ld.setVisible(true);
-            bm.setVisible(true);
+            this.setButtonsVisible(true);
         }
     }
 

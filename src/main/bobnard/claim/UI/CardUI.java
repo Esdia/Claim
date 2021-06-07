@@ -27,6 +27,9 @@ public class CardUI extends JPanel implements MouseInputListener {
 
     public boolean dragged;
 
+    private boolean ownedByAI = false;
+    private boolean ownedByHumanAgainstAI = false;
+
     public CardUI(CFrame frame) {
         super();
 
@@ -39,6 +42,14 @@ public class CardUI extends JPanel implements MouseInputListener {
         this.addMouseListener(this);
         dragged = false;
 
+    }
+
+    public void setOwnedByAI() {
+        this.ownedByAI = true;
+    }
+
+    public void setOwnedByHumanAgainstAI() {
+        this.ownedByHumanAgainstAI = true;
     }
 
     public Card getCard() {
@@ -58,7 +69,7 @@ public class CardUI extends JPanel implements MouseInputListener {
     }
 
     private void setImage() {
-        if (this.isFlipped) {
+        if ((this.isFlipped || this.ownedByAI) && !this.ownedByHumanAgainstAI) {
             this.image = getImage("CARDBACK");
         } else {
             this.image = getImage(this.card.name);
@@ -133,15 +144,12 @@ public class CardUI extends JPanel implements MouseInputListener {
 
     public void mouseReleased(MouseEvent e) {
     	int y = this.frame.getHeight() - getHeight();
-    	boolean play = true;
-        if (dragged && e.getYOnScreen() < (int) 1.5*getHeight() && this.frame.game.getCurrentPlayerID() == 0) {
+        if (dragged && e.getYOnScreen() < getHeight() && this.frame.game.getCurrentPlayerID() == 0) {
         	System.out.println("Refuse to play"+getHeight());
         	this.frame.getHandBack(this);
-        	play = false;
-        }else if (dragged && e.getYOnScreen() > (int) 1.5*y && this.frame.game.getCurrentPlayerID() == 1) {
+        }else if (dragged && e.getYOnScreen() > y && this.frame.game.getCurrentPlayerID() == 1) {
         	System.out.println("Refuse to play");
         	this.frame.getHandBack(this);
-        	play = false;
         }else if (!frame.getGame().isCurrentPlayerAI() && frame.game.getLegalCard(this.card)) {
             action();
         }
