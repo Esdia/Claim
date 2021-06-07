@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class Window implements Runnable {
     private static JFrame frame;
+    public static Boolean isFS;
     private static Container contentPane;
     private static CFrame cFrame;
 
@@ -32,10 +33,10 @@ public class Window implements Runnable {
         frame = this.getFrame();
 
         Menu menu = new Menu(frame);
-        cFrame = new CFrame();
+
 
         contentPane.add("Page1", menu);
-        contentPane.add("Page2", cFrame);
+
 
         frame.setVisible(true);
     }
@@ -45,6 +46,8 @@ public class Window implements Runnable {
     }
 
     public static void switchToGame(Game game) {
+        cFrame = new CFrame(frame);
+        contentPane.add("Page2", cFrame);
         game.start();
         cFrame.setGame(game);
         ((CardLayout) contentPane.getLayout()).next(contentPane);

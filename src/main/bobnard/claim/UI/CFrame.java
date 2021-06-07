@@ -6,18 +6,24 @@ import bobnard.claim.model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.MouseInputListener;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class CFrame extends JComponent {
+public class CFrame extends JComponent  {
 
-    Game game;
+    static Game game;
 
-    static final String path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
+    JFrame frame;
+    static String path;
 
     BufferedImage image;
     BufferedImage image2;
@@ -46,8 +52,24 @@ public class CFrame extends JComponent {
     private final Timer gameLoop = new Timer(16, null);
     final ArrayList<AnimatedPanel> movingPanels = new ArrayList<>();
 
-    public CFrame() {
+    final PauseMenu pm;
+    JButton pause;
+    ImageIcon p;
+    public static Boolean isPaused;
+
+    Config cf;
+    
+    public CFrame(JFrame frame) {
+        path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
         FlippedCard = null;
+        this.frame = frame;
+
+        isPaused = false;
+
+        pm = new PauseMenu(this);
+        this.add(pm);
+
+
 
         for (int i = 0; i < 5; i++) {
             try {
@@ -69,8 +91,43 @@ public class CFrame extends JComponent {
         } catch (IOException ignored) {
         }
 
+        pause = new JButton();
+        pause.addMouseListener(new MouseListener() {
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            public void mousePressed(MouseEvent e) {
+                if(e.getSource().equals(pause)){
+                    isPaused = true;
+                    pm.repaint();
+                    repaint();
+
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+
+        });
+
+        add(pause);
+
+        p = new ImageIcon(path+ "pause.png");
+
+
 
     }
+
 
     void setGame(Game game) {
         this.game = game;
@@ -169,7 +226,6 @@ public class CFrame extends JComponent {
         }
     }
 
-
     @Override
     public void paintComponent(Graphics g1) {
         Graphics2D g = (Graphics2D) g1;
@@ -183,34 +239,74 @@ public class CFrame extends JComponent {
             this.imgHeight = imgWidth * 3 / 2;
         }
 
+        setPauseButton(resize);
+
+        drawPM(pm,isPaused);
+
+
         g.clearRect(0, 0, w, h);
 
         this.drawHands(resize);
-        if (Phase != this.game.getPhaseNum()) { 
-        	SetFollowersInvisible();
-        	Phase = this.game.getPhaseNum();
+        if (Phase != this.game.getPhaseNum()) {
+            SetFollowersInvisible();
+            Phase = this.game.getPhaseNum();
         }
-        
-        if (this.game.getPhaseNum() == 1 ) 
-        	this.drawFollowers(resize);
-        else 
-        	this.drawScorePile(resize);
-        
+
+        if (this.game.getPhaseNum() == 1 )
+            this.drawFollowers(resize);
+        else
+            this.drawScorePile(resize);
+
         this.displayPlayed(resize);
         this.displayFlipped(resize);
-        
+
 
         int wb = w / 18;
         int hb = (int) (wb * 1.5);
 
         g.drawImage(image, 0, 0, w, h, null);
-
         g.drawImage(image2, w / 32, (h / 2) - (hb / 2), wb, hb, null);
 
         this.updateScore();
         paintscore(g, h, w);
 
+
+
+
         this.setVisible(true);
+    }
+
+    private void drawPM(JComponent component, boolean cond) {
+        if (cond) {
+            component.setBounds(0, 0, getWidth(), getHeight());
+            component.setOpaque(false);
+
+            if (!component.isVisible()) {
+                component.setVisible(true);
+            }
+
+            pause.setVisible(false);
+
+        } else {
+            component.setVisible(false);
+            pause.setVisible(true);
+        }
+    }
+
+
+    private void setPauseButton(boolean resize) {
+        int x = w/16;
+        int y = h/9;
+        if(resize){
+            pause.setIcon(new ImageIcon(p.getImage().getScaledInstance(x, y, Image.SCALE_SMOOTH)));
+            pause.setBounds(0, 0, x, y);
+            pause.setBorderPainted(false);
+            pause.setOpaque(false);
+            pause.setContentAreaFilled(false);
+
+            pause.setVisible(true);
+
+        }
     }
 
     void drawHands(boolean resize) {
@@ -434,8 +530,8 @@ public class CFrame extends JComponent {
 
     }
 
-    public Game getGame() {
-        return this.game;
+    public static Game getGame() {
+        return CFrame.game;
     }
 
     public void updateScore() {
@@ -493,6 +589,8 @@ public class CFrame extends JComponent {
         	playedPanels[i].setVisible(false);
         }
     }
+
+
 }
 
 

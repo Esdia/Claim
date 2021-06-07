@@ -1,5 +1,7 @@
 package bobnard.claim.UI;
 
+import bobnard.claim.model.Save;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +13,7 @@ public class Config extends JComponent {
 
     final JFrame frame;
     final Menu menu;
+    final PauseMenu pm;
     BufferedImage image;
 
     final JButton b1;
@@ -20,22 +23,23 @@ public class Config extends JComponent {
     final JLabel l2;
     final JComboBox<String> cb;
 
-    Boolean isFS;
+    public Boolean isFS;
 
     ImageIcon ba;
 
     final ConfigMouseListener m = new ConfigMouseListener(this);
 
-    static final GraphicsDevice device = GraphicsEnvironment
+    public static final GraphicsDevice device = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
 
     public Config(JFrame frame, Menu menu) {
-        this.isFS = false;
+        this.isFS = Window.isFS;
         this.frame = frame;
         this.menu = menu;
+        this.pm = null;
 
-        s = new JSlider(0, 15, 15);
+        s = new JSlider(0, 15, Audio.getVolume());
 
         s.setOpaque(false);
         s.setVisible(true);
@@ -60,6 +64,38 @@ public class Config extends JComponent {
         this.add(s);
         this.add(cb);
 
+
+    }
+
+    public Config(JFrame frame, PauseMenu pm) {
+        this.isFS = Window.isFS;
+        this.frame = frame;
+        this.pm = pm;
+        this.menu = null;
+
+        s = new JSlider(0, 15, Audio.getVolume());
+
+        s.setOpaque(false);
+        s.setVisible(true);
+
+        l1 = new JLabel("Volume :");
+        l2 = new JLabel("Screen :");
+
+        setImages();
+
+        b1 = new JButton();
+
+        b1.addMouseListener(m);
+
+        String[] str = {"Windowed" , "Fullscreen"};
+        cb = new JComboBox<>(str);
+        if(isFS) cb.setSelectedItem(cb.getItemAt(1));
+        this.add(cb);
+
+        this.add(b1);
+        this.add(l1);
+        this.add(l2);
+        this.add(s);
 
 
     }
@@ -109,16 +145,19 @@ public class Config extends JComponent {
 
         g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
 
+        Save.syssave(this);
 
         cb.setBounds(w/2 - w/10, (int) (h/2.3),w/6,h/18);
 
         if(cb.getItemAt(cb.getSelectedIndex()).equals("Fullscreen") && !isFS){
             device.setFullScreenWindow(frame);
             isFS = true;
+            Window.isFS = true;
         }
         if(cb.getItemAt(cb.getSelectedIndex()).equals("Windowed") && isFS){
             device.setFullScreenWindow(null);
             isFS = false;
+            Window.isFS = false;
         }
 
     }
