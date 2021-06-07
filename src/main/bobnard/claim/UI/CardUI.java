@@ -91,7 +91,7 @@ public class CardUI extends JPanel implements MouseInputListener {
 
     public void action() {
         System.out.println("frame.isAnimating() = " + frame.isAnimating());
-        if (!(this.isFlipped || frame.isAnimating())) {
+        if (!(this.isFlipped || frame.isAnimating() || CFrame.isPaused)) {
             /////
             CardUI cui = frame.playedPanels[frame.getGame().getCurrentPlayerID()];
             cui.setLocation(this.getLocation());
