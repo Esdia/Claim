@@ -307,14 +307,23 @@ public class CFrame extends JComponent  {
     void drawHands(boolean resize) {
         int x, size;
         int[] y = {5, h - imgHeight - 5};
+        int[] yRaised = {y[0] + imgHeight / 10, y[1] - imgHeight / 10};
 
         int currentPlayer = this.game.getCurrentPlayerID();
 
         Iterator<Card> it;
         Card c;
 
+        Hand playable;
+        boolean raise;
+
         for (int j = 0; j < 2; j++) {
         	size = players[j].getCards().size();
+
+            playable = game.getPlayableCards();
+            raise = (
+        	        game.getState() == GameState.WAITING_FOLLOW_ACTION && game.getCurrentPlayerID() == j && size != playable.size()
+            );
         	
         	if (size % 2 !=0) size +=1;
             x =(w/2) - ( size/2* imgWidth);
@@ -332,7 +341,11 @@ public class CFrame extends JComponent  {
                     }
                     c = it.next();
                     this.handPanels[j][i].setCard(c, j == currentPlayer);
-                    this.handPanels[j][i].setLocation(x, y[j]);
+                    if (raise && playable.contains(c)) {
+                        this.handPanels[j][i].setLocation(x, yRaised[j]);
+                    } else {
+                        this.handPanels[j][i].setLocation(x, y[j]);
+                    }
                     x += imgWidth;
                 }
             }
