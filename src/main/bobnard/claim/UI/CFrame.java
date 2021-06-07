@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class CFrame extends JComponent  {
+public class CFrame extends JComponent {
 
     Game game;
 
@@ -44,7 +44,7 @@ public class CFrame extends JComponent  {
     int imgWidth;
     int imgHeight;
 
-    int Phase ;
+    int Phase;
 
     private final Timer gameLoop = new Timer(16, null);
     final ArrayList<AnimatedPanel> movingPanels = new ArrayList<>();
@@ -55,11 +55,10 @@ public class CFrame extends JComponent  {
     public static Boolean isPaused;
 
 
-
-    MenuDeFin mf ;
-    private static boolean isend ;
+    MenuDeFin mf;
+    private static boolean isend;
     Config cf;
-    
+
     public CFrame(JFrame frame) {
         path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
         FlippedCard = null;
@@ -69,7 +68,6 @@ public class CFrame extends JComponent  {
 
         pm = new PauseMenu(this);
         this.add(pm);
-
 
 
         for (int i = 0; i < 5; i++) {
@@ -98,7 +96,7 @@ public class CFrame extends JComponent  {
             }
 
             public void mousePressed(MouseEvent e) {
-                if(e.getSource().equals(pause)){
+                if (e.getSource().equals(pause)) {
                     isPaused = true;
                     pm.repaint();
                     repaint();
@@ -123,8 +121,7 @@ public class CFrame extends JComponent  {
 
         add(pause);
 
-        p = new ImageIcon(path+ "pause.png");
-
+        p = new ImageIcon(path + "pause.png");
 
 
     }
@@ -139,7 +136,7 @@ public class CFrame extends JComponent  {
         this.initPlayedButton();
 
         this.setPlayers();
-        
+
         Phase = this.game.getPhaseNum();
 
         this.startLoop();
@@ -161,12 +158,12 @@ public class CFrame extends JComponent  {
             if (this.movingPanels.size() == 0 && !game.isWaitingHumanAction()) {
                 switch (game.getState()) {
                     case GAME_FINISHED -> {
-                        mf = new MenuDeFin(this, game );
+                        mf = new MenuDeFin(this, game);
                         this.add(mf);
-                        SetFollowersInvisible() ;
+                        SetFollowersInvisible();
 
                         Audio.getBGM().stop();
-                        drawPM(mf,true);
+                        drawPM(mf, true);
                         stopLoop();
 
                     }
@@ -244,8 +241,8 @@ public class CFrame extends JComponent  {
             }
         }
     }
-    
-    
+
+
     void initFlippedButton() {
         this.flippedPanel = new CardUI(this);
         this.add(flippedPanel);
@@ -275,7 +272,7 @@ public class CFrame extends JComponent  {
 
         setPauseButton(resize);
 
-        drawPM(pm,isPaused);
+        drawPM(pm, isPaused);
 
 
         g.clearRect(0, 0, w, h);
@@ -286,7 +283,7 @@ public class CFrame extends JComponent  {
             Phase = this.game.getPhaseNum();
         }
 
-        if (this.game.getPhaseNum() == 1 )
+        if (this.game.getPhaseNum() == 1)
             this.drawFollowers(resize);
         else
             this.drawScorePile(resize);
@@ -303,8 +300,6 @@ public class CFrame extends JComponent  {
 
         this.updateScore();
         paintscore(g, h, w);
-
-
 
 
         this.setVisible(true);
@@ -327,11 +322,10 @@ public class CFrame extends JComponent  {
     }
 
 
-
     private void setPauseButton(boolean resize) {
-        int x = w/16;
-        int y = h/9;
-        if(resize){
+        int x = w / 16;
+        int y = h / 9;
+        if (resize) {
             pause.setIcon(new ImageIcon(p.getImage().getScaledInstance(x, y, Image.SCALE_SMOOTH)));
             pause.setBounds(0, 0, x, y);
             pause.setBorderPainted(false);
@@ -357,17 +351,17 @@ public class CFrame extends JComponent  {
         boolean raise;
 
         for (int j = 0; j < 2; j++) {
-        	size = players[j].getCards().size();
+            size = players[j].getCards().size();
 
             playable = game.getPlayableCards();
             raise = (
-        	        game.getState() == GameState.WAITING_FOLLOW_ACTION && game.getCurrentPlayerID() == j
+                    game.getState() == GameState.WAITING_FOLLOW_ACTION && game.getCurrentPlayerID() == j
                             && size != playable.size() && !players[j].isAI()
             );
 
-        	if (size % 2 !=0) size +=1;
-            x =(w/2) - ( size/2* imgWidth);
-            
+            if (size % 2 != 0) size += 1;
+            x = (w / 2) - (size / 2 * imgWidth);
+
             it = players[j].getCards().iterator();
             for (int i = 0; i < 13; i++) {
                 if (this.handPanels[j][i].dragged) {
@@ -393,33 +387,33 @@ public class CFrame extends JComponent  {
     }
 
     public void getHandBack(CardUI card) {
-    	int ind = card.Position();
-    	int currentPlayer = this.game.getCurrentPlayerID();
-    	int size = players[currentPlayer].getCards().size();
-    	int x = (w/2) - ( size/2* imgWidth);
-    	int[] y = {5, h - imgHeight - 5};
-    	
-    	Point Po = new Point(x*ind , y[currentPlayer]);
-    	AnimatedPanel backhand = new AnimatedPanel(card, Po);
-    	this.movingPanels.add(backhand);
-    	
+        int ind = card.Position();
+        int currentPlayer = this.game.getCurrentPlayerID();
+        int size = players[currentPlayer].getCards().size();
+        int x = (w / 2) - (size / 2 * imgWidth);
+        int[] y = {5, h - imgHeight - 5};
+
+        Point Po = new Point(x * ind, y[currentPlayer]);
+        AnimatedPanel backhand = new AnimatedPanel(card, Po);
+        this.movingPanels.add(backhand);
+
     }
-    
-    
+
+
     void SetFollowersInvisible() {
-    	flippedPanel.setVisible(false);
-    	for (int j = 0; j < 2; j++) {
-              for (int i = 0; i < 36; i++) {
-                  this.followPanels[j][i].setVisible(false);
-              }
-          }
+        flippedPanel.setVisible(false);
+        for (int j = 0; j < 2; j++) {
+            for (int i = 0; i < 36; i++) {
+                this.followPanels[j][i].setVisible(false);
+            }
+        }
     }
 
 
     private int drawFollowPanel(boolean resize, int x, int[] y, int currentPlayer, Iterator<Card> it, int j, int i) {
         Card c;
         this.followPanels[j][i].setVisible(it.hasNext());
-        if (it.hasNext() ) {
+        if (it.hasNext()) {
             if (resize) {
                 this.followPanels[j][i].setSize(imgWidth, imgHeight);
             }
@@ -430,52 +424,52 @@ public class CFrame extends JComponent  {
                 this.followPanels[j][i].setLocation(x, y[j]);
 
             }
-            x += imgWidth/3;
+            x += imgWidth / 3;
         }
         return x;
     }
 
     void drawFollowers(boolean resize) {
-    	int x;
-    	int[] y = {(int)(imgHeight*1.2), h - (int)(imgHeight*2.2)};
+        int x;
+        int[] y = {(int) (imgHeight * 1.2), h - (int) (imgHeight * 2.2)};
 
-    	int currentPlayer = this.game.getCurrentPlayerID();
+        int currentPlayer = this.game.getCurrentPlayerID();
 
-    	Iterator<Card> it;
+        Iterator<Card> it;
 
-    	for (int j = 0; j < 2; j++) {
-    		x =(w/2)+ 3*imgWidth;
-    		it = players[j].getFollowers().iterator();
-    		for (int i = 0; i < 13; i++) {
+        for (int j = 0; j < 2; j++) {
+            x = (w / 2) + 3 * imgWidth;
+            it = players[j].getFollowers().iterator();
+            for (int i = 0; i < 13; i++) {
                 x = drawFollowPanel(resize, x, y, currentPlayer, it, j, i);
             }
-    	}
+        }
 
     }
 
     void drawScorePile(boolean resize) {
-    	int size;
-    	int max =  (w/2)+ 2*imgWidth+ 16*(imgWidth/3);
-    	int x;
-    	int[] y = {(int)(imgHeight*1.2), h - (int)(imgHeight*2.2)};
+        int size;
+        int max = (w / 2) + 2 * imgWidth + 16 * (imgWidth / 3);
+        int x;
+        int[] y = {(int) (imgHeight * 1.2), h - (int) (imgHeight * 2.2)};
 
-    	int currentPlayer = this.game.getCurrentPlayerID();
+        int currentPlayer = this.game.getCurrentPlayerID();
 
-    	Iterator<Card> it;
+        Iterator<Card> it;
 
-    	for (int j = 0; j < 2; j++) {
-    		it = players[j].getScoreStack().iterator();
-    		size = players[j].getScoreStack().size();
+        for (int j = 0; j < 2; j++) {
+            it = players[j].getScoreStack().iterator();
+            size = players[j].getScoreStack().size();
             x = (w / 2) + 2 * imgWidth;
-    		for (int i = 0; i < size; i++) {
-    			if (x == max) {
-					x =(w/2)+ 3*imgWidth;
-					y[0] += imgHeight;
-					y[1] -= imgHeight;
-				}
+            for (int i = 0; i < size; i++) {
+                if (x == max) {
+                    x = (w / 2) + 3 * imgWidth;
+                    y[0] += imgHeight;
+                    y[1] -= imgHeight;
+                }
                 x = drawFollowPanel(resize, x, y, currentPlayer, it, j, i);
             }
-    	}
+        }
 
     }
 
@@ -526,29 +520,29 @@ public class CFrame extends JComponent  {
     }
 
     void animateEndTrick() {
-    	Point start = new Point((w / 32) + 3 * imgWidth, (h - imgHeight) / 2);
-    	Point dest;
-    	if (this.game.getTrickWinnerID() == 0) {
-    		dest = new Point((w/2)+ 3*imgWidth, (int)(imgHeight*1.2));
-    	} else {
-    		dest = new Point((w/2)+ 3*imgWidth,h - (int)(imgHeight*2.2));
-    	}
+        Point start = new Point((w / 32) + 3 * imgWidth, (h - imgHeight) / 2);
+        Point dest;
+        if (this.game.getTrickWinnerID() == 0) {
+            dest = new Point((w / 2) + 3 * imgWidth, (int) (imgHeight * 1.2));
+        } else {
+            dest = new Point((w / 2) + 3 * imgWidth, h - (int) (imgHeight * 2.2));
+        }
 
 
-    	if (this.game.getPhaseNum() == 2) {
-    		this.movePlayedCards( dest);
-    		return;
-    	}
+        if (this.game.getPhaseNum() == 2) {
+            this.movePlayedCards(dest);
+            return;
+        }
 
-    	this.movingPanels.add(new AnimatedEndTrick(flippedPanel, start, dest, this));
+        this.movingPanels.add(new AnimatedEndTrick(flippedPanel, start, dest, this));
     }
 
 
     void paintscore(Graphics g, int h, int w) {
         int t = w / 20;
         int th = (int) (t * 1.5);
-        int x = w - (int)(1.5*t);
-        int y = ((int) (t* 1.5)) + (h / 30);
+        int x = w - (int) (1.5 * t);
+        int y = ((int) (t * 1.5)) + (h / 30);
         int xx = x + (t / 2) - 5;
         int fsize = h / 54;
 
@@ -600,20 +594,20 @@ public class CFrame extends JComponent  {
     }
 
     Point DwarfLocation(int id) {
-    	if (id == 0)
-    		return new Point((w/2)+ 2*imgWidth,h - (int)(imgHeight*2.2));
-    	else
-    		return new Point((w/2)+ 2*imgWidth, (int)(imgHeight*1.2));
+        if (id == 0)
+            return new Point((w / 2) + 2 * imgWidth, h - (int) (imgHeight * 2.2));
+        else
+            return new Point((w / 2) + 2 * imgWidth, (int) (imgHeight * 1.2));
     }
 
-    public void movePlayedCards( Point dest) {
-    	Point start;
-    	dest.x = (w/2)+ 2*imgWidth;
+    public void movePlayedCards(Point dest) {
+        Point start;
+        dest.x = (w / 2) + 2 * imgWidth;
         for (int i = 0; i < 2; i++) {
-        	start = new Point(playedPanels[i].getLocation());
-        	if (this.playedPanels[i].getCard().faction == Faction.DWARVES) {
-                this.movingPanels.add(new AnimatedEndTrick(playedPanels[i], start, this.DwarfLocation(this.game.getTrickWinnerID() ), this));
-            }else {
+            start = new Point(playedPanels[i].getLocation());
+            if (this.playedPanels[i].getCard().faction == Faction.DWARVES) {
+                this.movingPanels.add(new AnimatedEndTrick(playedPanels[i], start, this.DwarfLocation(this.game.getTrickWinnerID()), this));
+            } else {
                 this.movingPanels.add(new AnimatedEndTrick(playedPanels[i], start, dest, this));
             }
         }
@@ -621,7 +615,7 @@ public class CFrame extends JComponent  {
 
     public void removePlayedCards() {
         for (int i = 0; i < 2; i++) {
-        	playedPanels[i].setVisible(false);
+            playedPanels[i].setVisible(false);
         }
     }
 
