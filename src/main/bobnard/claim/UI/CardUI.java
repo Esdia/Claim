@@ -27,6 +27,9 @@ public class CardUI extends JPanel implements MouseInputListener {
 
     public boolean dragged;
 
+    private boolean ownedByAI = false;
+    private boolean ownedByHumanAgainstAI = false;
+
     public CardUI(CFrame frame) {
         super();
 
@@ -39,6 +42,14 @@ public class CardUI extends JPanel implements MouseInputListener {
         this.addMouseListener(this);
         dragged = false;
 
+    }
+
+    public void setOwnedByAI() {
+        this.ownedByAI = true;
+    }
+
+    public void setOwnedByHumanAgainstAI() {
+        this.ownedByHumanAgainstAI = true;
     }
 
     public Card getCard() {
@@ -58,7 +69,7 @@ public class CardUI extends JPanel implements MouseInputListener {
     }
 
     private void setImage() {
-        if (this.isFlipped) {
+        if ((this.isFlipped || this.ownedByAI) && !this.ownedByHumanAgainstAI) {
             this.image = getImage("CARDBACK");
         } else {
             this.image = getImage(this.card.name);

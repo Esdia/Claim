@@ -191,10 +191,19 @@ public class CFrame extends JComponent  {
     void initHandButtons() {
         this.handPanels = new CardUI[2][13];
 
+        boolean isOwnedByHumanAgainstAI;
+        boolean isOwnedByAI;
         for (int i = 0; i < 2; i++) {
+            isOwnedByAI = game.getPlayer(i).isAI();
+            isOwnedByHumanAgainstAI = !isOwnedByAI && game.getPlayer(1 - i).isAI();
             for (int j = 0; j < 13; j++) {
                 this.handPanels[i][j] = new CardUI(this);
                 this.add(handPanels[i][j]);
+                if (isOwnedByHumanAgainstAI) {
+                    this.handPanels[i][j].setOwnedByHumanAgainstAI();
+                } else if (isOwnedByAI) {
+                    this.handPanels[i][j].setOwnedByAI();
+                }
             }
         }
     }
@@ -202,10 +211,20 @@ public class CFrame extends JComponent  {
     void initFollowButtons() {
         this.followPanels = new CardUI[2][36];
 
+        boolean isOwnedByHumanAgainstAI;
+        boolean isOwnedByAI;
         for (int i = 0; i < 2; i++) {
+            isOwnedByAI = game.getPlayer(i).isAI();
+            isOwnedByHumanAgainstAI = !isOwnedByAI && game.getPlayer(1 - i).isAI();
             for (int j = 0; j < 36; j++) {
                 this.followPanels[i][j] = new CardUI(this);
                 this.add(followPanels[i][j]);
+
+                if (isOwnedByHumanAgainstAI) {
+                    this.followPanels[i][j].setOwnedByHumanAgainstAI();
+                } else if (isOwnedByAI) {
+                    this.followPanels[i][j].setOwnedByAI();
+                }
             }
         }
     }
@@ -326,7 +345,8 @@ public class CFrame extends JComponent  {
 
             playable = game.getPlayableCards();
             raise = (
-        	        game.getState() == GameState.WAITING_FOLLOW_ACTION && game.getCurrentPlayerID() == j && size != playable.size()
+        	        game.getState() == GameState.WAITING_FOLLOW_ACTION && game.getCurrentPlayerID() == j
+                            && size != playable.size() && !players[j].isAI()
             );
         	
         	if (size % 2 !=0) size +=1;
