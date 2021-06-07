@@ -56,6 +56,7 @@ public class Save {
             out.writeObject(Menu.skin);
             out.writeObject(Audio.getVolume());
             out.writeObject(config.isFS);
+            out.writeObject(Config.difficulty);
             out.close();
         }catch (IOException e){
             e.printStackTrace();
@@ -73,10 +74,14 @@ public class Save {
             Window.isFS = isFS;
             if(isFS) Config.device.setFullScreenWindow(frame);
 
+            String difficulty = (String) in.readObject();
+            Config.difficulty = difficulty;
+
             in.close();
         }catch (IOException | ClassNotFoundException e ){
             e.printStackTrace();
             Window.isFS = false;
+            Config.difficulty = "Normal";
         }
     }
 

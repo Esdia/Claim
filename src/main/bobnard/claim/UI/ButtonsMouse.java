@@ -2,6 +2,8 @@ package bobnard.claim.UI;
 
 
 import bobnard.claim.AI.AIMinimaxEasy;
+import bobnard.claim.AI.AIMinimaxNormal;
+import bobnard.claim.AI.AIRandom;
 import bobnard.claim.model.Game;
 import bobnard.claim.model.Player;
 
@@ -110,7 +112,9 @@ public class ButtonsMouse extends MouseAdapter {
             };
 
             if (menu.b1b.equals(e.getSource())) {
-                players[0] = new AIMinimaxEasy(game, 0);
+                if(Config.difficulty.equals("Easy")) players[0] = new AIRandom(game, 0);
+                if(Config.difficulty.equals("Normal")) players[0] = new AIMinimaxEasy(game, 0);
+                if(Config.difficulty.equals("Hard")) players[0] = new AIMinimaxNormal(game, 0);
             } else {
                 players[0] = new Player(0);
             }

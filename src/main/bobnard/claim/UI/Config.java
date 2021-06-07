@@ -21,7 +21,10 @@ public class Config extends JComponent {
 
     final JLabel l1;
     final JLabel l2;
+    final JLabel l3;
+
     final JComboBox<String> cb;
+    final JComboBox<String> cb2;
 
     public Boolean isFS;
 
@@ -31,6 +34,8 @@ public class Config extends JComponent {
 
     public static final GraphicsDevice device = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getScreenDevices()[0];
+
+    public static String difficulty;
 
 
     public Config(JFrame frame, Menu menu) {
@@ -46,6 +51,7 @@ public class Config extends JComponent {
 
         l1 = new JLabel("Volume :");
         l2 = new JLabel("Screen :");
+        l3 = new JLabel("Difficulty :");
 
         setImages();
 
@@ -56,13 +62,22 @@ public class Config extends JComponent {
         String[] str = {"Windowed" , "Fullscreen"};
         cb = new JComboBox<>(str);
 
+        String[] d = {"Easy" , "Normal", "Hard"};
+        cb2 = new JComboBox<>(d);
+
+        cb2.setSelectedItem(difficulty);
 
         this.add(cb);
+        this.add(cb2);
+
         this.add(b1);
+
         this.add(l1);
         this.add(l2);
+        this.add(l3);
+
         this.add(s);
-        this.add(cb);
+
 
 
     }
@@ -80,6 +95,7 @@ public class Config extends JComponent {
 
         l1 = new JLabel("Volume :");
         l2 = new JLabel("Screen :");
+        l3 = new JLabel("Difficulty :");
 
         setImages();
 
@@ -89,12 +105,23 @@ public class Config extends JComponent {
 
         String[] str = {"Windowed" , "Fullscreen"};
         cb = new JComboBox<>(str);
+
+        String[] d = {"Easy" , "Normal", "Hard"};
+        cb2 = new JComboBox<>(d);
+
         if(isFS) cb.setSelectedItem(cb.getItemAt(1));
+
+        cb2.setSelectedItem(difficulty);
+
         this.add(cb);
+        this.add(cb2);
 
         this.add(b1);
+
         this.add(l1);
         this.add(l2);
+        this.add(l3);
+
         this.add(s);
 
 
@@ -134,8 +161,11 @@ public class Config extends JComponent {
         l1.setBounds(w/2 - w/12,h/20, w,h/10);
         l1.setFont(new Font("Forte", Font.PLAIN, w/30));
 
-        l2.setBounds(w/2 - w/12,h/3, w,h/10);
+        l2.setBounds(w/2 - w/12,h/4, w,h/10);
         l2.setFont(new Font("Forte", Font.PLAIN, w/30));
+
+        l3.setBounds(w/2 - w/12,h/2, w,h/10);
+        l3.setFont(new Font("Forte", Font.PLAIN, w/30));
 
         this.s.setBounds(w/2 - w/10,h/7,w/7,h/10);
         this.s.setOpaque(false);
@@ -145,20 +175,26 @@ public class Config extends JComponent {
 
         g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
 
-        Save.syssave(this);
 
-        cb.setBounds(w/2 - w/10, (int) (h/2.3),w/6,h/18);
+        cb.setBounds(w/2 - w/10, (int) (h/2.9),w/6,h/18);
+
+        cb2.setBounds(w/2 - w/10, (int) (h/1.65),w/6,h/18);
 
         if(cb.getItemAt(cb.getSelectedIndex()).equals("Fullscreen") && !isFS){
             device.setFullScreenWindow(frame);
             isFS = true;
             Window.isFS = true;
         }
+
         if(cb.getItemAt(cb.getSelectedIndex()).equals("Windowed") && isFS){
             device.setFullScreenWindow(null);
             isFS = false;
             Window.isFS = false;
         }
+
+        difficulty = cb2.getItemAt(cb2.getSelectedIndex());
+
+        Save.syssave(this);
 
     }
 
