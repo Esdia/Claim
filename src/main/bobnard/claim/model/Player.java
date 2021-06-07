@@ -1,11 +1,12 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
 import java.util.Stack;
 
 /**
  * This class represents a player.
  */
-public class Player {
+public class Player implements Serializable {
     private int id;
 
     private final Hand hand;

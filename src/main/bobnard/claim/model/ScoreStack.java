@@ -1,5 +1,6 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Stack;
@@ -8,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * Represents the score of a player.
  */
-public class ScoreStack extends Stack<Card> {
+public class ScoreStack extends Stack<Card> implements Serializable {
     private final HashMap<Faction, Integer> occ;
 
     /**

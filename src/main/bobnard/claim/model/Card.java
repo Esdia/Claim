@@ -1,10 +1,12 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
+
 /**
  * This class represents a Card.
  * A card is represented by a Faction and a Value
  */
-public class Card implements Comparable<Card> {
+public class Card implements Comparable<Card>, Serializable {
     public final Faction faction;
     public final int value;
 

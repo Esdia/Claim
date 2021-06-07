@@ -1,11 +1,12 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Represents a game's phase.
  */
-abstract class Phase {
+abstract class Phase  implements Serializable {
     protected final Player[] players;
 
     private int currentLeader;

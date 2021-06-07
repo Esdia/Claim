@@ -1,9 +1,11 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
+
 /**
  * Represents the game
  */
-public class Game {
+public class Game implements Serializable {
     private GameState state;
 
     private Phase phase;

@@ -1,9 +1,11 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
+
 /**
  * Represents the second phase of the game.
  */
-class PhaseTwo extends Phase {
+class PhaseTwo extends Phase implements Serializable {
     private PhaseTwo(Player[] players, boolean copy, int startingPlayer) {
         super(players, startingPlayer);
 

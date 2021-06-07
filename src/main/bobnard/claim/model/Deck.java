@@ -1,5 +1,6 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -7,7 +8,7 @@ import java.util.Stack;
  * This class represents a Deck.
  * A deck is just a stack of cards
  */
-public class Deck extends Stack<Card> {
+public class Deck extends Stack<Card> implements Serializable {
     /**
      * Creates a new deck and initialize it so that
      * it can be used in the game.

@@ -1,5 +1,6 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
  * Represents a player's hand.
  * A hand is just a list of cards.
  */
-public class Hand extends ArrayList<Card> {
+public class Hand extends ArrayList<Card> implements Serializable {
     /**
      * Sorts the hand according to Card::compareTo.
      */

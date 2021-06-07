@@ -1,9 +1,11 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
+
 /**
  * Represents the current game's state.
  */
-public enum GameState {
+public enum GameState implements Serializable {
     WAITING_PLAYER_INITIALISATION,
     READY_TO_START,
     STARTED_PHASE_ONE,

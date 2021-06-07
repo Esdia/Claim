@@ -1,9 +1,11 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
+
 /**
  * Represents a trick.
  */
-class Trick {
+class Trick implements Serializable {
     private Card c1; /* Card played by the leader */
     private Card c2; /* Card played by the other player */
 

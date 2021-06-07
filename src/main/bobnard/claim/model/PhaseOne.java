@@ -1,9 +1,11 @@
 package bobnard.claim.model;
 
+import java.io.Serializable;
+
 /**
  * Represents the first phase of the gme
  */
-class PhaseOne extends Phase {
+class PhaseOne extends Phase implements Serializable {
     private final Deck deck;
 
     private Card flippedCard;
