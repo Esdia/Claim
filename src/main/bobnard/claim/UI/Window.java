@@ -54,4 +54,8 @@ public class Window implements Runnable {
 
         frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/Icon/icon.png").getImage());
     }
+
+    static CFrame getCFrame() {
+        return cFrame;
+    }
 }
