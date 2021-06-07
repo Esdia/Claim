@@ -41,25 +41,7 @@ public class MFMouseListener extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Game game = new Game();
-        Player[] players = new Player[]{
-                null,
-                new Player(1)
-        };
-        Audio.playSE(0);
-        if (e.getSource().equals(mf.re)) {
-            players[0] = new AIMinimaxEasy(game, 0);
-            game.setPlayers(players);
-            Window.switchToGame(game);
 
-        }
-
-        if (e.getSource().equals(mf.me)) {
-            mf.frame.frame.dispose();
-            Audio.getBGM().stop();
-            Window.start();
-
-        }
 
     }
 

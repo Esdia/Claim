@@ -53,6 +53,7 @@ public class Save {
         try{
             FileOutputStream fsave = new FileOutputStream("sys");
             ObjectOutputStream out = new ObjectOutputStream(fsave);
+            System.out.println("save"+Menu.skin);
             out.writeObject(Menu.skin);
             out.writeObject(Audio.getVolume());
             out.writeObject(config.isFS);

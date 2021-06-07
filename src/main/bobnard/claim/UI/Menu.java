@@ -78,6 +78,7 @@ public class Menu extends JComponent {
 
     public void changeSkin(String name) {
         skin = name;
+        Save.syssave(this.config);
         setImages();
         refresh();
         Audio.reload();
