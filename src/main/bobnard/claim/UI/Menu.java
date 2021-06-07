@@ -61,13 +61,11 @@ public class Menu extends JComponent {
         this.add(panel);
 
 
-
-
         Audio.setFiles();
 
         Audio.playBGM(0);
 
-        Save.sysload(this.frame);
+
 
         config = new Config(frame, this);
         this.add(config);

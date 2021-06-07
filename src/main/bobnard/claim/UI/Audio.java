@@ -1,5 +1,7 @@
 package bobnard.claim.UI;
 
+import bobnard.claim.model.Save;
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
@@ -83,8 +85,9 @@ public class Audio {
             float dB = (float) (Math.log((double) volume/100) / Math.log(10.0) * 20.0);
             gainControl.setValue(dB);
             if (loop) {
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
                 bgm = clip;
+                Save.sysload(Menu.frame);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
             } else {
                 clip.start();
             }

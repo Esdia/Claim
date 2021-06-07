@@ -77,6 +77,7 @@ public class Save {
             in.close();
         }catch (IOException | ClassNotFoundException e ){
             e.printStackTrace();
+            Window.isFS = false;
         }
     }
 
@@ -89,6 +90,7 @@ public class Save {
             in.close();
         }catch (IOException | ClassNotFoundException e ){
             e.printStackTrace();
+            Menu.skin = "Vanilla";
         }
     }
 
