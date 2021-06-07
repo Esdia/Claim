@@ -163,8 +163,11 @@ public class CFrame extends JComponent  {
                     case GAME_FINISHED -> {
                         mf = new MenuDeFin(this, game );
                         this.add(mf);
+                        SetFollowersInvisible() ;
+
                         Audio.getBGM().stop();
                         drawPM(mf,true);
+                        stopLoop();
 
                     }
                     case STARTED_PHASE_ONE -> Audio.playBGM(1);

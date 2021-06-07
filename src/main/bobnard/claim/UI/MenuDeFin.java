@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static bobnard.claim.UI.CFrame.game;
+
 
 public class MenuDeFin extends JComponent {
 
@@ -88,7 +88,7 @@ public class MenuDeFin extends JComponent {
 
         this.setButton(me, (int) (w/2.70), (int) (h/1.20), w / 7, h / 15, ime);
 
-        this.setButton(re, (int) (w/1.50), (int) (h/1.20), w / 10, h / 12, ire);
+        this.setButton(re, (int) (w/1.90), (int) (h/1.20), w / 10, h / 12, ire);
 
 
 
