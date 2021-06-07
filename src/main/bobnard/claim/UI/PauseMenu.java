@@ -23,7 +23,7 @@ public class PauseMenu extends JComponent {
 
     public PauseMenu(CFrame frame) {
 
-        c = new Config(frame.frame, this);
+          c = new Config(frame.frame, this);
 
         this.add(c);
 
@@ -62,6 +62,7 @@ public class PauseMenu extends JComponent {
 
     public void setImages() {
         try {
+
             bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/bg.png"));
             ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/resume.png");
             icf = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/config.png");

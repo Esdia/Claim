@@ -57,6 +57,10 @@ public class CFrame extends JComponent  {
     ImageIcon p;
     public static Boolean isPaused;
 
+
+
+    MenuDeFin mf ;
+    private static boolean isend ;
     Config cf;
     
     public CFrame(JFrame frame) {
@@ -159,9 +163,16 @@ public class CFrame extends JComponent  {
 
             if (this.movingPanels.size() == 0 && !game.isWaitingHumanAction()) {
                 switch (game.getState()) {
-                    case GAME_FINISHED -> Audio.getBGM().stop();
+                    case GAME_FINISHED -> {
+                        mf = new MenuDeFin(this, game );
+                        this.add(mf);
+                        Audio.getBGM().stop();
+                        drawPM(mf,true);
+                        
+                    }
                     case STARTED_PHASE_ONE -> Audio.playBGM(1);
                     case FIRST_PHASE_FINISHED -> {
+
                         Audio.getBGM().stop();
                         Audio.playBGM(2);
                     }
@@ -286,12 +297,12 @@ public class CFrame extends JComponent  {
             }
 
             pause.setVisible(false);
-
         } else {
             component.setVisible(false);
             pause.setVisible(true);
         }
     }
+
 
 
     private void setPauseButton(boolean resize) {
