@@ -248,7 +248,7 @@ public class Game {
             throw new IllegalStateException();
         }
         // System.out.println("Beginning phase 2");
-        this.phase = new PhaseTwo(players);
+        this.phase = new PhaseTwo(players, this.getCurrentPlayerID());
     }
     //endregion
 

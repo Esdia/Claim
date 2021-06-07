@@ -19,7 +19,7 @@ class PhaseTwoTest {
                 new Player(0),
                 new Player(1)
         };
-        phase = new PhaseTwo(players);
+        phase = new PhaseTwo(players, 0);
     }
 
     @Test

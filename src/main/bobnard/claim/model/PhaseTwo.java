@@ -4,8 +4,8 @@ package bobnard.claim.model;
  * Represents the second phase of the game.
  */
 class PhaseTwo extends Phase {
-    private PhaseTwo(Player[] players, boolean copy) {
-        super(players);
+    private PhaseTwo(Player[] players, boolean copy, int startingPlayer) {
+        super(players, startingPlayer);
 
         if (!copy) {
             this.players[0].followersToHand();
@@ -18,8 +18,8 @@ class PhaseTwo extends Phase {
      *
      * @param players The game's players.
      */
-    PhaseTwo(Player[] players) {
-        this(players, false);
+    PhaseTwo(Player[] players, int startingPlayer) {
+        this(players, false, startingPlayer);
     }
 
     //region OVERRIDES
@@ -54,7 +54,7 @@ class PhaseTwo extends Phase {
      */
     @Override
     Phase getInstance(Player[] players) {
-        return new PhaseTwo(players, true);
+        return new PhaseTwo(players, true, this.getCurrentPlayer());
     }
 
     /**

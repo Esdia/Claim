@@ -20,11 +20,12 @@ abstract class Phase {
      * classes will determine whether it is
      * the first phase or the second one.
      *
-     * @param players The game's players.
+     * @param players        The game's players.
+     * @param startingPlayer The phase's starting player
      * @throws IllegalArgumentException if the player list is badly formed.
      *                                  The list must contains 2 non null players.
      */
-    Phase(Player[] players) {
+    Phase(Player[] players, int startingPlayer) {
         if (players == null) {
             throw new IllegalArgumentException();
         }
@@ -35,9 +36,24 @@ abstract class Phase {
 
         this.players = players;
 
-        this.currentLeader = 0;
-        this.currentPlayer = 0;
+        this.currentLeader = startingPlayer;
+        this.currentPlayer = startingPlayer;
         this.resetTrick();
+    }
+
+    /**
+     * Creates a new "blank" phase.
+     * <p>
+     * Since the class is abstract, the child
+     * classes will determine whether it is
+     * the first phase or the second one.
+     *
+     * @param players The game's players.
+     * @throws IllegalArgumentException if the player list is badly formed.
+     *                                  The list must contains 2 non null players.
+     */
+    Phase(Player[] players) {
+        this(players, 0);
     }
 
     //region PHASE MANAGEMENT
