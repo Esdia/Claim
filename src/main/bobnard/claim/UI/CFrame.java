@@ -141,7 +141,13 @@ public class CFrame extends JComponent {
 
         Phase = this.game.getPhaseNum();
 
-        this.startLoop();
+        if (!this.isLoopRunning()) {
+            this.startLoop();
+        }
+    }
+
+    boolean isLoopRunning() {
+        return this.gameLoop.isRunning();
     }
 
     void startLoop() {
