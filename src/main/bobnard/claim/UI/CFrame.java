@@ -171,6 +171,10 @@ public class CFrame extends JComponent  {
         this.gameLoop.start();
     }
 
+    void stopLoop() {
+        this.gameLoop.stop();
+    }
+
     public void setPlayers() {
         this.players = new Player[2];
 
