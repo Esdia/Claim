@@ -69,11 +69,13 @@ public class PMMouseListener extends MouseAdapter {
             pm.repaint();
         }
         if (e.getSource().equals(pm.sv)) {
-            Save.save("File1");
+            Save.save("File1", pm.frame.getGame());
         }
         if (e.getSource().equals(pm.ld)) {
-            Save.load("File1");
+            Game game = Save.load("File1");
             CFrame.isPaused = false;
+
+            pm.frame.setGame(game);
         }
         if (e.getSource().equals(pm.bm)) {
             pm.frame.frame.dispose();

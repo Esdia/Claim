@@ -6,44 +6,35 @@ import javax.swing.*;
 import java.io.*;
 
 public class Save {
-    static PhaseOne p1 ;
-    static PhaseTwo p2 ;
-    static Game game ;
-    static ScoreStack score ;
 
-    public static void save(String fileName){
-        try{
-            FileOutputStream fsave = new FileOutputStream(fileName);
-            ObjectOutputStream out = new ObjectOutputStream(fsave);
+    public static void save(String fileName, Game game) {
+        try {
+            FileOutputStream fSave = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fSave);
+
             out.writeObject(game);
-            out.writeObject(score);
-            /*phase 1 */
-            if (game.getPhaseNum()== 1 ) {
-                out.writeObject(p1);
-            }else/*phase 2 */{
-                out.writeObject(p2);
-            }
+
             out.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void load(String fileName){
+    public static Game load(String fileName) {
         try {
-            FileInputStream fload = new FileInputStream(fileName);
-            ObjectInputStream in = new ObjectInputStream(fload);
-            game = (Game) in.readObject();
-            score = (ScoreStack) in.readObject();
-            if (game.getPhaseNum()== 1 ){
-                p1 = (PhaseOne) in.readObject();
-            }else{
-                p2 = (PhaseTwo) in.readObject();
-            }
+            FileInputStream fLoad = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(fLoad);
+
+            Game game = (Game) in.readObject();
+
             in.close();
-        }catch (IOException | ClassNotFoundException e ){
+
+            return game;
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public static void syssave(Config config){

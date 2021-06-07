@@ -7,7 +7,7 @@ import bobnard.claim.model.*;
  * Represents a blank AI.
  */
 public abstract class AI extends Player {
-    private CardUI[] cardUIs = null;
+    private transient CardUI[] cardUIs = null;
     protected final Game game;
 
     private boolean evaluating;
