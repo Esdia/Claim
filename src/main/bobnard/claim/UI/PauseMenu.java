@@ -59,7 +59,7 @@ public class PauseMenu extends JComponent {
     public Icon resizeIcon(ImageIcon i, int w, int h) {
         if (i == null) return null;
         Image im = i.getImage();
-        Image resIm = im.getScaledInstance(w-25, h, Image.SCALE_SMOOTH);
+        Image resIm = im.getScaledInstance(w-13, h, Image.SCALE_SMOOTH);
         return new ImageIcon(resIm);
 
     }
@@ -80,7 +80,6 @@ public class PauseMenu extends JComponent {
     }
 
     void setButton(JButton button, int x, int y, int w, int h, ImageIcon icon) {
-
         button.setIcon(resizeIcon(icon, w, h));
         button.setBounds(x, y, w, h);
         button.setOpaque(false);
@@ -97,7 +96,7 @@ public class PauseMenu extends JComponent {
 
         this.setButton(re, (int) (w/2.30), (int) (h/2.40), w / 7, h / 15, ire);
 
-        this.setButton(cf, (int) (w/2.2), (int) (h/1.95), w / 10, h / 12, icf);
+        this.setButton(cf, (int) (w/2.26), (int) (h/1.95), w / 8, h / 12, icf);
 
         this.setButton(sv, (int) (w/2.2), (int) (h/1.65), w / 10, h / 15, isv);
 
