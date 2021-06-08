@@ -15,6 +15,10 @@ public class AIMinimaxEasy extends AIMinimax {
         super(game, id);
     }
 
+    public AIMinimaxEasy(AIMinimaxEasy base) {
+        super(base);
+    }
+
     /**
      * Returns an instance of NodeEasy
      *
@@ -55,5 +59,10 @@ public class AIMinimaxEasy extends AIMinimax {
         }
 
         return this.getIndexes(nextMoves);
+    }
+
+    @Override
+    protected Player copy() {
+        return new AIMinimaxEasy(this);
     }
 }

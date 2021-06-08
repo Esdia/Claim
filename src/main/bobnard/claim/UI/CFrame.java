@@ -505,6 +505,8 @@ public class CFrame extends JComponent {
             for (int i = 0; i < 13; i++) {
                 if (this.handPanels[j][i].dragged) {
                     x += imgWidth;
+                    if (!it.hasNext()) throw new IllegalStateException();
+                    it.next(); /* We don't want to display this card normally */
                     continue;
                 }
                 this.handPanels[j][i].setVisible(it.hasNext());

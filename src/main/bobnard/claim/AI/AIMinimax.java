@@ -1,9 +1,6 @@
 package bobnard.claim.AI;
 
-import bobnard.claim.model.Card;
-import bobnard.claim.model.Deck;
-import bobnard.claim.model.Game;
-import bobnard.claim.model.Hand;
+import bobnard.claim.model.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,6 +26,18 @@ abstract class AIMinimax extends AI {
 
         this.possibleOpponentCards = new Hand();
         this.possibleOpponentFollowers = new Hand();
+    }
+
+    public AIMinimax(AIMinimax base) {
+        super(base);
+
+        this.possibleOpponentCards = new Hand();
+        this.possibleOpponentCards.addAll(base.possibleOpponentCards);
+
+        this.possibleOpponentFollowers = new Hand();
+        this.possibleOpponentFollowers.addAll(base.possibleOpponentFollowers);
+
+        this.lastShownCard = base.lastShownCard;
     }
 
     private void initOpponentCards() {

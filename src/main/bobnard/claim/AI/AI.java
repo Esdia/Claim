@@ -8,7 +8,7 @@ import bobnard.claim.model.*;
  */
 public abstract class AI extends Player {
     private transient CardUI[] cardUIs = null;
-    protected final Game game;
+    protected Game game;
 
     private boolean evaluating;
 
@@ -22,6 +22,15 @@ public abstract class AI extends Player {
         super(id);
         this.game = game;
         this.evaluating = false;
+    }
+
+    AI(AI base) {
+        super(base);
+
+        this.evaluating = base.evaluating;
+
+        /* To suppress the warning */
+        this.game = null;
     }
 
     /**
@@ -132,4 +141,9 @@ public abstract class AI extends Player {
      */
     @Override
     public abstract void showFlippedCard(Card card);
+
+    @Override
+    protected void setGame(Game game) {
+        this.game = game;
+    }
 }

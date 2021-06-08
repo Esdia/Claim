@@ -541,12 +541,18 @@ public class Game implements Serializable {
                 this.players[1].copy()
         };
 
-        return new Game(
+        Game gameCopy = new Game(
                 players,
                 this.phase.copy(players),
                 this.isDone,
                 this.winnerID,
                 this.getState()
         );
+
+        for (Player player : players) {
+            player.setGame(gameCopy);
+        }
+
+        return gameCopy;
     }
 }

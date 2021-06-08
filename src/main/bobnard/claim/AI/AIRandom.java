@@ -2,6 +2,7 @@ package bobnard.claim.AI;
 
 import bobnard.claim.model.Card;
 import bobnard.claim.model.Game;
+import bobnard.claim.model.Player;
 
 import java.util.Random;
 
@@ -15,7 +16,7 @@ import java.util.Random;
  */
 @SuppressWarnings("unused")
 public class AIRandom extends AI {
-    private final Random random;
+    private static final Random random = new Random();
 
     /**
      * Creates a new AIRandom.
@@ -25,7 +26,10 @@ public class AIRandom extends AI {
      */
     public AIRandom(Game game, int id) {
         super(game, id);
-        this.random = new Random();
+    }
+
+    public AIRandom(AIRandom base) {
+        super(base);
     }
 
     /**
@@ -67,5 +71,10 @@ public class AIRandom extends AI {
      */
     @Override
     public void showFlippedCard(Card card) {
+    }
+
+    @Override
+    protected Player copy() {
+        return new AIRandom(this);
     }
 }
