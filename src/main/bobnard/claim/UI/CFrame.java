@@ -294,6 +294,7 @@ public class CFrame extends JComponent {
         Card[] played = game.getPlayedCards();
         for (int i = 0; i < 2; i++) {
             if (played[i] != null) {
+                this.playedPanels[i].setVisible(true);
                 this.playedPanels[i].setCard(played[i]);
             } else {
                 this.playedPanels[i].setVisible(false);
