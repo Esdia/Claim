@@ -7,12 +7,13 @@ import java.io.*;
 
 public class Save {
 
-    public static void save(String fileName, Game game) {
+    public static void save(String fileName, CFrame frame) {
         try {
             FileOutputStream fSave = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(fSave);
 
-            out.writeObject(game);
+            out.writeObject(frame.getGame());
+            frame.saveUndoRedo(out);
 
             out.close();
         } catch (IOException e) {
@@ -20,12 +21,13 @@ public class Save {
         }
     }
 
-    public static Game load(String fileName) {
+    public static Game load(String fileName, CFrame frame) {
         try {
             FileInputStream fLoad = new FileInputStream(fileName);
             ObjectInputStream in = new ObjectInputStream(fLoad);
 
             Game game = (Game) in.readObject();
+            frame.loadUndoRedo(in);
 
             in.close();
 
