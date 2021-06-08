@@ -60,6 +60,8 @@ public class Config extends JComponent {
         String[] str = {"Windowed" , "Fullscreen"};
         cb = new JComboBox<>(str);
 
+        if(isFS) cb.setSelectedItem(cb.getItemAt(1));
+
         String[] d = {"Easy" , "Normal", "Hard"};
         cb2 = new JComboBox<>(d);
 
