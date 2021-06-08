@@ -35,7 +35,7 @@ public abstract class Node {
         this.playableCards = this.game.getPlayableCards();
     }
 
-    private int expectiminimax(int depth, double alpha, double beta) {
+    private int minimax(int depth, double alpha, double beta) {
         if (depth == 0 || this.isLeaf()) {
             return this.evaluateState();
         }
@@ -49,7 +49,7 @@ public abstract class Node {
                 int i = 0;
                 int tmp;
                 for (Card card : this.playableCards) {
-                    tmp = this.nextChild(card).expectiminimax(depth - 1, alpha, beta);
+                    tmp = this.nextChild(card).minimax(depth - 1, alpha, beta);
                     if (tmp > value) {
                         value = tmp;
                         this.nextMoves.clear();
@@ -67,7 +67,7 @@ public abstract class Node {
                 for (Card card : this.playableCards) {
                     value = Math.min(
                             value,
-                            this.nextChild(card).expectiminimax(depth - 1, alpha, beta)
+                            this.nextChild(card).minimax(depth - 1, alpha, beta)
                     );
                     beta = Math.min(value, beta);
                     if (beta <= alpha) break; // Alpha cut
@@ -80,8 +80,8 @@ public abstract class Node {
 
     abstract int getStartingDepth();
 
-    private void expectiminimax() {
-        this.expectiminimax(
+    private void minimax() {
+        this.minimax(
                 this.getStartingDepth(),
                 Double.NEGATIVE_INFINITY,
                 Double.POSITIVE_INFINITY
@@ -210,7 +210,7 @@ public abstract class Node {
         if (game.getPlayableCards().size() == 1) {
             this.nextMoves.add(0);
         } else {
-            this.expectiminimax();
+            this.minimax();
         }
 
         return this.nextMoves;
