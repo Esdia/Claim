@@ -224,7 +224,6 @@ public class CFrame extends JComponent {
                         this.redo.clear();
 
                         SetFollowersInvisible();
-                        Audio.getBGM().stop();
                         mf.setgame(game);
                         isfin = true ;
 
