@@ -74,7 +74,10 @@ public class PMMouseListener extends MouseAdapter {
         }
         if (e.getSource().equals(pm.ld)) {
             Game game = Save.load("File1", pm.frame);
+            Audio.getBGM().stop();
+            Audio.playBGM(game.getPhaseNum());
             CFrame.isPaused = false;
+            pm.repaint();
 
             pm.frame.setGame(game);
         }
