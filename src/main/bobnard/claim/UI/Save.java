@@ -37,8 +37,8 @@ public class Save {
         return null;
     }
 
-    public static void syssave(Config config){
-        try{
+    public static void syssave(Config config) {
+        try {
             FileOutputStream fsave = new FileOutputStream("sys");
             ObjectOutputStream out = new ObjectOutputStream(fsave);
             out.writeObject(Menu.skin);
@@ -46,13 +46,13 @@ public class Save {
             out.writeObject(config.isFS);
             out.writeObject(Config.difficulty);
             out.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    public static void sysload(JFrame frame){
+    public static void sysload(JFrame frame) {
         try {
             FileInputStream fload = new FileInputStream("sys");
             ObjectInputStream in = new ObjectInputStream(fload);
@@ -60,32 +60,30 @@ public class Save {
             Audio.setVolume((Integer) in.readObject());
             boolean isFS = (Boolean) in.readObject();
             Window.isFS = isFS;
-            if(isFS) Config.device.setFullScreenWindow(frame);
+            if (isFS) Config.device.setFullScreenWindow(frame);
 
-            String difficulty = (String) in.readObject();
-            Config.difficulty = difficulty;
+            Config.difficulty = (String) in.readObject();
 
             in.close();
-        }catch (IOException | ClassNotFoundException e ){
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             Window.isFS = false;
             Config.difficulty = "Normal";
         }
     }
 
-    public static void sysloadSkin(){
+    public static void sysloadSkin() {
         try {
             FileInputStream fload = new FileInputStream("sys");
             ObjectInputStream in = new ObjectInputStream(fload);
             Menu.skin = (String) in.readObject();
 
             in.close();
-        }catch (IOException | ClassNotFoundException e ){
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             Menu.skin = "Vanilla";
         }
     }
-
 
 
 }

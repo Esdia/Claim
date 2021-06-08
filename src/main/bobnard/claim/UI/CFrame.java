@@ -56,8 +56,6 @@ public class CFrame extends JComponent {
 
 
     MenuDeFin mf;
-    private static boolean isend;
-    Config cf;
 
     public CFrame(JFrame frame) {
         path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";

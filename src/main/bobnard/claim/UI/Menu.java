@@ -43,7 +43,7 @@ public class Menu extends JComponent {
     public static String skin;
 
     final SkinSelect panel;
-    Config config;
+    final Config config;
 
     public Menu(JFrame frame) {
 
