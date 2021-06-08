@@ -27,8 +27,8 @@ public class MenuDeFin extends JComponent {
         this.frame = frame;
 
 
-        me = new JButton("Menu");
-        re = new JButton("Rejouer");
+        me = new JButton();
+        re = new JButton();
 
 
         me.addMouseListener(m);
@@ -43,7 +43,7 @@ public class MenuDeFin extends JComponent {
     public Icon resizeIcon(ImageIcon i, int w, int h) {
         if (i == null) return null;
         Image im = i.getImage();
-        Image resIm = im.getScaledInstance(w - 25, h, Image.SCALE_SMOOTH);
+        Image resIm = im.getScaledInstance(w , h, Image.SCALE_SMOOTH);
         return new ImageIcon(resIm);
 
     }
@@ -92,9 +92,9 @@ public class MenuDeFin extends JComponent {
         int h = this.frame.getHeight();
 
 
-        this.setButton(me, (int) (w / 2.70), (int) (h / 1.20), w / 7, h / 15, ime);
+        this.setButton(me, (int) (w / 2.90), (int) (h / 1.20), w / 7, h / 12, ime);
 
-        this.setButton(re, (int) (w / 1.90), (int) (h / 1.20), w / 10, h / 12, ire);
+        this.setButton(re, (int) (w / 2.0), (int) (h / 1.20), w / 7, h / 12, ire);
 
 
     }
