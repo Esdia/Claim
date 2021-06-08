@@ -243,6 +243,23 @@ public class Player implements Serializable {
     public void showCard(Card card) {
     }
 
+    /**
+     * Shows the flipped card to the player.
+     *
+     * <p>
+     * This method is meant to be overridden by the
+     * AI class.
+     * This method is called when the flipped card is revealed
+     * to the player (so, when it is drawn from the deck, after
+     * a trick ends in the first phase).
+     * <p>
+     * This method, like every other empty method
+     * here, exists in this class so that the model
+     * can stay independent from the AI (by not having
+     * to import it and to cast the player down to it).
+     *
+     * @param card The flipped card.
+     */
     public void showFlippedCard(Card card) {
     }
 

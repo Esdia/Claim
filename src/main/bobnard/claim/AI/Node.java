@@ -78,6 +78,11 @@ public abstract class Node {
         return (int) value;
     }
 
+    /**
+     * Returns the starting depth.
+     *
+     * @return the starting depth
+     */
     abstract int getStartingDepth();
 
     private void minimax() {

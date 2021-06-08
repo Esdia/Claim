@@ -30,6 +30,11 @@ public class NodeEasy extends Node {
         return new NodeEasy(game, aiID, type);
     }
 
+    /**
+     * Returns the starting depth.
+     *
+     * @return the starting depth
+     */
     @Override
     int getStartingDepth() {
         return DEPTH;

@@ -37,11 +37,21 @@ abstract class AIMinimax extends AI {
         possibleOpponentCards.sort();
     }
 
+    /**
+     * Initialize the AI at the start of the game.
+     */
     @Override
     public void init() {
         this.initOpponentCards();
     }
 
+    /**
+     * Transfers the player's follower to their
+     * hand.
+     * <p>
+     * This method is meant to only be called at
+     * the beginning of phase 2
+     */
     @Override
     protected void followersToHand() {
         super.followersToHand();
@@ -54,6 +64,13 @@ abstract class AIMinimax extends AI {
         return this.playableCards(game.getPlayedFaction()).indexOf(card);
     }
 
+    /**
+     * Converts a list of cards (a Hand) to a list of the indexes of the hand's
+     * cards in the list of the AI's playable cards.
+     *
+     * @param hand The hand we want to convert to a list of indexes.
+     * @return The indexes of the hand's cards in the AI's playable cards
+     */
     protected ArrayList<Integer> getIndexes(Hand hand) {
         ArrayList<Integer> indexes = new ArrayList<>();
         hand.stream().mapToInt(this::getIndex).forEach(indexes::add);
@@ -76,6 +93,14 @@ abstract class AIMinimax extends AI {
         this.lastShownCard = card;
     }
 
+    /**
+     * Shows the flipped card to the AI.
+     * <p>
+     * In order to correctly keep track of the opponent's hand, we have
+     * to treat flipped cards differently, which is why this method exists.
+     *
+     * @param card The flipped card.
+     */
     @Override
     public void showFlippedCard(Card card) {
         this.showCard(card);
@@ -122,7 +147,7 @@ abstract class AIMinimax extends AI {
     @Override
     int nextCard() {
         ArrayList<Integer> nextCardsIndexes;
-        
+
         if (game.getPhaseNum() == 1) {
             nextCardsIndexes = this.getMovesPhaseOne();
         } else { /* game.getPhaseNum() == 2 */

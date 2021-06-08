@@ -28,10 +28,19 @@ public class AIRandom extends AI {
         this.random = new Random();
     }
 
+    /**
+     * Initialize the AI at the start of the game
+     */
     @Override
     public void init() {
     }
 
+    /**
+     * Calculates the AI's next move.
+     *
+     * @return The index of the AI's next move in the list of
+     * it's playable cards.
+     */
     @Override
     int nextCard() {
         return random.nextInt(this.game.getPlayableCards().size());
@@ -48,6 +57,14 @@ public class AIRandom extends AI {
     public void showCard(Card card) {
     }
 
+    /**
+     * Shows the flipped card to the AI.
+     * <p>
+     * In order to correctly keep track of the opponent's hand, we have
+     * to treat flipped cards differently, which is why this method exists.
+     *
+     * @param card The flipped card.
+     */
     @Override
     public void showFlippedCard(Card card) {
     }

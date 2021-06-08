@@ -30,11 +30,23 @@ public class NodeNormal extends Node {
         return new NodeNormal(game, aiID, type);
     }
 
+    /**
+     * Returns the starting depth.
+     *
+     * @return the starting depth
+     */
     @Override
     int getStartingDepth() {
         return DEPTH;
     }
 
+    /**
+     * Returns the completion percentage of the faction in the score stack
+     *
+     * @param ss      The score stack in which we are counting the cards of the faction
+     * @param faction The faction we are counting the cards of
+     * @return The completion percentage of the faction in the score stack
+     */
     int getFactionCompletionPercentage(ScoreStack ss, Faction faction) {
         int nbCards = ss.getNbCardsFaction(faction);
         int needed = 1 + getMaxNbCardsFaction(faction) / 2;
@@ -42,6 +54,13 @@ public class NodeNormal extends Node {
         return (100 * nbCards) / needed;
     }
 
+    /**
+     * Returns true if the player who owns the score stack won the faction.
+     *
+     * @param ss      The score stack we are checking
+     * @param faction The faction we are checking
+     * @return True if the player won the faction
+     */
     boolean wonFaction(ScoreStack ss, Faction faction) {
         return this.getFactionCompletionPercentage(ss, faction) >= 100;
     }

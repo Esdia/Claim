@@ -24,9 +24,18 @@ public abstract class AI extends Player {
         this.evaluating = false;
     }
 
+    /**
+     * Initialize the AI at the start of the game
+     */
     @Override
     public abstract void init();
 
+    /**
+     * Sets the AI in evaluation mode.
+     * <p>
+     * In evaluation mode, the AI does not try to interact with the UI, it only interacts with
+     * the model.
+     */
     void setEvaluating() {
         this.evaluating = true;
     }
@@ -113,6 +122,14 @@ public abstract class AI extends Player {
     @Override
     public abstract void showCard(Card card);
 
+    /**
+     * Shows the flipped card to the AI.
+     * <p>
+     * In order to correctly keep track of the opponent's hand, we have
+     * to treat flipped cards differently, which is why this method exists.
+     *
+     * @param card The flipped card.
+     */
     @Override
     public abstract void showFlippedCard(Card card);
 }
