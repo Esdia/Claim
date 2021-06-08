@@ -64,16 +64,13 @@ public class Config extends JComponent {
         String[] str = {"Windowed" , "Fullscreen"};
         cb = new JComboBox<>(str);
 
-        if(isFS) cb.setSelectedItem(cb.getItemAt(1));
-
         String[] d = {"Easy" , "Normal", "Hard"};
         cb2 = new JComboBox<>(d);
 
-        cb2.setSelectedItem(difficulty);
-
         String[] fp = {"1 (top)", "2 (bottom)", "Random"};
         cb3 = new JComboBox<>(fp);
-        cb3.setSelectedItem(firstPlayer);
+
+        this.refreshSettings();
 
         this.add(cb);
         this.add(cb2);
@@ -120,13 +117,10 @@ public class Config extends JComponent {
         String[] d = {"Easy" , "Normal", "Hard"};
         cb2 = new JComboBox<>(d);
 
-        if(isFS) cb.setSelectedItem(cb.getItemAt(1));
-
-        cb2.setSelectedItem(difficulty);
-
         String[] fp = {"1 (top)", "2 (bottom)", "Random"};
         cb3 = new JComboBox<>(fp);
-        cb3.setSelectedItem(firstPlayer);
+
+        this.refreshSettings();
 
         this.add(cb);
         this.add(cb2);
@@ -142,6 +136,15 @@ public class Config extends JComponent {
         this.add(s);
 
 
+    }
+
+    void refreshSettings() {
+        Save.sysload(frame);
+
+        s.setValue(Audio.getVolume());
+        cb.setSelectedIndex(Window.isFS ? 1 : 0);
+        cb2.setSelectedItem(difficulty);
+        cb3.setSelectedItem(firstPlayer);
     }
 
     public void setImages() {
@@ -237,5 +240,6 @@ public class Config extends JComponent {
 
     public void refresh() {
         setImages();
+        this.refreshSettings();
     }
 }

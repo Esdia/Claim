@@ -66,6 +66,7 @@ public class PMMouseListener extends MouseAdapter {
         }
         if (e.getSource().equals(pm.cf)) {
             PauseMenu.isConfig = true;
+            pm.c.refreshSettings();
             pm.repaint();
         }
         if (e.getSource().equals(pm.sv)) {
