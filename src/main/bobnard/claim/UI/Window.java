@@ -4,8 +4,11 @@ import bobnard.claim.model.Game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class Window implements Runnable {
+    private static final Random random = new Random();
+
     private static JFrame frame;
     public static boolean isFS;
     private static Container contentPane;
@@ -52,6 +55,14 @@ public class Window implements Runnable {
         CardUI.refreshImagePath();
 
         game.reset();
+        game.setFirstPlayer(
+                switch (Config.firstPlayer) {
+                    case "1 (top)" -> 0;
+                    case "2 (bottom)" -> 1;
+                    case "Random" -> random.nextInt(2);
+                    default -> throw new IllegalStateException("Unexpected value: " + Config.firstPlayer);
+                }
+        );
         game.start();
         cFrame.setGame(game);
         cFrame.refreshImages();

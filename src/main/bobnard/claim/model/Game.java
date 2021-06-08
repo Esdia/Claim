@@ -14,6 +14,8 @@ public class Game implements Serializable {
     private boolean isDone;
     private int winnerID;
 
+    private int firstPlayerID;
+
     /**
      * Creates a new game.
      * <p>
@@ -56,6 +58,10 @@ public class Game implements Serializable {
         this.players[0] = players[0];
         this.players[1] = players[1];
         this.setState(GameState.READY_TO_START);
+    }
+
+    public void setFirstPlayer(int playerID) {
+        this.firstPlayerID = playerID;
     }
 
     //region GAME MANAGEMENT
@@ -243,6 +249,7 @@ public class Game implements Serializable {
     private void startPhaseOne() {
         // System.out.println("Beginning phase 1");
         this.phase = new PhaseOne(this.players);
+        this.phase.setFirstPlayer(this.firstPlayerID);
     }
 
     private void startPhaseTwo() {

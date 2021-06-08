@@ -45,6 +45,7 @@ public class Save {
             out.writeObject(Audio.getVolume());
             out.writeObject(config.isFS);
             out.writeObject(Config.difficulty);
+            out.writeObject(Config.firstPlayer);
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,12 +64,14 @@ public class Save {
             if (isFS) Config.device.setFullScreenWindow(frame);
 
             Config.difficulty = (String) in.readObject();
+            Config.firstPlayer = (String) in .readObject();
 
             in.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             Window.isFS = false;
             Config.difficulty = "Normal";
+            Config.firstPlayer = "Random";
         }
     }
 

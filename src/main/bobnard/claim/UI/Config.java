@@ -20,9 +20,11 @@ public class Config extends JComponent {
     final JLabel l1;
     final JLabel l2;
     final JLabel l3;
+    final JLabel l4;
 
     final JComboBox<String> cb;
     final JComboBox<String> cb2;
+    final JComboBox<String> cb3;
 
     public boolean isFS;
 
@@ -34,6 +36,7 @@ public class Config extends JComponent {
             .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
     public static String difficulty;
+    public static String firstPlayer;
 
 
     public Config(JFrame frame, Menu menu) {
@@ -50,6 +53,7 @@ public class Config extends JComponent {
         l1 = new JLabel("Volume :");
         l2 = new JLabel("Screen :");
         l3 = new JLabel("Difficulty :");
+        l4 = new JLabel("First player :");
 
         setImages();
 
@@ -67,14 +71,20 @@ public class Config extends JComponent {
 
         cb2.setSelectedItem(difficulty);
 
+        String[] fp = {"1 (top)", "2 (bottom)", "Random"};
+        cb3 = new JComboBox<>(fp);
+        cb3.setSelectedItem(firstPlayer);
+
         this.add(cb);
         this.add(cb2);
+        this.add(cb3);
 
         this.add(b1);
 
         this.add(l1);
         this.add(l2);
         this.add(l3);
+        this.add(l4);
 
         this.add(s);
 
@@ -96,6 +106,7 @@ public class Config extends JComponent {
         l1 = new JLabel("Volume :");
         l2 = new JLabel("Screen :");
         l3 = new JLabel("Difficulty :");
+        l4 = new JLabel("First player :");
 
         setImages();
 
@@ -113,14 +124,20 @@ public class Config extends JComponent {
 
         cb2.setSelectedItem(difficulty);
 
+        String[] fp = {"1 (top)", "2 (bottom)", "Random"};
+        cb3 = new JComboBox<>(fp);
+        cb3.setSelectedItem(firstPlayer);
+
         this.add(cb);
         this.add(cb2);
+        this.add(cb3);
 
         this.add(b1);
 
         this.add(l1);
         this.add(l2);
         this.add(l3);
+        this.add(l4);
 
         this.add(s);
 
@@ -156,16 +173,24 @@ public class Config extends JComponent {
         int w = this.frame.getWidth();
         int h = this.frame.getHeight();
 
+        Font font = new Font("Forte", Font.PLAIN, w / 30);
+
         setButtons();
 
         l1.setBounds(w/2 - w/12,h/20, w,h/10);
-        l1.setFont(new Font("Forte", Font.PLAIN, w/30));
+        l1.setFont(font);
 
-        l2.setBounds(w/2 - w/12,h/4, w,h/10);
-        l2.setFont(new Font("Forte", Font.PLAIN, w/30));
+        int step = 9 * h / 52;
+        int yStart = h / 4;
 
-        l3.setBounds(w/2 - w/12,h/2, w,h/10);
-        l3.setFont(new Font("Forte", Font.PLAIN, w/30));
+        l2.setBounds(w/2 - w/12,yStart, w,h/10);
+        l2.setFont(font);
+
+        l3.setBounds(w/2 - w/12,yStart + step, w,h/10);
+        l3.setFont(font);
+
+        l4.setBounds(w/2 - w/10, yStart + 2 * step, w, h/10);
+        l4.setFont(font);
 
         this.s.setBounds(w/2 - w/10,h/7,w/7,h/10);
         this.s.setOpaque(false);
@@ -175,10 +200,13 @@ public class Config extends JComponent {
 
         g.drawImage(this.image, 0, 0, getWidth(), getHeight(), null);
 
+        yStart = (int) (h / 2.9);
 
-        cb.setBounds(w/2 - w/10, (int) (h/2.9),w/6,h/18);
+        cb.setBounds(w/2 - w/10, yStart,w/6,h/18);
 
-        cb2.setBounds(w/2 - w/10, (int) (h/1.65),w/6,h/18);
+        cb2.setBounds(w/2 - w/10, yStart + step,w/6,h/18);
+
+        cb3.setBounds(w/2 - w/10, yStart + 2 * step,w/6,h/18);
 
         if(cb.getItemAt(cb.getSelectedIndex()).equals("Fullscreen") && !isFS){
             device.setFullScreenWindow(frame);
@@ -193,6 +221,7 @@ public class Config extends JComponent {
         }
 
         difficulty = cb2.getItemAt(cb2.getSelectedIndex());
+        firstPlayer = cb3.getItemAt(cb3.getSelectedIndex());
 
         Save.syssave(this);
 

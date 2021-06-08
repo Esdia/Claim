@@ -37,9 +37,7 @@ abstract class Phase  implements Serializable {
 
         this.players = players;
 
-        this.currentLeader = startingPlayer;
-        this.currentPlayer = startingPlayer;
-        this.resetTrick();
+        this.setFirstPlayer(startingPlayer);
     }
 
     /**
@@ -59,6 +57,11 @@ abstract class Phase  implements Serializable {
 
     //region PHASE MANAGEMENT
 
+    void setFirstPlayer(int firstPlayerID) {
+        this.currentLeader = firstPlayerID;
+        this.currentPlayer = firstPlayerID;
+        this.resetTrick();
+    }
     /**
      * Switches the current player.
      * <p>

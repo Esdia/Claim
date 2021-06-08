@@ -59,6 +59,11 @@ public class CardUI extends JPanel implements MouseInputListener {
         this.ownedByHumanAgainstAI = true;
     }
 
+    public void resetOwn() {
+        this.ownedByAI = false;
+        this.ownedByHumanAgainstAI = false;
+    }
+
     public Card getCard() {
         return this.card;
     }

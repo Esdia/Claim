@@ -267,6 +267,8 @@ public class CFrame extends JComponent {
                     this.handPanels[i][j].setOwnedByHumanAgainstAI();
                 } else if (isOwnedByAI) {
                     this.handPanels[i][j].setOwnedByAI();
+                } else {
+                    this.handPanels[i][j].resetOwn();
                 }
             }
         }
@@ -285,6 +287,8 @@ public class CFrame extends JComponent {
                     this.followPanels[i][j].setOwnedByHumanAgainstAI();
                 } else if (isOwnedByAI) {
                     this.followPanels[i][j].setOwnedByAI();
+                } else {
+                    this.followPanels[i][j].resetOwn();
                 }
             }
         }
