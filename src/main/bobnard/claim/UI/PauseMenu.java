@@ -35,11 +35,11 @@ public class PauseMenu extends JComponent {
 
         setImages();
 
-        re = new JButton("Resume");
-        cf = new JButton("Config");
-        sv = new JButton("Save");
-        ld = new JButton("Load");
-        bm = new JButton("Back to menu");
+        re = new JButton();
+        cf = new JButton();
+        sv = new JButton();
+        ld = new JButton();
+        bm = new JButton();
 
         re.addMouseListener(m);
         cf.addMouseListener(m);
@@ -59,7 +59,7 @@ public class PauseMenu extends JComponent {
     public Icon resizeIcon(ImageIcon i, int w, int h) {
         if (i == null) return null;
         Image im = i.getImage();
-        Image resIm = im.getScaledInstance(w-13, h, Image.SCALE_SMOOTH);
+        Image resIm = im.getScaledInstance(w, h, Image.SCALE_SMOOTH);
         return new ImageIcon(resIm);
 
     }

@@ -91,10 +91,18 @@ public class MenuDeFin extends JComponent {
         int w = this.frame.getWidth();
         int h = this.frame.getHeight();
 
+        int imgHeight = h / 15;
 
-        this.setButton(me, (int) (w / 2.90), (int) (h / 1.20), w / 7, h / 12, ime);
+        int widthMenu = (int) (imgHeight * 3.22);
+        int widthNG = (int) (imgHeight * 6.36);
 
-        this.setButton(re, (int) (w / 2.0), (int) (h / 1.20), w / 7, h / 12, ire);
+        int y = (int) (h / 1.20);
+        int xMenu = w / 10 + (widthNG - widthMenu) / 2;
+        int xNG = 9 * w / 10 - widthNG;
+
+        this.setButton(me, xMenu, y, widthMenu, imgHeight, ime);
+
+        this.setButton(re, xNG, y, widthNG, imgHeight, ire);
 
 
     }
