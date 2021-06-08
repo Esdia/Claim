@@ -1,5 +1,12 @@
 package bobnard.claim.UI;
 
+
+import bobnard.claim.AI.AIMinimaxEasy;
+import bobnard.claim.model.Game;
+import bobnard.claim.model.Player;
+
+
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -13,15 +20,37 @@ public class MFMouseListener extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
+        ImageIcon ime = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/menu2.png");
+        ImageIcon ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/newgame2.png");
+        setHover(e, ime, ire );
+    }
+
+    private void setHover(MouseEvent e, ImageIcon ime, ImageIcon ire) {
+        if (mf.me.equals(e.getSource())) {
+            mf.ime = ime;
+
+        } if (mf.re.equals(e.getSource())) {
+            mf.ire= ire;
+        }
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         super.mouseEntered(e);
+        ImageIcon ime = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/menu.png");
+        ImageIcon ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/newgame.png");
+        setHover(e,ime, ire  );
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (e.getSource().equals(mf.me)){
+            CFrame.isPaused = false;
+            Window.switchToMainMenu();
+        }
+
     }
+
 }
 

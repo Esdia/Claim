@@ -11,7 +11,7 @@ import java.io.IOException;
 
 
 public class MenuDeFin extends JComponent {
-
+    final Player player;
     final Game game;
     final CFrame frame;
     BufferedImage bg, lg;
@@ -23,10 +23,10 @@ public class MenuDeFin extends JComponent {
     ImageIcon ime, ire;
 
 
-    public MenuDeFin(CFrame frame, Game game) {
+    public MenuDeFin(CFrame frame, Game game , Player player) {
         this.game = game;
         this.frame = frame;
-
+        this.player = player;
         setImages();
 
         me = new JButton("Menu");
@@ -55,12 +55,22 @@ public class MenuDeFin extends JComponent {
         try {
             System.out.println("ici");
             if (game.getWinnerID() == 1) {
-                bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victoryP1.png"));
+                if(player.isAI()) {
+                    bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/defeatscreen.png"));
+                }else {
+                    bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victoryP1.png"));
+                }
             } else {
-                bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victoryP2.png"));
+                if(player.isAI()){
+                    bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victory.png"));
+
+                }else{
+                    bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victoryP2.png"));
+
+                }
             }
-            ime = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/.png");
-            ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/.png");
+            ime = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/menu.png");
+            ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/newgame.png");
         } catch (IOException e) {
             e.printStackTrace();
         }

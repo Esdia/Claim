@@ -165,7 +165,7 @@ public class CFrame extends JComponent {
             if (this.movingPanels.size() == 0 && !game.isWaitingHumanAction()) {
                 switch (game.getState()) {
                     case GAME_FINISHED -> {
-                        mf = new MenuDeFin(this, game);
+                        mf = new MenuDeFin(this, game , players[0]);
                         this.add(mf);
                         SetFollowersInvisible();
 
