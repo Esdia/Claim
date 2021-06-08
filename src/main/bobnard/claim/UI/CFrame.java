@@ -54,7 +54,7 @@ public class CFrame extends JComponent {
 
     final PauseMenu pm;
     final JButton pause;
-    final ImageIcon p;
+    ImageIcon p, p1, p2;
     public static Boolean isPaused;
 
 
@@ -101,17 +101,29 @@ public class CFrame extends JComponent {
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                if(e.getSource().equals(pause)){
+                    p = p2;
+                    setPauseButton(true);
+                }
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
+                if(e.getSource().equals(pause)){
+                    p = p1;
+                    setPauseButton(true);
+                }
             }
 
         });
 
         add(pause);
 
-        p = new ImageIcon(path + "pause.png");
+        p1 = new ImageIcon(path + "pause.png");
+        p2 = new ImageIcon(path + "pause2.png");
+
+        p = p1;
 
         this.undo = new Stack<>();
         this.redo = new Stack<>();
@@ -447,7 +459,7 @@ public class CFrame extends JComponent {
         int y = h / 9;
         if (resize) {
             pause.setIcon(new ImageIcon(p.getImage().getScaledInstance(x, y, Image.SCALE_SMOOTH)));
-            pause.setBounds(0, 0, x, y);
+            pause.setBounds(10, 10, x, y);
             pause.setBorderPainted(false);
             pause.setOpaque(false);
             pause.setContentAreaFilled(false);
