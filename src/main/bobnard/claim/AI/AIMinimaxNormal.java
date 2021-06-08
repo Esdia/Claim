@@ -1,8 +1,10 @@
 package bobnard.claim.AI;
 
-import bobnard.claim.model.Card;
 import bobnard.claim.model.Game;
 import bobnard.claim.model.GameState;
+import bobnard.claim.model.Hand;
+
+import java.util.ArrayList;
 
 public class AIMinimaxNormal extends AIMinimax {
     /**
@@ -41,29 +43,29 @@ public class AIMinimaxNormal extends AIMinimax {
      * @see AIMinimax#nextCard()
      */
     @Override
-    int getMovePhaseOne() {
-        Card nextMove;
+    ArrayList<Integer> getMovesPhaseOne() {
+        Hand nextMoves;
 
         boolean want = (this.game.getFlippedCard().value >= 5);
 
         if (game.getState() == GameState.WAITING_LEADER_ACTION) {
             // AI plays first
             if (want) {
-                nextMove = this.getCards().getStrongestCard();
+                nextMoves = this.getCards().getStrongestCards();
             } else {
-                nextMove = this.getCards().getWeakestCard();
+                nextMoves = this.getCards().getWeakestCards();
             }
         } else if (game.getState() == GameState.WAITING_FOLLOW_ACTION) {
             // AI plays second
             if (want) {
-                nextMove = this.getCards().getWeakestToBeat(lastShownCard);
+                nextMoves = this.getCards().getWeakestToBeat(lastShownCard);
             } else {
-                nextMove = this.getCards().getWeakestPlayableCard(lastShownCard.faction);
+                nextMoves = this.getCards().getWeakestPlayableCards(lastShownCard.faction);
             }
         } else {
             throw new IllegalStateException();
         }
 
-        return this.getIndex(nextMove);
+        return this.getIndexes(nextMoves);
     }
 }

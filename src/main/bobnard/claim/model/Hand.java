@@ -61,9 +61,21 @@ public class Hand extends ArrayList<Card> implements Serializable {
         return cards;
     }
 
+    private Hand getCardsOfSameValue(Card card) {
+        if (card == null) throw new IllegalArgumentException();
+
+        return this.stream()
+                .filter(c -> c.value == card.value)
+                .collect(Collectors.toCollection(Hand::new));
+    }
+
     public Card getWeakestCard() {
         Optional<Card> min = this.stream().min(Comparator.comparingInt(c -> c.value));
         return min.orElse(null);
+    }
+
+    public Hand getWeakestCards() {
+        return this.getCardsOfSameValue(this.getWeakestCard());
     }
 
     public Card getStrongestCard() {
@@ -71,29 +83,32 @@ public class Hand extends ArrayList<Card> implements Serializable {
         return max.orElse(null);
     }
 
-    public Card getWeakestPlayableCard(Faction faction) {
-        return playableCards(faction).getWeakestCard();
+    public Hand getStrongestCards() {
+        return this.getCardsOfSameValue(this.getStrongestCard());
     }
 
-    private ArrayList<Card> canBeat(Card card) {
+    public Hand getWeakestPlayableCards(Faction faction) {
+        return playableCards(faction).getWeakestCards();
+    }
+
+    private Hand canBeat(Card card) {
         Stream<Card> canBeat = this.stream().filter(
                 c -> (c.faction == card.faction || c.faction == Faction.DOPPELGANGERS)
                         && c.value > card.value
         );
 
-        return canBeat.collect(Collectors.toCollection(ArrayList::new));
+        return canBeat.collect(Collectors.toCollection(Hand::new));
     }
 
-    public Card getWeakestToBeat(Card toBeat) {
-        ArrayList<Card> canBeat = this.canBeat(toBeat);
+    public Hand getWeakestToBeat(Card toBeat) {
+        Hand canBeat = this.canBeat(toBeat);
 
         if (canBeat.size() == 0) {
-            Card card = this.getWeakestPlayableCard(toBeat.faction);
-            return card != null ? card : this.getWeakestCard();
+            Hand cards = this.getWeakestPlayableCards(toBeat.faction);
+            return cards.size() > 0 ? cards : this.getWeakestCards();
         }
 
-        Optional<Card> weakestToBeat = canBeat.stream().min(Card::compareTo);
-        return weakestToBeat.orElse(null);
+        return canBeat.getWeakestCards();
     }
 
     @Override

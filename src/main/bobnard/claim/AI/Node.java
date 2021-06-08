@@ -2,6 +2,8 @@ package bobnard.claim.AI;
 
 import bobnard.claim.model.*;
 
+import java.util.ArrayList;
+
 /**
  * Represents a Node in the tree generated
  * by the Minimax Algorithm.
@@ -14,7 +16,7 @@ public abstract class Node {
 
     private final NodeType type;
 
-    private int nextMove = 0;
+    private final ArrayList<Integer> nextMoves = new ArrayList<>();
 
     /**
      * Creates a new Node.
@@ -50,7 +52,10 @@ public abstract class Node {
                     tmp = this.nextChild(card).expectiminimax(depth - 1, alpha, beta);
                     if (tmp > value) {
                         value = tmp;
-                        this.nextMove = i;
+                        this.nextMoves.clear();
+                    }
+                    if (tmp >= value) {
+                        this.nextMoves.add(i);
                     }
                     alpha = Math.max(value, alpha);
                     if (alpha >= beta) break; // Beta cut
@@ -201,13 +206,13 @@ public abstract class Node {
      *
      * @return the AI's next move.
      */
-    int getNextMove() {
+    ArrayList<Integer> getNextMoves() {
         if (game.getPlayableCards().size() == 1) {
-            return 0;
+            this.nextMoves.add(0);
+        } else {
+            this.expectiminimax();
         }
 
-        this.expectiminimax();
-
-        return this.nextMove;
+        return this.nextMoves;
     }
 }

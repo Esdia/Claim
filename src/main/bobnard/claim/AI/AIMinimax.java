@@ -5,10 +5,15 @@ import bobnard.claim.model.Deck;
 import bobnard.claim.model.Game;
 import bobnard.claim.model.Hand;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * An AI implementing the Minimax Algorithm
  */
 abstract class AIMinimax extends AI {
+    private static final Random random = new Random();
+
     protected final Hand possibleOpponentCards;
     private final Hand possibleOpponentFollowers;
     protected Card lastShownCard;
@@ -45,8 +50,14 @@ abstract class AIMinimax extends AI {
         this.possibleOpponentCards.addAll(this.possibleOpponentFollowers);
     }
 
-    protected int getIndex(Card card) {
+    private int getIndex(Card card) {
         return this.playableCards(game.getPlayedFaction()).indexOf(card);
+    }
+
+    protected ArrayList<Integer> getIndexes(Hand hand) {
+        ArrayList<Integer> indexes = new ArrayList<>();
+        hand.stream().mapToInt(this::getIndex).forEach(indexes::add);
+        return indexes;
     }
 
     /**
@@ -86,18 +97,18 @@ abstract class AIMinimax extends AI {
      * it's playable cards.
      * @see #nextCard()
      */
-    abstract int getMovePhaseOne();
+    abstract ArrayList<Integer> getMovesPhaseOne();
 
     /**
      * Calculates the AI's next move in the second phase.
      *
      * @return The index of the AI's next move in the list of
      * it's playable cards.
-     * @see Node#getNextMove()
+     * @see Node#getNextMoves()
      */
-    private int getMovePhaseTwo() {
+    private ArrayList<Integer> getMovesPhaseTwo() {
         Node node = this.getNodeInstance();
-        return node.getNextMove();
+        return node.getNextMoves();
     }
 
     /**
@@ -105,15 +116,19 @@ abstract class AIMinimax extends AI {
      *
      * @return The index of the AI's next move in the list of
      * it's playable cards.
-     * @see #getMovePhaseOne()
-     * @see #getMovePhaseTwo()
+     * @see #getMovesPhaseOne()
+     * @see #getMovesPhaseTwo()
      */
     @Override
     int nextCard() {
+        ArrayList<Integer> nextCardsIndexes;
+        
         if (game.getPhaseNum() == 1) {
-            return this.getMovePhaseOne();
+            nextCardsIndexes = this.getMovesPhaseOne();
         } else { /* game.getPhaseNum() == 2 */
-            return this.getMovePhaseTwo();
+            nextCardsIndexes = this.getMovesPhaseTwo();
         }
+
+        return nextCardsIndexes.get(random.nextInt(nextCardsIndexes.size()));
     }
 }
