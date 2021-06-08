@@ -3,6 +3,7 @@ package bobnard.claim.AI;
 import bobnard.claim.model.Game;
 import bobnard.claim.model.GameState;
 import bobnard.claim.model.Hand;
+import bobnard.claim.model.Player;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,10 @@ public class AIMinimaxNormal extends AIMinimax {
      */
     public AIMinimaxNormal(Game game, int id) {
         super(game, id);
+    }
+
+    public AIMinimaxNormal(AIMinimaxNormal base) {
+        super(base);
     }
 
     /**
@@ -67,5 +72,10 @@ public class AIMinimaxNormal extends AIMinimax {
         }
 
         return this.getIndexes(nextMoves);
+    }
+
+    @Override
+    protected Player copy() {
+        return new AIMinimaxNormal(this);
     }
 }

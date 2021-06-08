@@ -29,6 +29,19 @@ public class Player implements Serializable {
         this.followers = new Stack<>();
     }
 
+    protected Player(Player base) {
+        this.id = base.id;
+
+        this.hand = new Hand();
+        this.hand.addAll(base.hand);
+
+        this.followers = new Stack<>();
+        this.followers.addAll(base.followers);
+
+        this.scoreStack = new ScoreStack();
+        base.scoreStack.forEach(this.scoreStack::push);
+    }
+
     public void setID(int id) {
         this.id = id;
     }
@@ -294,17 +307,25 @@ public class Player implements Serializable {
     }
 
     /**
+     * Gives the game object to the AI.
+     * <p>
+     * This method is meant to be overridden by the
+     * AI class.
+     * <p>
+     * This method, like every other empty method
+     * here, exists in this class so that the model
+     * can stay independent from the AI (by not having
+     * to import it and to cast the player down to it).
+     */
+    protected void setGame(Game game) {
+    }
+
+    /**
      * Returns a copy of the player.
      *
      * @return a copy of the player.
      */
-    Player copy() {
-        Player player = new Player(this.id);
-
-        player.hand.addAll(this.hand);
-        this.scoreStack.forEach(player.scoreStack::push);
-        player.followers.addAll(this.followers);
-
-        return player;
+    protected Player copy() {
+        return new Player(this);
     }
 }
