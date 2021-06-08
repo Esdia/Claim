@@ -11,23 +11,21 @@ import java.io.IOException;
 
 
 public class MenuDeFin extends JComponent {
-    final Player player;
-    final Game game;
-    final CFrame frame;
+    Game game ;
+    CFrame frame;
     BufferedImage bg, lg;
     final JButton me;
     final JButton re;
 
-    final MFMouseListener m = new MFMouseListener(this);
+    final MFMouseListener m = new MFMouseListener(this, frame);
 
     ImageIcon ime, ire;
 
 
-    public MenuDeFin(CFrame frame, Game game , Player player) {
-        this.game = game;
+    public MenuDeFin(CFrame frame) {
+
         this.frame = frame;
-        this.player = player;
-        setImages();
+
 
         me = new JButton("Menu");
         re = new JButton("Rejouer");
@@ -49,19 +47,21 @@ public class MenuDeFin extends JComponent {
         return new ImageIcon(resIm);
 
     }
-
+    public void setgame(Game game){
+        this.game = game;
+        setImages();
+    }
     public void setImages() {
 
         try {
-            System.out.println("ici");
             if (game.getWinnerID() == 1) {
-                if(player.isAI()) {
+                if(game.getPlayer(0).isAI()) {
                     bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/defeatscreen.png"));
                 }else {
                     bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victoryP1.png"));
                 }
             } else {
-                if(player.isAI()){
+                if(game.getPlayer(0).isAI()){
                     bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victory.png"));
 
                 }else{

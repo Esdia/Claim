@@ -128,6 +128,7 @@ public class Game implements Serializable {
         for (Player player : players) {
             player.reset();
         }
+        this.setState(GameState.READY_TO_START);
     }
 
     /**
@@ -220,7 +221,7 @@ public class Game implements Serializable {
             }
             case GAME_FINISHED -> {
                 this.reset();
-                this.setState(GameState.READY_TO_START);
+
             }
         }
     }

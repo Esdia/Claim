@@ -56,9 +56,10 @@ public class CFrame extends JComponent {
     final JButton pause;
     ImageIcon p, p1, p2;
     public static Boolean isPaused;
+    public static Boolean isfin;
+    public static MenuDeFin mf;
 
 
-    MenuDeFin mf;
 
     private Stack<Game> undo;
     private Stack<Game> redo;
@@ -73,9 +74,13 @@ public class CFrame extends JComponent {
         this.frame = frame;
 
         isPaused = false;
-
+        isfin = false ;
         pm = new PauseMenu(this);
         this.add(pm);
+        mf = new MenuDeFin(this);
+        this.add(mf);
+
+
 
         setLayout(null);
         this.setVisible(true);
@@ -200,6 +205,7 @@ public class CFrame extends JComponent {
     }
 
     void initLoop() {
+
         this.gameLoop.addActionListener(e -> {
             if (game.getState() == GameState.STARTED_PHASE_ONE) {
                 this.undo.clear();
@@ -219,12 +225,12 @@ public class CFrame extends JComponent {
             if (this.movingPanels.size() == 0 && !game.isWaitingHumanAction()) {
                 switch (game.getState()) {
                     case GAME_FINISHED -> {
-                        mf = new MenuDeFin(this, game , players[0]);
-                        this.add(mf);
-                        SetFollowersInvisible();
 
+                        SetFollowersInvisible();
                         Audio.getBGM().stop();
-                        drawPM(mf, true);
+                        mf.setgame(game);
+                        isfin = true ;
+
                         stopLoop();
                         return;
 
@@ -404,7 +410,7 @@ public class CFrame extends JComponent {
         setPauseButton(resize);
 
         drawPM(pm, isPaused);
-
+        drawPM(mf, isfin);
 
         g.clearRect(0, 0, w, h);
 
