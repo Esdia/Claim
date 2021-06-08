@@ -207,11 +207,6 @@ public class CFrame extends JComponent {
     void initLoop() {
 
         this.gameLoop.addActionListener(e -> {
-            if (game.getState() == GameState.STARTED_PHASE_ONE) {
-                this.undo.clear();
-                this.redo.clear();
-            }
-
             ArrayList<AnimatedPanel> tmp = new ArrayList<>(this.movingPanels);
             for (AnimatedPanel animatedPanel : tmp) {
                 animatedPanel.nextStep();
@@ -225,6 +220,8 @@ public class CFrame extends JComponent {
             if (this.movingPanels.size() == 0 && !game.isWaitingHumanAction()) {
                 switch (game.getState()) {
                     case GAME_FINISHED -> {
+                        this.undo.clear();
+                        this.redo.clear();
 
                         SetFollowersInvisible();
                         Audio.getBGM().stop();
