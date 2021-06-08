@@ -78,10 +78,8 @@ public class PMMouseListener extends MouseAdapter {
             pm.frame.setGame(game);
         }
         if (e.getSource().equals(pm.bm)) {
-            pm.frame.frame.dispose();
-            Audio.getBGM().stop();
-            Window.getCFrame().stopLoop();
-            Window.start();
+            CFrame.isPaused = false;
+            Window.switchToMainMenu();
         }
 
     }

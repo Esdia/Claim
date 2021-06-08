@@ -37,6 +37,8 @@ public class Window implements Runnable {
 
         contentPane.add("Page1", menu);
 
+        cFrame = new CFrame(frame);
+        contentPane.add("Page2", cFrame);
 
         frame.setVisible(true);
     }
@@ -46,8 +48,7 @@ public class Window implements Runnable {
     }
 
     public static void switchToGame(Game game) {
-        cFrame = new CFrame(frame);
-        contentPane.add("Page2", cFrame);
+        game.reset();
         game.start();
         cFrame.setGame(game);
         ((CardLayout) contentPane.getLayout()).next(contentPane);
@@ -55,7 +56,9 @@ public class Window implements Runnable {
         frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/Icon/icon.png").getImage());
     }
 
-    static CFrame getCFrame() {
-        return cFrame;
+    public static void switchToMainMenu() {
+        Audio.getBGM().stop();
+        cFrame.stopLoop();
+        ((CardLayout) contentPane.getLayout()).previous(contentPane);
     }
 }

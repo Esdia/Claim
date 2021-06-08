@@ -125,6 +125,8 @@ public class CFrame extends JComponent {
         this.createFollowButton();
         this.createFlippedButton();
         this.createPlayedButtons();
+
+        this.initLoop();
     }
 
 
@@ -144,11 +146,7 @@ public class CFrame extends JComponent {
         }
     }
 
-    boolean isLoopRunning() {
-        return this.gameLoop.isRunning();
-    }
-
-    void startLoop() {
+    void initLoop() {
         this.gameLoop.addActionListener(e -> {
 
             ArrayList<AnimatedPanel> tmp = new ArrayList<>(this.movingPanels);
@@ -187,6 +185,13 @@ public class CFrame extends JComponent {
             }
         });
         this.gameLoop.setRepeats(true);
+    }
+
+    boolean isLoopRunning() {
+        return this.gameLoop.isRunning();
+    }
+
+    void startLoop() {
         this.gameLoop.start();
     }
 
@@ -287,6 +292,8 @@ public class CFrame extends JComponent {
         for (int i = 0; i < 2; i++) {
             if (played[i] != null) {
                 this.playedPanels[i].setCard(played[i]);
+            } else {
+                this.playedPanels[i].setVisible(false);
             }
         }
     }
