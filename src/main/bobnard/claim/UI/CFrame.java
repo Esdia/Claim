@@ -12,8 +12,11 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
 
 public class CFrame extends JComponent {
 
@@ -56,6 +59,12 @@ public class CFrame extends JComponent {
 
 
     MenuDeFin mf;
+
+    private Stack<Game> undo;
+    private Stack<Game> redo;
+
+    private UndoRedoPanel undoPanel;
+    private UndoRedoPanel redoPanel;
 
     public CFrame(JFrame frame) {
         this.refreshImages();
@@ -104,12 +113,41 @@ public class CFrame extends JComponent {
 
         p = new ImageIcon(path + "pause.png");
 
+        this.undo = new Stack<>();
+        this.redo = new Stack<>();
+
         this.createHandButtons();
         this.createFollowButton();
         this.createFlippedButton();
         this.createPlayedButtons();
+        this.createUndoRedoButtons();
 
         this.initLoop();
+    }
+
+    void undo() {
+        if (!this.undo.isEmpty()) {
+            this.redo.push(this.game.copy());
+            this.setGame(this.undo.pop());
+            this.repaint();
+        }
+    }
+
+    void redo() {
+        if (!this.redo.isEmpty()) {
+            this.undo.push(this.game.copy());
+            this.setGame(this.redo.pop());
+            this.repaint();
+        }
+    }
+
+    void playCard(Card card) {
+        this.undo.push(this.game.copy());
+        this.redo.clear();
+
+        game.playCard(card);
+        System.out.println(card.name);
+        this.repaint();
     }
 
     void refreshImages() {
@@ -151,6 +189,10 @@ public class CFrame extends JComponent {
 
     void initLoop() {
         this.gameLoop.addActionListener(e -> {
+            if (game.getState() == GameState.STARTED_PHASE_ONE) {
+                this.undo.clear();
+                this.redo.clear();
+            }
 
             ArrayList<AnimatedPanel> tmp = new ArrayList<>(this.movingPanels);
             for (AnimatedPanel animatedPanel : tmp) {
@@ -248,6 +290,33 @@ public class CFrame extends JComponent {
         for (int i = 0; i < 2; i++) {
             this.playedPanels[i] = new CardUI(this);
             this.add(playedPanels[i]);
+        }
+    }
+
+    void createUndoRedoButtons() {
+        this.undoPanel = new UndoRedoPanel(this, "undo");
+        this.redoPanel = new UndoRedoPanel(this, "redo");
+
+        this.add(undoPanel);
+        this.add(redoPanel);
+    }
+
+    @SuppressWarnings("unchecked")
+    void loadUndoRedo(ObjectInputStream in) {
+        try {
+            this.undo = (Stack<Game>) in.readObject();
+            this.redo = (Stack<Game>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void saveUndoRedo(ObjectOutputStream out) {
+        try {
+            out.writeObject(this.undo);
+            out.writeObject(this.redo);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     //endregion
@@ -349,6 +418,8 @@ public class CFrame extends JComponent {
 
         this.updateScore();
         paintscore(g, h, w);
+
+        this.drawUndoRedo(resize);
 
 
         this.setVisible(true);
@@ -520,6 +591,31 @@ public class CFrame extends JComponent {
             }
         }
 
+    }
+
+    void drawUndoRedo(boolean resize) {
+        if (resize) {
+            Point played0 = getPlayedLocation(0);
+            Point played1 = getPlayedLocation(1);
+
+            int arrowSize = played1.y - played0.y - imgHeight;
+
+            int y = played1.y - arrowSize;
+
+            int[] x = {
+                    played0.x - (int) (1.5 * arrowSize),
+                    played0.x + imgWidth + arrowSize / 2
+            };
+
+            this.undoPanel.setBounds(x[0], y, arrowSize, arrowSize);
+            this.undoPanel.refreshImagePath();
+
+            this.redoPanel.setBounds(x[1], y, arrowSize, arrowSize);
+            this.redoPanel.refreshImagePath();
+        }
+
+        this.undoPanel.setVisible(!this.undo.isEmpty());
+        this.redoPanel.setVisible(!this.redo.isEmpty());
     }
 
     void animateFlipped() {

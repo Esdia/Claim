@@ -113,9 +113,7 @@ public class CardUI extends JPanel implements MouseInputListener {
             AnimatedPanel ap = new AnimatedPlayedCard(cui, frame.getPlayedLocation(game.getCurrentPlayerID()), frame);
             this.frame.addAnimation(ap);
             /////
-            game.playCard(card);
-            System.out.println(card.name);
-            frame.repaint();
+            frame.playCard(card);
         }
     }
 
