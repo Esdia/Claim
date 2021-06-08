@@ -7,9 +7,10 @@ import java.awt.*;
 
 public class Window implements Runnable {
     private static JFrame frame;
-    public static Boolean isFS;
+    public static boolean isFS;
     private static Container contentPane;
     private static CFrame cFrame;
+    private static Menu menu;
 
     private JFrame getFrame() {
         frame = new JFrame("Claim");
@@ -32,7 +33,7 @@ public class Window implements Runnable {
     public void run() {
         frame = this.getFrame();
 
-        Menu menu = new Menu(frame);
+        menu = new Menu(frame);
 
 
         contentPane.add("Page1", menu);
@@ -48,15 +49,19 @@ public class Window implements Runnable {
     }
 
     public static void switchToGame(Game game) {
+        CardUI.refreshImagePath();
+
         game.reset();
         game.start();
         cFrame.setGame(game);
+        cFrame.refreshImages();
         ((CardLayout) contentPane.getLayout()).next(contentPane);
 
         frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/Icon/icon.png").getImage());
     }
 
     public static void switchToMainMenu() {
+        menu.reset();
         Audio.getBGM().stop();
         cFrame.stopLoop();
         ((CardLayout) contentPane.getLayout()).previous(contentPane);

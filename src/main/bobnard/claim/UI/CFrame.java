@@ -58,7 +58,8 @@ public class CFrame extends JComponent {
     MenuDeFin mf;
 
     public CFrame(JFrame frame) {
-        path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
+        this.refreshImages();
+
         FlippedCard = null;
         this.frame = frame;
 
@@ -67,26 +68,8 @@ public class CFrame extends JComponent {
         pm = new PauseMenu(this);
         this.add(pm);
 
-
-        for (int i = 0; i < 5; i++) {
-            try {
-                FactionIm[i] = ImageIO.read(new File(path + "SCORE" + i + ".png"));
-            } catch (IOException ignored) {
-            }
-        }
-
         setLayout(null);
         this.setVisible(true);
-
-        try {
-            image = ImageIO.read(new File(path + "board.png"));
-        } catch (IOException ignored) {
-        }
-
-        try {
-            image2 = ImageIO.read(new File(path + "CARDBACK.png"));
-        } catch (IOException ignored) {
-        }
 
         pause = new JButton();
         pause.addMouseListener(new MouseListener() {
@@ -129,6 +112,26 @@ public class CFrame extends JComponent {
         this.initLoop();
     }
 
+    void refreshImages() {
+        path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
+
+        for (int i = 0; i < 5; i++) {
+            try {
+                FactionIm[i] = ImageIO.read(new File(path + "SCORE" + i + ".png"));
+            } catch (IOException ignored) {
+            }
+        }
+
+        try {
+            image = ImageIO.read(new File(path + "board.png"));
+        } catch (IOException ignored) {
+        }
+
+        try {
+            image2 = ImageIO.read(new File(path + "CARDBACK.png"));
+        } catch (IOException ignored) {
+        }
+    }
 
     void setGame(Game game) {
         this.game = game;

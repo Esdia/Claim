@@ -43,6 +43,10 @@ public class CardUI extends JPanel implements MouseInputListener {
 
     }
 
+    public static void refreshImagePath() {
+        path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
+    }
+
     void fetchGame() {
         this.game = frame.getGame();
     }

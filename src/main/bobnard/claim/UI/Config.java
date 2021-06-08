@@ -24,7 +24,7 @@ public class Config extends JComponent {
     final JComboBox<String> cb;
     final JComboBox<String> cb2;
 
-    public Boolean isFS;
+    public boolean isFS;
 
     ImageIcon ba;
 

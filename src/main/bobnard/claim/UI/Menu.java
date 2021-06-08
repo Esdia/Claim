@@ -241,6 +241,11 @@ public class Menu extends JComponent {
 
     }
 
+    void reset() {
+        this.isStart = false;
+        this.b1a.setVisible(false);
+        this.b1b.setVisible(false);
+    }
 }
 
 
