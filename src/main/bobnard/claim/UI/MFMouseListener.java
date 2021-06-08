@@ -49,6 +49,7 @@ public class MFMouseListener extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        Audio.getBGM().stop();
         if (e.getSource().equals(mf.me)) {
             CFrame.isfin = false;
             Window.switchToMainMenu();
