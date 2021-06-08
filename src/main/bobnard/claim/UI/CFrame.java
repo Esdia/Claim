@@ -223,6 +223,8 @@ public class CFrame extends JComponent {
                         this.undo.clear();
                         this.redo.clear();
 
+                        this.w = 0; // To force a resize
+
                         SetFollowersInvisible();
                         mf.setgame(game);
                         isfin = true ;
@@ -236,6 +238,8 @@ public class CFrame extends JComponent {
 
                         Audio.getBGM().stop();
                         Audio.playBGM(2);
+
+                        this.w = 0; // To force a resize
                     }
                 }
 
