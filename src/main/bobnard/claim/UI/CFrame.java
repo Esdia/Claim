@@ -219,13 +219,14 @@ public class CFrame extends JComponent {
             if (this.movingPanels.size() == 0 && !game.isWaitingHumanAction()) {
                 switch (game.getState()) {
                     case GAME_FINISHED -> {
-                        mf = new MenuDeFin(this, game);
+                        mf = new MenuDeFin(this, game , players[0]);
                         this.add(mf);
                         SetFollowersInvisible();
 
                         Audio.getBGM().stop();
                         drawPM(mf, true);
                         stopLoop();
+                        return;
 
                     }
                     case STARTED_PHASE_ONE -> Audio.playBGM(1);
@@ -580,6 +581,10 @@ public class CFrame extends JComponent {
     }
 
     void drawScorePile(boolean resize) {
+        if (game.getState() == GameState.GAME_FINISHED) {
+            return;
+        }
+
         int size;
         int max = (w / 2) + 2 * imgWidth + 16 * (imgWidth / 3);
         int x;
