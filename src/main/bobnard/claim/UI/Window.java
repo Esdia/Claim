@@ -63,6 +63,7 @@ public class Window implements Runnable {
     public static void switchToMainMenu() {
         menu.reset();
         Audio.getBGM().stop();
+        Audio.playBGM(0);
         cFrame.stopLoop();
         ((CardLayout) contentPane.getLayout()).previous(contentPane);
     }
