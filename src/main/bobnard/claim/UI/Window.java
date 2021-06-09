@@ -55,14 +55,19 @@ public class Window implements Runnable {
         CardUI.refreshImagePath();
 
         game.reset();
-        game.setFirstPlayer(
-                switch (Config.firstPlayer) {
-                    case "1 (top)" -> 0;
-                    case "2 (bottom)" -> 1;
-                    case "Random" -> random.nextInt(2);
-                    default -> throw new IllegalStateException("Unexpected value: " + Config.firstPlayer);
-                }
-        );
+        switch (Config.firstPlayer) {
+            case "1 (top)":
+                game.setFirstPlayer(0);
+                break;
+            case "2 (bottom)":
+                game.setFirstPlayer(1);
+                break;
+            case "Random":
+                game.setFirstPlayer(random.nextInt(2));
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + Config.firstPlayer);
+        }
         game.start();
         cFrame.setGame(game);
         cFrame.refreshImages();

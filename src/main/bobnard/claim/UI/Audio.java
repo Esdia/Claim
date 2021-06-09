@@ -51,23 +51,38 @@ public class Audio {
     public static void playBGM(int phase) {
         File song;
         Random rand = new Random();
-        song = switch (phase) {
-            case 0 -> menuBGM[rand.nextInt(NB_SONG_MENU)];
-            case 1 -> p1blf[rand.nextInt(NB_SONG_P1)];
-            case 2 -> p2blf[rand.nextInt(NB_SONG_P2)];
-            default -> throw new IllegalStateException("Unexpected value: " + phase);
-        };
+
+        switch (phase) {
+            case 0:
+                song = menuBGM[rand.nextInt(NB_SONG_MENU)];
+                break;
+            case 1:
+                song = p1blf[rand.nextInt(NB_SONG_P1)];
+                break;
+            case 2:
+                song = p2blf[rand.nextInt(NB_SONG_P2)];
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + phase);
+        }
 
         play(song, true);
 
     }
 
     public static void playSE(int number) {
-        File song = switch (number) {
-            case 0 -> menuSE1;
-            case 1 -> menuSE2;
-            default -> throw new IllegalStateException("Unexpected value: " + number);
-        };
+        File song;
+
+        switch (number) {
+            case 0:
+                song = menuSE1;
+                break;
+            case 1:
+                song = menuSE2;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + number);
+        }
 
         play(song, false);
 

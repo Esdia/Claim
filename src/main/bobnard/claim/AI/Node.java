@@ -43,7 +43,7 @@ public abstract class Node {
         double value = 0;
 
         switch (this.type) {
-            case MAX -> {
+            case MAX: {
                 // Calculating the AI's move
                 value = Double.NEGATIVE_INFINITY;
                 int i = 0;
@@ -61,8 +61,9 @@ public abstract class Node {
                     if (alpha >= beta) break; // Beta cut
                     i++;
                 }
+                break;
             }
-            case MIN -> {
+            case MIN: {
                 value = Double.POSITIVE_INFINITY;
                 for (Card card : this.playableCards) {
                     value = Math.min(
@@ -72,6 +73,7 @@ public abstract class Node {
                     beta = Math.min(value, beta);
                     if (beta <= alpha) break; // Alpha cut
                 }
+                break;
             }
         }
 

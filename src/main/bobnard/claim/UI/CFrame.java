@@ -219,7 +219,7 @@ public class CFrame extends JComponent {
 
             if (this.movingPanels.size() == 0 && !game.isWaitingHumanAction()) {
                 switch (game.getState()) {
-                    case GAME_FINISHED -> {
+                    case GAME_FINISHED: {
                         this.undo.clear();
                         this.redo.clear();
 
@@ -231,15 +231,18 @@ public class CFrame extends JComponent {
 
                         stopLoop();
                         return;
-
                     }
-                    case STARTED_PHASE_ONE -> Audio.playBGM(1);
-                    case FIRST_PHASE_FINISHED -> {
-
+                    case STARTED_PHASE_ONE: {
+                        Audio.playBGM(1);
+                        break;
+                    }
+                    case FIRST_PHASE_FINISHED: {
                         Audio.getBGM().stop();
                         Audio.playBGM(2);
 
                         this.w = 0; // To force a resize
+
+                        break;
                     }
                 }
 

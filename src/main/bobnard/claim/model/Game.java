@@ -186,10 +186,17 @@ public class Game implements Serializable {
      */
     public void nextStep() {
         switch (this.state) {
-            case READY_TO_START -> this.start();
+            case READY_TO_START: {
+                this.start();
+                break;
+            }
             /* This state exists to let the UI start the audio */
-            case STARTED_PHASE_ONE -> this.setState(GameState.WAITING_LEADER_ACTION);
-            case WAITING_LEADER_ACTION, WAITING_FOLLOW_ACTION -> {
+            case STARTED_PHASE_ONE: {
+                this.setState(GameState.WAITING_LEADER_ACTION);
+                break;
+            }
+            case WAITING_LEADER_ACTION:
+            case WAITING_FOLLOW_ACTION: {
                 /*
                  * Here, the method playCard (called by AI.action,
                  * or when a player clicks on a card) changes the state
@@ -198,8 +205,9 @@ public class Game implements Serializable {
                 if (this.isCurrentPlayerAI()) {
                     this.getCurrentPlayer().action();
                 }
+                break;
             }
-            case TRICK_FINISHED -> {
+            case TRICK_FINISHED: {
                 this.endTrick();
                 if (this.phase.isDone()) {
                     if (this.getPhaseNum() == 1) {
@@ -210,18 +218,21 @@ public class Game implements Serializable {
                 } else {
                     this.setState(GameState.WAITING_LEADER_ACTION);
                 }
+                break;
             }
-            case FIRST_PHASE_FINISHED -> {
+            case FIRST_PHASE_FINISHED: {
                 this.startPhaseTwo();
                 this.setState(GameState.WAITING_LEADER_ACTION);
+                break;
             }
-            case SECOND_PHASE_FINISHED -> {
+            case SECOND_PHASE_FINISHED: {
                 this.endGame();
                 this.setState(GameState.GAME_FINISHED);
+                break;
             }
-            case GAME_FINISHED -> {
+            case GAME_FINISHED: {
                 this.reset();
-
+                break;
             }
         }
     }
@@ -292,11 +303,16 @@ public class Game implements Serializable {
 
         this.phase.playCard(card);
 
-        this.setState(switch (this.state) {
-            case WAITING_LEADER_ACTION -> GameState.WAITING_FOLLOW_ACTION;
-            case WAITING_FOLLOW_ACTION -> GameState.TRICK_FINISHED;
-            default -> throw new IllegalStateException();
-        });
+        switch (this.state) {
+            case WAITING_LEADER_ACTION:
+                this.setState(GameState.WAITING_FOLLOW_ACTION);
+                break;
+            case WAITING_FOLLOW_ACTION:
+                this.setState(GameState.TRICK_FINISHED);
+                break;
+            default:
+                throw new IllegalStateException();
+        }
 
         if (this.state == GameState.WAITING_FOLLOW_ACTION) {
             this.changePlayer();

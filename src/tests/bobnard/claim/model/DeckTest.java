@@ -51,11 +51,21 @@ class DeckTest {
                 assertFalse(seen.contains(c));
                 seen.add(c);
                 switch (c.faction) {
-                    case GOBLINS -> nbGoblins++;
-                    case KNIGHTS -> nbKnights++;
-                    case UNDEADS -> nbUndeads++;
-                    case DWARVES -> nbDwarves++;
-                    case DOPPELGANGERS -> nbDoppelgangers++;
+                    case GOBLINS:
+                        nbGoblins++;
+                        break;
+                    case KNIGHTS:
+                        nbKnights++;
+                        break;
+                    case UNDEADS:
+                        nbUndeads++;
+                        break;
+                    case DWARVES:
+                        nbDwarves++;
+                        break;
+                    case DOPPELGANGERS:
+                        nbDoppelgangers++;
+                        break;
                 }
             }
         }
