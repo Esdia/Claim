@@ -3,14 +3,11 @@ package bobnard.claim.UI;
 import bobnard.claim.model.Card;
 import bobnard.claim.model.Game;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class CardUI extends JPanel implements MouseInputListener {
@@ -33,7 +30,7 @@ public class CardUI extends JPanel implements MouseInputListener {
     public CardUI(CFrame frame) {
         super();
 
-        path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
+        path = "gameboard/";
 
         this.frame = frame;
 
@@ -44,7 +41,7 @@ public class CardUI extends JPanel implements MouseInputListener {
     }
 
     public static void refreshImagePath() {
-        path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
+        images.clear();
     }
 
     void fetchGame() {
@@ -71,10 +68,7 @@ public class CardUI extends JPanel implements MouseInputListener {
     private static BufferedImage getImage(String name) {
         name = path + name + ".png";
         if (!images.containsKey(name)) {
-            try {
-                images.put(name, ImageIO.read(new File(name)));
-            } catch (IOException ignored) {
-            }
+            images.put(name, Utils.loadImg(name));
         }
 
         return images.get(name);

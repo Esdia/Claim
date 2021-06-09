@@ -23,8 +23,8 @@ public class MFMouseListener extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
-        ImageIcon ime = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/menu2.png");
-        ImageIcon ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/newgame2.png");
+        ImageIcon ime = Utils.loadIcon("menu_fin/menu2.png");
+        ImageIcon ire = Utils.loadIcon("menu_fin/newgame2.png");
         setHover(e, ime, ire);
     }
 
@@ -42,14 +42,14 @@ public class MFMouseListener extends MouseAdapter {
     @Override
     public void mouseExited(MouseEvent e) {
         super.mouseEntered(e);
-        ImageIcon ime = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/menu.png");
-        ImageIcon ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/newgame.png");
+        ImageIcon ime = Utils.loadIcon("menu_fin/menu.png");
+        ImageIcon ire = Utils.loadIcon("menu_fin/newgame.png");
         setHover(e, ime, ire);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Audio.getBGM().stop();
+        Audio.stopBGM();
         if (e.getSource().equals(mf.me)) {
             CFrame.isfin = false;
             Window.switchToMainMenu();

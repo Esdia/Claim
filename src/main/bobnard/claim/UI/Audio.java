@@ -25,23 +25,30 @@ public class Audio {
 
 
     public static void setFiles() {
+        if (Utils.isInJar()) {
+            return;
+        }
+
         System.out.println(Menu.skin);
-        File p1bf = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/phase1/bgm");
-        File p2bf = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/phase2/bgm");
-        p1blf = p1bf.listFiles();
-        p2blf = p2bf.listFiles();
+
+        String path = "audio/";
+
+        p1blf = Utils.loadFiles(path + "phase1/BGM");
+        p2blf = Utils.loadFiles(path + "phase2/BGM");
         NB_SONG_P1 = p1blf.length;
         NB_SONG_P2 = p2blf != null ? p2blf.length : 0;
-        menuBGM = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/menu/bgm/").listFiles();
+        menuBGM = Utils.loadFiles(path + "menu/BGM");
         NB_SONG_MENU = menuBGM != null ? menuBGM.length : 0;
-        menuSE1 = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/menu/se/sysb.wav");
+        menuSE1 = Utils.loadFile(path + "menu/SE/sysb.wav");
         if (Menu.skin.equals("Umineko"))
-            menuSE2 = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/audio/menu/se/ZS1.WAV");
-
-
+            menuSE2 = Utils.loadFile(path + "menu/SE/ZS1.WAV");
     }
 
     public static void setVolume(int volume) {
+        if (Utils.isInJar()) {
+            return;
+        }
+
         Audio.volume = volume;
         float dB = (float) (Math.log((double) volume/100) / Math.log(10.0) * 20.0);
         FloatControl gainControl = (FloatControl) bgm.getControl(FloatControl.Type.MASTER_GAIN);
@@ -49,6 +56,10 @@ public class Audio {
     }
 
     public static void playBGM(int phase) {
+        if (Utils.isInJar()) {
+            return;
+        }
+
         File song;
         Random rand = new Random();
 
@@ -71,6 +82,10 @@ public class Audio {
     }
 
     public static void playSE(int number) {
+        if (Utils.isInJar()) {
+            return;
+        }
+
         File song;
 
         switch (number) {
@@ -117,8 +132,10 @@ public class Audio {
         Audio.playBGM(0);
     }
 
-    public static Clip getBGM() {
-        return bgm;
+    public static void stopBGM() {
+        if (!Utils.isInJar()) {
+            bgm.stop();
+        }
     }
 
     public static int getVolume() {

@@ -56,6 +56,14 @@ public class Save {
 
 
     public static void sysload(JFrame frame) {
+        File sys = new File("sys");
+        if (!sys.exists()) {
+            Window.isFS = false;
+            Config.difficulty = "Normal";
+            Config.firstPlayer = "Random";
+            return;
+        }
+
         try {
             FileInputStream fload = new FileInputStream("sys");
             ObjectInputStream in = new ObjectInputStream(fload);
@@ -71,13 +79,16 @@ public class Save {
             in.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            Window.isFS = false;
-            Config.difficulty = "Normal";
-            Config.firstPlayer = "Random";
         }
     }
 
     public static void sysloadSkin() {
+        File sys = new File("sys");
+        if (!sys.exists()) {
+            Menu.skin = "Vanilla";
+            return;
+        }
+
         try {
             FileInputStream fload = new FileInputStream("sys");
             ObjectInputStream in = new ObjectInputStream(fload);
@@ -86,7 +97,6 @@ public class Save {
             in.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            Menu.skin = "Vanilla";
         }
     }
 

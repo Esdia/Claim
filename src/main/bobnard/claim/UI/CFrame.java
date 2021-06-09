@@ -4,18 +4,17 @@ package bobnard.claim.UI;
 import bobnard.claim.AI.AI;
 import bobnard.claim.model.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Stack;
 
 public class CFrame extends JComponent {
@@ -125,8 +124,8 @@ public class CFrame extends JComponent {
 
         add(pause);
 
-        p1 = new ImageIcon(path + "pause.png");
-        p2 = new ImageIcon(path + "pause2.png");
+        p1 = new ImageIcon(Objects.requireNonNull(Utils.loadImg(path + "pause.png")));
+        p2 = new ImageIcon(Objects.requireNonNull(Utils.loadImg(path + "pause2.png")));
 
         p = p1;
 
@@ -168,24 +167,15 @@ public class CFrame extends JComponent {
     }
 
     void refreshImages() {
-        path = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
+        path = "gameboard/";
 
         for (int i = 0; i < 5; i++) {
-            try {
-                FactionIm[i] = ImageIO.read(new File(path + "SCORE" + i + ".png"));
-            } catch (IOException ignored) {
-            }
+            FactionIm[i] = Utils.loadImg(path + "SCORE" + i + ".png");
         }
 
-        try {
-            image = ImageIO.read(new File(path + "board.png"));
-        } catch (IOException ignored) {
-        }
+        image = Utils.loadImg(path + "board.png");
 
-        try {
-            image2 = ImageIO.read(new File(path + "CARDBACK.png"));
-        } catch (IOException ignored) {
-        }
+        image2 = Utils.loadImg(path + "CARDBACK.png");
     }
 
     void setGame(Game game) {
@@ -237,7 +227,7 @@ public class CFrame extends JComponent {
                         break;
                     }
                     case FIRST_PHASE_FINISHED: {
-                        Audio.getBGM().stop();
+                        Audio.stopBGM();
                         Audio.playBGM(2);
 
                         this.w = 0; // To force a resize

@@ -1,11 +1,8 @@
 package bobnard.claim.UI;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class Config extends JComponent {
 
@@ -148,12 +145,8 @@ public class Config extends JComponent {
     }
 
     public void setImages() {
-        try {
-            ba = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/Config/back.png");
-            image = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/Config/bg.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ba = Utils.loadIcon("menu/Config/back.png");
+        image = Utils.loadImg("menu/Config/bg.png");
     }
 
     void setButton(JButton button, int y, int w, int h, ImageIcon icon) {

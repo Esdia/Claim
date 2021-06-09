@@ -53,27 +53,21 @@ public class MenuDeFin extends JComponent {
     }
     public void setImages() {
 
-        try {
-            if (game.getWinnerID() == 1) {
-                if(game.getPlayer(0).isAI()) {
-                    bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/defeatscreen.png"));
-                }else {
-                    bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victoryP1.png"));
-                }
-            } else {
-                if(game.getPlayer(0).isAI()){
-                    bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victory.png"));
-
-                }else{
-                    bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/victoryP2.png"));
-
-                }
+        if (game.getWinnerID() == 1) {
+            if(game.getPlayer(0).isAI()) {
+                bg = Utils.loadImg("menu_fin/defeatscreen.png");
+            }else {
+                bg = Utils.loadImg("menu_fin/victoryP1.png");
             }
-            ime = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/menu.png");
-            ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu_fin/newgame.png");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            if(game.getPlayer(0).isAI()){
+                bg = Utils.loadImg("menu_fin/victory.png");
+            }else{
+                bg = Utils.loadImg("menu_fin/victoryP2.png");
+            }
         }
+        ime = Utils.loadIcon("menu_fin/menu.png");
+        ire = Utils.loadIcon("menu_fin/newgame.png");
     }
 
     void setButton(JButton button, int x, int y, int w, int h, ImageIcon icon) {

@@ -11,8 +11,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 public class ButtonsMouse extends MouseAdapter {
     final Menu menu;
@@ -26,13 +29,13 @@ public class ButtonsMouse extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
 
-        ImageIcon ng = new ImageIcon(menu.path + "new_game2.png");
-        ImageIcon ru = new ImageIcon(menu.path + "rules2.png");
-        ImageIcon cf = new ImageIcon(menu.path + "config2.png");
-        ImageIcon sk = new ImageIcon(menu.path + "skin2.png");
-        ImageIcon ex = new ImageIcon(menu.path + "exit2.png");
-        ImageIcon pvp = new ImageIcon(menu.path + "pvp2.png");
-        ImageIcon pve = new ImageIcon(menu.path + "pve2.png");
+        ImageIcon ng = Utils.loadIcon(menu.path + "new_game2.png");
+        ImageIcon ru = Utils.loadIcon(menu.path + "rules2.png");
+        ImageIcon cf = Utils.loadIcon(menu.path + "config2.png");
+        ImageIcon sk = Utils.loadIcon(menu.path + "skin2.png");
+        ImageIcon ex = Utils.loadIcon(menu.path + "exit2.png");
+        ImageIcon pvp = Utils.loadIcon(menu.path + "pvp2.png");
+        ImageIcon pve = Utils.loadIcon(menu.path + "pve2.png");
 
 
         setHover(e, ng, ru, cf, sk, ex, pvp, pve);
@@ -68,13 +71,13 @@ public class ButtonsMouse extends MouseAdapter {
         super.mouseEntered(e);
 
 
-        ImageIcon ng = new ImageIcon(menu.path + "new_game.png");
-        ImageIcon ru = new ImageIcon(menu.path + "rules.png");
-        ImageIcon cf = new ImageIcon(menu.path + "config.png");
-        ImageIcon sk = new ImageIcon(menu.path + "skin.png");
-        ImageIcon ex = new ImageIcon(menu.path + "exit.png");
-        ImageIcon pvp = new ImageIcon(menu.path + "pvp.png");
-        ImageIcon pve = new ImageIcon(menu.path + "pve.png");
+        ImageIcon ng = Utils.loadIcon(menu.path + "new_game.png");
+        ImageIcon ru = Utils.loadIcon(menu.path + "rules.png");
+        ImageIcon cf = Utils.loadIcon(menu.path + "config.png");
+        ImageIcon sk = Utils.loadIcon(menu.path + "skin.png");
+        ImageIcon ex = Utils.loadIcon(menu.path + "exit.png");
+        ImageIcon pvp = Utils.loadIcon(menu.path + "pvp.png");
+        ImageIcon pve = Utils.loadIcon(menu.path + "pve.png");
 
 
         setHover(e, ng, ru, cf, sk, ex, pvp, pve);
@@ -103,7 +106,7 @@ public class ButtonsMouse extends MouseAdapter {
                     }
                 }
             }
-            Audio.getBGM().stop();
+            Audio.stopBGM();
 
             Game game = new Game();
             Player[] players = new Player[]{
@@ -137,9 +140,16 @@ public class ButtonsMouse extends MouseAdapter {
 
 
         if (menu.b2.equals(e.getSource())) {
-            File pdfFile = new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/rules/rules.pdf");
+            InputStream in = Utils.loadInputStream("/" + Menu.skin + "/rules/rules.pdf");
+
             try {
-                Desktop.getDesktop().open(pdfFile);
+                Path tmp = Files.createTempFile("tempPdf", ".pdf");
+
+                tmp.toFile().deleteOnExit();
+
+                Files.copy(in, tmp, StandardCopyOption.REPLACE_EXISTING);
+
+                Desktop.getDesktop().open(tmp.toFile());
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -158,7 +168,7 @@ public class ButtonsMouse extends MouseAdapter {
         }
 
         if (menu.b5.equals(e.getSource())) {
-            Audio.getBGM().stop();
+            Audio.stopBGM();
             Menu.frame.dispose();
         }
     }

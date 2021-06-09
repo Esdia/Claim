@@ -73,7 +73,7 @@ public class Window implements Runnable {
         cFrame.refreshImages();
         ((CardLayout) contentPane.getLayout()).next(contentPane);
 
-        frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/Icon/icon.png").getImage());
+        frame.setIconImage(Utils.loadImg("Icon/icon.png"));
     }
 
     public static void switchToMainMenu() {

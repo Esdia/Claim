@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class UndoRedoPanel extends JPanel {
     private String path = null;
@@ -31,20 +32,16 @@ public class UndoRedoPanel extends JPanel {
     }
 
     public void refreshImagePath() {
-        String path_tmp = "src/main/bobnard/claim/UI/resources/" + Menu.skin + "/gameboard/";
+        String path_tmp = "gameboard/";
         if (!path_tmp.equals(path)) {
             path = path_tmp;
-            try {
-                image = ImageIO.read(new File(path + imageName + ".png"));
-                image = image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+            image = Utils.loadImg(path + imageName + ".png");
+            image = Objects.requireNonNull(image).getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
 
-                image2 = ImageIO.read(new File(path + imageName + "2.png"));
-                image2 = image2.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+            image2 = Utils.loadImg(path + imageName + "2.png");
+            image2 = Objects.requireNonNull(image2).getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
 
-                this.currentImage = image;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            this.currentImage = image;
         }
     }
 

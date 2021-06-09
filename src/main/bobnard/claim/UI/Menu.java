@@ -1,12 +1,9 @@
 package bobnard.claim.UI;
 
 
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
 
 
 public class Menu extends JComponent {
@@ -85,23 +82,18 @@ public class Menu extends JComponent {
     private void setImages() {
 
         frame.setIconImage(new ImageIcon("src/main/bobnard/claim/UI/resources/" + skin + "/Icon/icon.png").getImage());
-        this.path = "src/main/bobnard/claim/UI/resources/" + skin + "/menu/";
+        this.path = "menu/";
 
-        try {
-            ng = new ImageIcon(path + "new_game.png");
-            ru = new ImageIcon(path + "rules.png");
-            cf = new ImageIcon(path + "config.png");
-            sk = new ImageIcon(path + "skin.png");
-            ex = new ImageIcon(path + "exit.png");
-            pvp = new ImageIcon(path + "pvp.png");
-            pve = new ImageIcon(path + "pve.png");
+        ng = Utils.loadIcon(path + "new_game.png");
+        ru = Utils.loadIcon(path + "rules.png");
+        cf = Utils.loadIcon(path + "config.png");
+        sk = Utils.loadIcon(path + "skin.png");
+        ex = Utils.loadIcon(path + "exit.png");
+        pvp = Utils.loadIcon(path + "pvp.png");
+        pve = Utils.loadIcon(path + "pve.png");
 
-            image = ImageIO.read(new File(path + "menu.png"));
-            if (skin.equals("Umineko")) image2 = ImageIO.read(new File(path + "ware.png"));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        image = Utils.loadImg(path + "menu.png");
+        if (skin.equals("Umineko")) image2 = Utils.loadImg(path + "ware.png");
 
     }
 

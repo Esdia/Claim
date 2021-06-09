@@ -40,14 +40,10 @@ public class SkinSelect extends JComponent {
     }
 
     public void setImages() {
-        try {
-            ul = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/logou.png");
-            vl = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/logov.png");
-            ba = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/back.png");
-            image = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/menu/skin/bg2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ul = Utils.loadIcon("menu/skin/logou.png");
+        vl = Utils.loadIcon("menu/skin/logov.png");
+        ba = Utils.loadIcon("menu/skin/back.png");
+        image = Utils.loadImg("menu/skin/bg2.png");
     }
 
     void setButton(JButton button, int x, int y, int w, int h, ImageIcon icon) {

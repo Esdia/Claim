@@ -18,11 +18,11 @@ public class PMMouseListener extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
-        ImageIcon isv = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/save2.png");
-        ImageIcon ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/resume2.png");
-        ImageIcon icf = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/config2.png");
-        ImageIcon ild = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/load2.png");
-        ImageIcon ibm = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/backtomenu2.png");
+        ImageIcon isv = Utils.loadIcon("pause_menu/save2.png");
+        ImageIcon ire = Utils.loadIcon("pause_menu/resume2.png");
+        ImageIcon icf = Utils.loadIcon("pause_menu/config2.png");
+        ImageIcon ild = Utils.loadIcon("pause_menu/load2.png");
+        ImageIcon ibm = Utils.loadIcon("pause_menu/backtomenu2.png");
         setHover(e, isv, ire, ild, icf, ibm);
 
     }
@@ -48,11 +48,11 @@ public class PMMouseListener extends MouseAdapter {
     @Override
     public void mouseExited(MouseEvent e) {
         super.mouseEntered(e);
-        ImageIcon isv = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/save.png");
-        ImageIcon ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/resume.png");
-        ImageIcon icf = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/config.png");
-        ImageIcon ild = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/load.png");
-        ImageIcon ibm = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/backtomenu.png");
+        ImageIcon isv = Utils.loadIcon("pause_menu/save.png");
+        ImageIcon ire = Utils.loadIcon("pause_menu/resume.png");
+        ImageIcon icf = Utils.loadIcon("pause_menu/config.png");
+        ImageIcon ild = Utils.loadIcon("pause_menu/load.png");
+        ImageIcon ibm = Utils.loadIcon("pause_menu/backtomenu.png");
         setHover(e, isv, ire, ild, icf, ibm);
 
     }
@@ -74,8 +74,10 @@ public class PMMouseListener extends MouseAdapter {
         }
         if (e.getSource().equals(pm.ld)) {
             Game game = Save.load("File1", pm.frame);
-            Audio.getBGM().stop();
-            Audio.playBGM(game.getPhaseNum());
+            Audio.stopBGM();
+            if (game != null) {
+                Audio.playBGM(game.getPhaseNum());
+            }
             CFrame.isPaused = false;
             pm.repaint();
 

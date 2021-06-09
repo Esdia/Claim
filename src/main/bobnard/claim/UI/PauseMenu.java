@@ -65,18 +65,13 @@ public class PauseMenu extends JComponent {
     }
 
     public void setImages() {
-        try {
-
-            bg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/bg.png"));
-            ire = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/resume.png");
-            icf = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/config.png");
-            isv = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/save.png");
-            ild = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/load.png");
-            ibm = new ImageIcon("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/backtomenu.png");
-            lg = ImageIO.read(new File("src/main/bobnard/claim/UI/resources/" + Menu.skin + "/pause_menu/logo.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        bg = Utils.loadImg("pause_menu/bg.png");
+        ire = Utils.loadIcon("pause_menu/resume.png");
+        icf = Utils.loadIcon("pause_menu/config.png");
+        isv = Utils.loadIcon("pause_menu/save.png");
+        ild = Utils.loadIcon("pause_menu/load.png");
+        ibm = Utils.loadIcon("pause_menu/backtomenu.png");
+        lg = Utils.loadImg("pause_menu/logo.png");
     }
 
     void setButton(JButton button, int x, int y, int w, int h, ImageIcon icon) {
