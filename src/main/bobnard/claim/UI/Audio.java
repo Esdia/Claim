@@ -127,6 +127,10 @@ public class Audio {
     }
 
     public static void reload() {
+        if (Utils.isInJar()) {
+            return;
+        }
+
         bgm.stop();
         setFiles();
         Audio.playBGM(0);
